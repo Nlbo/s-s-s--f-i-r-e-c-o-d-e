@@ -1,6 +1,6 @@
 {
   "product": "org.wordpress.android",
-  "generated_at": "2026-07-31T10:28:54.614881Z",
+  "generated_at": "2026-07-31T11:04:53.226121Z",
   "t0": "2017-01-01",
   "one_sentence_gap": "Users need a reliable, fast, and user-friendly way to upload multiple images or media files without failures, delays, or merging errors, including multi-select functionality and minimal loading steps — under-prioritized by the roadmap despite the evidence (50% confidence).",
   "gaps": [
@@ -94,9 +94,9 @@
         "lag_months": 2,
         "still_open": false,
         "reaction_growth": null,
-        "note": "Team later shipped GH-5434 (closed 2017-03-22, sim 0.57)."
+        "note": "Team later shipped GH-5434 'Media browser fails to load images' (closed 2017-03-22, sim 0.57)."
       },
-      "theme_id": "TH-fb46f9"
+      "theme_id": "TH-960110"
     },
     {
       "rank": 2,
@@ -188,9 +188,9 @@
         "lag_months": 3,
         "still_open": false,
         "reaction_growth": null,
-        "note": "Team later shipped GH-5685 (closed 2017-04-21, sim 0.56)."
+        "note": "Team later shipped GH-5685 'Changes in HTML mode not saved' (closed 2017-04-21, sim 0.56)."
       },
-      "theme_id": "TH-b9f18d"
+      "theme_id": "TH-c6fb22"
     },
     {
       "rank": 3,
@@ -282,9 +282,9 @@
         "lag_months": 11,
         "still_open": false,
         "reaction_growth": null,
-        "note": "Team later shipped GH-6955 (closed 2017-12-20, sim 0.66)."
+        "note": "Team later shipped GH-6955 'Editor: Media picker allows adding videos to galle' (closed 2017-12-20, sim 0.66)."
       },
-      "theme_id": "TH-20865c"
+      "theme_id": "TH-d5fd61"
     }
   ],
   "meta": {

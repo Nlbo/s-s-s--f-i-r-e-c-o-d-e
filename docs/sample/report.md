@@ -1,6 +1,6 @@
 # 🔇 The Silent Stakeholder — org.wordpress.android
 
-*Roadmap snapshot T0 = 2017-01-01 · generated 2026-07-31 10:28 UTC · mode openai:gpt-4.1-mini*
+*Roadmap snapshot T0 = 2017-01-01 · generated 2026-07-31 11:04 UTC · mode openai:gpt-4.1-mini*
 
 ## The single most important unmet need
 > **Users need a reliable, fast, and user-friendly way to upload multiple images or media files without failures, delays, or merging errors, including multi-select functionality and minimal loading steps — under-prioritized by the roadmap despite the evidence (50% confidence).**
@@ -15,7 +15,7 @@
 
 **Confidence** = V 1.0 · D 0.667 · I 0.434 · K 0.729 · G 0.4 · X 0.126 (raw 0.583)
 
-**Backtest:** Team later shipped GH-5434 (closed 2017-03-22, sim 0.57).
+**Backtest:** Team later shipped GH-5434 'Media browser fails to load images' (closed 2017-03-22, sim 0.57).
 
 **Evidence (6 signals):**
 - `R-d5ccafcd` (review ★1) — Disastrous Update Used to love this app but now just problem after problem. The whole thing is really clunky and seems to have a mind of its own Now pictures refuse to load. I'm not interested in doing anything fancy. I just want to be able
@@ -39,7 +39,7 @@ Thi
 
 **Confidence** = V 0.388 · D 0.333 · I 0.45 · K 0.811 · G 0.7 · X 0.0 (raw 0.562)
 
-**Backtest:** Team later shipped GH-5685 (closed 2017-04-21, sim 0.56).
+**Backtest:** Team later shipped GH-5685 'Changes in HTML mode not saved' (closed 2017-04-21, sim 0.56).
 
 **Evidence (6 signals):**
 - `GH-3863` (gh_issue ) — Visual Editor: Formatting applied before typing is lost. ### Steps to reproduce the behavior
@@ -76,7 +76,7 @@ Notice the opening bold tag is set, and the bold option is
 
 **Confidence** = V 0.438 · D 0.667 · I 0.375 · K 0.75 · G 0.5 · X 0.0 (raw 0.531)
 
-**Backtest:** Team later shipped GH-6955 (closed 2017-12-20, sim 0.66).
+**Backtest:** Team later shipped GH-6955 'Editor: Media picker allows adding videos to galle' (closed 2017-12-20, sim 0.66).
 
 **Evidence (6 signals):**
 - `GH-4593` (gh_issue ) — No videos in media library when trying to add to a post. ### Expected behavior
