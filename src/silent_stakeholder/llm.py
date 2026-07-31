@@ -101,7 +101,13 @@ class LLMClient:
         """
         if not texts:
             return np.zeros((0, 1), dtype=np.float32)
-        vecs = self._embed_openai_call(texts) if self._embed_openai else self._embed_tfidf(texts)
+        if self._embed_openai:
+            try:
+                vecs = self._embed_openai_call(texts)
+            except Exception:  # noqa: BLE001 - API hiccup -> deterministic embeddings, never crash
+                vecs = self._embed_tfidf(texts)
+        else:
+            vecs = self._embed_tfidf(texts)
         # Deterministically de-zero empty rows (e.g. reviews that are all stop-words):
         # give each a distinct basis spike so cosine is defined and they scatter into
         # tiny clusters that min_size filters out — instead of collapsing to the origin.

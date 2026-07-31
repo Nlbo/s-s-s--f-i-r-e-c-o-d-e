@@ -65,8 +65,13 @@ def _do_run(req: RunReq) -> None:
         with _lock:
             _status.update(running=False, done=True, stage="Done", frac=1.0, error=None)
     except Exception as e:  # noqa: BLE001 - surface any failure to the UI, don't crash the server
+        name = type(e).__name__
+        msg = str(e).strip() or name
+        if any(k in name for k in ("RetryError", "Connection", "RateLimit", "Timeout")):
+            msg = ("the model API kept failing (rate limit or connection). Try again, "
+                   "lower Max signals, or pick the offline model.")
         with _lock:
-            _status.update(running=False, done=True, stage="Failed", error=str(e)[:300])
+            _status.update(running=False, done=True, stage="Failed", error=msg[:300])
 
 
 def create_app() -> FastAPI:

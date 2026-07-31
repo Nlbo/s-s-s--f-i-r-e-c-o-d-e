@@ -62,6 +62,11 @@ def run(
           f"= {len(signals)} signals | roadmap@T0 {len(roadmap_t0)} ({len(roadmap_all)} total)")
     if not token:
         print("  note    : no token this run -> shallow roadmap + backtest N/A")
+    if not roadmap_t0:
+        print("  WARN    : this product has NO usable GitHub roadmap (0 items) — gaps can't "
+              "be aligned. Pick a repo with public issues/milestones (e.g. WordPress).")
+    if not reviews:
+        print("  WARN    : no reviews for this package in sealuzh/app_reviews — signal is thin.")
 
     emit(f"Ingested {len(signals)} signals", 0.15)
 
