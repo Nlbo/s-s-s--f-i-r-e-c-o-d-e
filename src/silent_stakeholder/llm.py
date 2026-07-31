@@ -24,13 +24,23 @@ from .config import LLM_CACHE_DIR, Settings
 class LLMClient:
     def __init__(self, settings: Settings, *, offline: bool = False) -> None:
         self.settings = settings
-        self.offline = offline or not settings.use_llm
+        backend = "offline" if offline else settings.backend
+        self.backend = backend
+        self.offline = backend == "offline"          # gates chat (extract/verdict/critic)
+        self._embed_openai = backend == "openai" and bool(settings.openai_embed_model)
         self._client = None
+        self._chat_model = ""
         LLM_CACHE_DIR.mkdir(parents=True, exist_ok=True)
-        if not self.offline:
+        if backend != "offline":
             from openai import OpenAI
 
-            self._client = OpenAI(api_key=settings.openai_api_key)
+            if backend == "router":
+                base = settings.llm_url.rstrip("/") + "/v1"
+                self._client = OpenAI(api_key=settings.llm_key, base_url=base)
+                self._chat_model = settings.llm_model
+            else:
+                self._client = OpenAI(api_key=settings.openai_api_key)
+                self._chat_model = settings.openai_model
 
     # ---- cache -------------------------------------------------------------
     def _cache_path(self, kind: str, key: str) -> Path:
@@ -42,7 +52,7 @@ class LLMClient:
     def _chat_raw(self, system: str, user: str) -> str:
         assert self._client is not None
         resp = self._client.chat.completions.create(
-            model=self.settings.openai_model,
+            model=self._chat_model,
             messages=[
                 {"role": "system", "content": system},
                 {"role": "user", "content": user},
@@ -70,7 +80,7 @@ class LLMClient:
 
     # ---- embeddings --------------------------------------------------------
     @retry(stop=stop_after_attempt(4), wait=wait_exponential(min=1, max=20))
-    def _embed_openai(self, texts: list[str]) -> np.ndarray:
+    def _embed_openai_call(self, texts: list[str]) -> np.ndarray:
         assert self._client is not None
         vecs: list[list[float]] = []
         for i in range(0, len(texts), 256):
@@ -90,7 +100,7 @@ class LLMClient:
         """
         if not texts:
             return np.zeros((0, 1), dtype=np.float32)
-        vecs = self._embed_openai(texts) if not self.offline else self._embed_tfidf(texts)
+        vecs = self._embed_openai_call(texts) if self._embed_openai else self._embed_tfidf(texts)
         # Deterministically de-zero empty rows (e.g. reviews that are all stop-words):
         # give each a distinct basis spike so cosine is defined and they scatter into
         # tiny clusters that min_size filters out — instead of collapsing to the origin.

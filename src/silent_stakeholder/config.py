@@ -63,12 +63,20 @@ def _get(name: str, default: str = "") -> str:
 
 @dataclass(frozen=True)
 class Settings:
-    # LLM (optional — deterministic fallback used when absent)
+    # --- LLM backends (all optional — deterministic fallback used when absent). ---
+    # Auto-detected priority: Hackstudio router (LLM_KEY+LLM_URL) -> OpenAI -> offline.
     openai_api_key: str = field(default_factory=lambda: _get("OPENAI_API_KEY"))
     openai_model: str = field(default_factory=lambda: _get("OPENAI_MODEL", "gpt-4o-mini"))
     openai_embed_model: str = field(
         default_factory=lambda: _get("OPENAI_EMBED_MODEL", "text-embedding-3-small")
     )
+    # OpenAI-compatible internal router (e.g. the Hackstudio LLM gateway).
+    llm_key: str = field(default_factory=lambda: _get("LLM_KEY"))
+    llm_url: str = field(
+        default_factory=lambda: _get("LLM_URL", "https://llm-router-qa.qa.us-west-2.aws.wfk8s.com")
+    )
+    llm_model: str = field(default_factory=lambda: _get("LLM_MODEL", "claude-opus-4-8"))
+
     github_token: str = field(default_factory=lambda: _get("GITHUB_TOKEN"))
 
     # Target product (override to retarget the whole system)
@@ -89,8 +97,17 @@ class Settings:
     weights: ConfidenceWeights = field(default_factory=ConfidenceWeights)
 
     @property
+    def backend(self) -> str:
+        """'router' (internal gateway) | 'openai' | 'offline'."""
+        if self.llm_key and self.llm_url:
+            return "router"
+        if self.openai_api_key:
+            return "openai"
+        return "offline"
+
+    @property
     def use_llm(self) -> bool:
-        return bool(self.openai_api_key)
+        return self.backend != "offline"
 
 
 def get_settings() -> Settings:
