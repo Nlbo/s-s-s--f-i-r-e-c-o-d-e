@@ -121,6 +121,28 @@ class GitHubClient:
             page += 1
         return raw
 
+    def search_issues(self, query: str, *, max_pages: int = 10) -> list[dict]:
+        """Search API — reaches issues beyond the 100-page offset cap via date-ranged
+        queries. Paced for the 30 req/min search limit; cached per page."""
+        out: list[dict] = []
+        page = 1
+        ck = query.replace(" ", "_").replace(":", "-").replace("/", "__")[:60]
+        while page <= max_pages:
+            data = self._get(
+                "/search/issues",
+                {"q": query, "per_page": 100, "page": page, "sort": "created", "order": "asc"},
+                f"search_{ck}_p{page}",
+            )
+            items = data.get("items", []) if isinstance(data, dict) else []
+            if not items:
+                break
+            out.extend(items)
+            if len(items) < 100:
+                break
+            page += 1
+            time.sleep(2)  # stay under the 30/min search rate limit
+        return out
+
 
 def _is_roadmap(issue: dict) -> bool:
     if issue.get("milestone"):

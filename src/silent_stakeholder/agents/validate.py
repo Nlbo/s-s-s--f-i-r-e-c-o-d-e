@@ -20,7 +20,6 @@ from ..llm import LLMClient
 from ..schemas import Gap, RoadmapItem, Validation
 
 MIN_CORPUS = 20
-FUTURE_MAX_PAGES = 200  # bounded deep walk; 422/empty stops earlier
 
 
 def _months_between(a: str | None, b: str | None) -> int | None:
@@ -36,32 +35,36 @@ def build_future_corpus(
     repo: str, token: str, t0: str, roadmap: list[RoadmapItem]
 ) -> list[RoadmapItem]:
     """Issue-level items created strictly after T0 (what was actually built/planned later).
-    Only issues count — version-number milestones carry no feature semantics. Requires a
-    token for the deep walk; without one this is ~empty and the backtest reports N/A."""
+    Only issues count — version-number milestones carry no feature semantics. With a token we
+    walk the Search API per calendar year (T0 → today), which reaches issues beyond the REST
+    100-page offset cap; without a token this is ~empty and the backtest reports N/A."""
     future = [r for r in roadmap if (r.created_at or "") > t0 and r.kind == "issue"]
     if not token:
         return future
     gh = GitHubClient(repo, token)
-    for it in gh.issues(created_before=None, max_pages=FUTURE_MAX_PAGES):
-        if (it.get("created_at") or "") <= t0:
-            continue
-        labels = [
-            (lb["name"] if isinstance(lb, dict) else str(lb)) for lb in it.get("labels", [])
-        ]
-        future.append(
-            RoadmapItem(
-                id=issue_id(it["number"]),
-                kind="issue",
-                title=it.get("title", ""),
-                body=(it.get("body") or "")[:1500],
-                labels=labels,
-                state=it.get("state", "open"),
-                created_at=it.get("created_at"),
-                closed_at=it.get("closed_at"),
-                reactions=(it.get("reactions") or {}).get("total_count", 0),
-                url=it.get("html_url"),
+    seen = {r.id for r in future}
+    for year in range(int(t0[:4]), date.today().year + 1):
+        query = f"repo:{repo} type:issue created:{year}-01-01..{year}-12-31"
+        for it in gh.search_issues(query):
+            if "pull_request" in it or (it.get("created_at") or "") <= t0:
+                continue
+            rid = issue_id(it["number"])
+            if rid in seen:
+                continue
+            seen.add(rid)
+            labels = [
+                (lb["name"] if isinstance(lb, dict) else str(lb)) for lb in it.get("labels", [])
+            ]
+            future.append(
+                RoadmapItem(
+                    id=rid, kind="issue", title=it.get("title", ""),
+                    body=(it.get("body") or "")[:1500], labels=labels,
+                    state=it.get("state", "open"), created_at=it.get("created_at"),
+                    closed_at=it.get("closed_at"),
+                    reactions=(it.get("reactions") or {}).get("total_count", 0),
+                    url=it.get("html_url"),
+                )
             )
-        )
     return future
 
 
