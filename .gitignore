@@ -37,3 +37,7 @@ data/interim/
 
 # --- Outputs (regenerable; keep a sample in docs/) ---
 out/
+
+# Office temp/lock files
+~$*
+*.pdf
