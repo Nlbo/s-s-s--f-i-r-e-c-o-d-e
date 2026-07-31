@@ -51,7 +51,7 @@ def _select_candidates(
 
     anchored = [
         t for t in themes
-        if product_support(t) >= MIN_PRODUCT and product_support(t) >= 0.25 * t.size
+        if (ps := product_support(t)) >= MIN_PRODUCT and ps >= 0.25 * t.size
     ]
     if not anchored:
         return []
