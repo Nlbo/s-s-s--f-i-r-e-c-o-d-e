@@ -8,6 +8,8 @@ and testable. Runs fully offline via the deterministic fallback when no key is s
 
 from __future__ import annotations
 
+from collections.abc import Callable
+
 from .agents.calibrate import calibrate
 from .agents.cluster import cluster_needs
 from .agents.confidence import score_all
@@ -24,7 +26,18 @@ from .report import build_report, rank_and_select, write_report
 from .schemas import Signal
 
 
-def run(settings: Settings, *, limit: int | None = None, offline: bool = False) -> None:
+def run(
+    settings: Settings,
+    *,
+    limit: int | None = None,
+    offline: bool = False,
+    on_stage: Callable[[str, float], None] | None = None,
+) -> None:
+    def emit(label: str, frac: float) -> None:
+        if on_stage:
+            on_stage(label, frac)
+
+    emit("Starting…", 0.02)
     llm = LLMClient(settings, offline=offline)
     t0 = settings.analysis_t0
     # offline is truly offline: no token => shallow cached roadmap, no backtest network
@@ -41,7 +54,7 @@ def run(settings: Settings, *, limit: int | None = None, offline: bool = False) 
     roadmap_all, gh_sigs = split_github(
         settings.target_github_repo, token, created_before=t0, max_pages=max_pages,
     )
-    roadmap_t0 = [r for r in roadmap_all if (r.created_at or "") <= t0]
+    roadmap_t0 = [r for r in roadmap_all if r.created_at and r.created_at <= t0]
     gh_pre = [g for g in gh_sigs if (g.date or "") <= t0]
     tickets = load_tickets(limit=settings.max_tickets)
     signals: list[Signal] = (reviews + gh_pre + tickets)[: settings.max_signals]
@@ -50,25 +63,33 @@ def run(settings: Settings, *, limit: int | None = None, offline: bool = False) 
     if not token:
         print("  note    : no token this run -> shallow roadmap + backtest N/A")
 
+    emit(f"Ingested {len(signals)} signals", 0.15)
+
     # 2-3. extract + cluster ------------------------------------------------
+    emit("Extracting needs (JTBD)…", 0.20)
     units = extract_need_units(llm, signals)
     sentiment_by_id = {u.signal_id: u.sentiment for u in units}
     threshold = 0.55 if llm._embed_openai else 0.95  # dense vs TF-IDF-SVD spaces
     themes = cluster_needs(llm, units, signals, distance_threshold=threshold)
     print(f"  themes  : {len(themes)} candidate need-themes (cluster threshold {threshold})")
 
+    emit(f"Clustered {len(themes)} need-themes", 0.50)
+
     # 4-5. gap + confidence -------------------------------------------------
+    emit("Detecting gaps vs roadmap…", 0.55)
     cands = detect_gaps(llm, themes, signals, roadmap_t0)
     gaps = score_all(settings, cands, signals, sentiment_by_id)
 
     # 6. validate (backtest) then 7. calibrate ------------------------------
+    emit("Backtesting against 2017–today history…", 0.75)
     gaps = validate_gaps(
         llm, gaps, roadmap_all,
         repo=settings.target_github_repo, token=token, t0=t0,
     )
     calib_status, _ = calibrate(gaps)
 
-    # 8. critic (adversarial) — adjusts the (calibrated) confidence ---------
+    # 8. critic (adversarial) — survival gate; does NOT touch the confidence
+    emit("Adversarial critique…", 0.92)
     gaps, survives = critique_all(llm, gaps, cands, signals)
 
     # 9. rank + report ------------------------------------------------------
@@ -83,6 +104,7 @@ def run(settings: Settings, *, limit: int | None = None, offline: bool = False) 
     }
     report = build_report(settings.target_app_package, t0, top, meta)
     paths = write_report(report)
+    emit("Done", 1.0)
 
     print(f"\n  calibration: {calib_status}")
     print(f"  >> {len(top)} gaps ranked. One-liner:\n     {report.one_sentence_gap}")

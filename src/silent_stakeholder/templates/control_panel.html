@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>The Silent Stakeholder — Control Panel</title>
+<style>
+  :root{--primary:#1677ff;--primary-bg:#e6f4ff;--primary-border:#91caff;
+    --success:#52c41a;--success-bg:#f6ffed;--success-border:#b7eb8f;--success-text:#389e0d;
+    --warning-bg:#fffbe6;--warning-border:#ffe58f;--warning-text:#d48806;
+    --error:#ff4d4f;--error-bg:#fff1f0;--error-border:#ffccc7;--error-text:#cf1322;
+    --purple-bg:#f9f0ff;--purple-border:#d3adf7;--purple-text:#531dab;
+    --tx:rgba(0,0,0,.88);--tx2:rgba(0,0,0,.65);--tx3:rgba(0,0,0,.45);
+    --bd:#f0f0f0;--bd2:#d9d9d9;--bg:#f5f5f5;--radius:8px;
+    --shadow:0 1px 2px 0 rgba(0,0,0,.03),0 1px 6px -1px rgba(0,0,0,.02),0 2px 4px 0 rgba(0,0,0,.02);}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.57 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+  .wrap{max-width:900px;margin:0 auto;padding:32px 24px 72px}
+  h1{font-size:24px;font-weight:600;margin:0 0 4px} .sub{color:var(--tx3);font-size:13px;margin:0 0 24px}
+  .card{background:#fff;border:1px solid var(--bd);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px 24px;margin:0 0 18px}
+  label{display:block;font-size:13px;color:var(--tx2);margin:0 0 4px;font-weight:500}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  select,input{width:100%;border:1px solid var(--bd2);border-radius:6px;padding:7px 11px;font:inherit;color:var(--tx);background:#fff;outline:none;transition:.2s}
+  select:focus,input:focus{border-color:var(--primary);box-shadow:0 0 0 2px var(--primary-bg)}
+  .field{margin:0 0 14px}
+  .btn{background:var(--primary);color:#fff;border:none;border-radius:6px;padding:9px 20px;font:inherit;font-weight:500;cursor:pointer;transition:.2s;box-shadow:0 2px 0 rgba(5,145,255,.1)}
+  .btn:hover{background:#4096ff} .btn:disabled{background:#d9d9d9;cursor:not-allowed;box-shadow:none}
+  .btn.ghost{background:#fff;color:var(--primary);border:1px solid var(--primary)}
+  .hint{color:var(--tx3);font-size:12px;margin-top:6px}
+  .badge{display:inline-block;font-size:12px;padding:1px 8px;border-radius:4px;border:1px solid}
+  .badge.ok{background:var(--success-bg);color:var(--success-text);border-color:var(--success-border)}
+  .badge.no{background:var(--warning-bg);color:var(--warning-text);border-color:var(--warning-border)}
+  #progwrap{display:none} .prog{height:8px;background:#f0f0f0;border-radius:100px;overflow:hidden;margin:10px 0}
+  .prog>i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--primary),#69b1ff);transition:width .5s ease;border-radius:100px}
+  .stage{font-size:13px;color:var(--tx2)} .stage .spin{display:inline-block;width:12px;height:12px;border:2px solid var(--primary-border);border-top-color:var(--primary);border-radius:50%;animation:sp .8s linear infinite;vertical-align:-1px;margin-right:6px}
+  @keyframes sp{to{transform:rotate(360deg)}}
+  #results{display:none}
+  .oneliner{background:var(--primary-bg);border:1px solid var(--primary-border);border-radius:var(--radius);padding:14px 18px;font-weight:600;margin:0 0 16px}
+  .gap{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--bd)}
+  .gap:last-child{border-bottom:none}
+  .rk{width:26px;height:26px;flex:none;border-radius:50%;background:var(--primary);color:#fff;font-weight:600;display:flex;align-items:center;justify-content:center;font-size:13px}
+  .need{flex:1;font-weight:500;font-size:14px} .need small{display:block;color:var(--tx3);font-weight:400;font-size:12px;margin-top:2px}
+  .tag{font-size:11px;font-weight:600;padding:1px 8px;border-radius:4px;white-space:nowrap}
+  .tag.IGNORED{background:var(--error-bg);color:var(--error-text);border:1px solid var(--error-border)}
+  .tag.UNDER-PRIORITIZED{background:var(--warning-bg);color:var(--warning-text);border:1px solid var(--warning-border)}
+  .tag.MISUNDERSTOOD{background:var(--purple-bg);color:var(--purple-text);border:1px solid var(--purple-border)}
+  .conf{font-weight:600;color:var(--primary);font-variant-numeric:tabular-nums}
+  .err{background:var(--error-bg);border:1px solid var(--error-border);color:var(--error-text);border-radius:var(--radius);padding:12px 16px}
+</style>
+</head>
+<body><div class="wrap">
+  <h1>🔇 The Silent Stakeholder</h1>
+  <p class="sub">Control panel — pick a model &amp; product, run the pipeline, watch it work.</p>
+
+  <div class="card">
+    <div class="grid">
+      <div class="field"><label>Model</label><select id="model"></select>
+        <div class="hint" id="backend"></div></div>
+      <div class="field"><label>Product preset</label><select id="preset"></select></div>
+    </div>
+    <div class="grid">
+      <div class="field"><label>App package (from sealuzh/app_reviews)</label><input id="pkg"/></div>
+      <div class="field"><label>GitHub repo (owner/name)</label><input id="repo"/></div>
+    </div>
+    <div class="grid">
+      <div class="field"><label>T0 (roadmap snapshot / backtest cutoff)</label><input id="t0" type="date"/></div>
+      <div class="field"><label>Max signals</label><input id="max" type="number" min="200" step="500"/></div>
+    </div>
+    <button class="btn" id="run">▶ Run analysis</button>
+    <span class="hint" id="ghnote" style="margin-left:12px"></span>
+  </div>
+
+  <div class="card" id="progwrap">
+    <div class="stage" id="stage"><span class="spin"></span><span id="stageText">Starting…</span></div>
+    <div class="prog"><i id="bar"></i></div>
+    <div class="hint" id="pct">0%</div>
+  </div>
+
+  <div class="card" id="results">
+    <div class="oneliner" id="oneliner"></div>
+    <div id="gaps"></div>
+    <div style="margin-top:16px">
+      <a class="btn ghost" id="openReport" target="_blank" href="/report.html">Open full dashboard →</a>
+    </div>
+  </div>
+</div>
+<script>
+const $=s=>document.querySelector(s);
+let poll=null;
+async function init(){
+  const c=await (await fetch('/api/config')).json();
+  $('#model').innerHTML=c.models.map(m=>`<option>${m}</option>`).join('');
+  $('#preset').innerHTML=c.presets.map((p,i)=>`<option value="${i}">${p.name}</option>`).join('');
+  window._presets=c.presets;
+  applyPreset();
+  $('#t0').value=c.defaults.t0; $('#max').value=c.defaults.max_signals;
+  $('#backend').textContent='backend: '+c.backend;
+  $('#ghnote').innerHTML = c.has_github_token
+    ? '<span class="badge ok">GitHub token ✓ — full backtest</span>'
+    : '<span class="badge no">no GitHub token — shallow roadmap, backtest N/A</span>';
+}
+function applyPreset(){const p=window._presets[+$('#preset').value];$('#pkg').value=p.pkg;$('#repo').value=p.repo;}
+$('#preset').addEventListener('change',applyPreset);
+$('#run').addEventListener('click',async()=>{
+  $('#run').disabled=true; $('#results').style.display='none'; $('#progwrap').style.display='block';
+  setStage('Queued…',0.02);
+  const body={model:$('#model').value,app_package:$('#pkg').value,github_repo:$('#repo').value,
+    t0:$('#t0').value,max_signals:+$('#max').value};
+  const r=await (await fetch('/api/run',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)})).json();
+  if(!r.ok){setStage('⚠ '+(r.error||'failed'),0);$('#run').disabled=false;return;}
+  poll=setInterval(tick,1000);
+});
+function setStage(t,f){$('#stageText').textContent=t;const p=Math.round(f*100);$('#bar').style.width=p+'%';$('#pct').textContent=p+'%';}
+async function tick(){
+  const s=await (await fetch('/api/status')).json();
+  setStage(s.stage||'…', s.frac||0);
+  if(s.done){clearInterval(poll);$('#run').disabled=false;
+    document.querySelector('.spin').style.display='none';
+    if(s.error){$('#stageText').innerHTML='<span style="color:#cf1322">✕ '+s.error+'</span>';return;}
+    showResults(s.report);}
+}
+function showResults(rep){
+  if(!rep)return;
+  $('#oneliner').textContent='🎯 '+rep.one_sentence_gap;
+  const cal=(rep.meta&&rep.meta.calibration)||'';
+  $('#gaps').innerHTML=rep.gaps.map(g=>`
+    <div class="gap"><div class="rk">${g.rank}</div>
+      <div class="need">${esc(g.need)}<small>${esc(g.backtest)}</small></div>
+      <span class="tag ${g.verdict}">${g.verdict}</span>
+      <span class="conf">${Math.round(g.confidence*100)}%</span></div>`).join('')
+    + `<div class="hint" style="margin-top:10px">${esc(cal)}</div>`;
+  $('#results').style.display='block';
+}
+function esc(s){return (s||'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+init();
+</script>
+</body></html>
