@@ -50,6 +50,10 @@ class GitHubClient:
                 f"GitHub rate limit hit. Set GITHUB_TOKEN for 5000/h "
                 f"(resets ~{max(0, reset - int(time.time()))}s)."
             )
+        # GitHub caps deep listing pagination (~page 100) with a 422 — treat any 422
+        # as "no more results" so a long history walk ends cleanly instead of crashing.
+        if r.status_code == 422:
+            return []
         r.raise_for_status()
         data = r.json()
         cf.write_text(json.dumps(data))

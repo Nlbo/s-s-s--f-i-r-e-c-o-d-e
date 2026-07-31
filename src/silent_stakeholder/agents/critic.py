@@ -28,18 +28,23 @@ def _heuristic(gap: Gap, cand: GapCandidate) -> tuple[str, bool, float]:
         )
     if gap.confidence_breakdown.X > 0.4:
         objections.append(
-            f"internally inconsistent signals (X={gap.confidence_breakdown.X:.2f}): some users "
-            "want the opposite"
+            f"mixed signals (X={gap.confidence_breakdown.X:.2f}): a notable share of members "
+            "are non-pain/satisfied, so the theme isn't unanimous"
         )
     if gap.confidence_breakdown.D < 0.34:
-        objections.append("single-source evidence (reviews only) — not yet corroborated")
+        objections.append("single-source evidence — not yet corroborated across sources")
 
     fatal = [o for o in objections if "surface complaint" in o or "already be covered" in o]
     survives = len(fatal) == 0
+    _held = {
+        "IGNORED": "no near roadmap item addresses it",
+        "UNDER-PRIORITIZED": "the related roadmap item is under-prioritized vs the signal",
+        "MISUNDERSTOOD": "the roadmap frames it differently than users experience it",
+    }[gap.verdict]
     if not objections:
         text = (
-            "Survived falsification: high latency, not covered by any near roadmap item, "
-            "and evidence is intensity-weighted rather than cherry-picked."
+            f"Survived falsification: high latency, {_held}, and evidence is "
+            "intensity-weighted rather than cherry-picked."
         )
         return text, True, 1.0
     penalty = 0.90 ** len(objections)

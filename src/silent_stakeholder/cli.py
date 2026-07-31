@@ -37,7 +37,8 @@ def build_parser() -> argparse.ArgumentParser:
     run_p.add_argument(
         "--offline",
         action="store_true",
-        help="force deterministic local fallback (no network / no LLM)",
+        help="deterministic local models (no LLM calls); uses cached datasets, a shallow "
+        "roadmap, and skips the token-based backtest",
     )
     run_p.set_defaults(func=_cmd_run)
 

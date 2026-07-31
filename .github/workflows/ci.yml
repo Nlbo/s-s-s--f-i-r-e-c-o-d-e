@@ -28,6 +28,9 @@ jobs:
           if git grep -nEI \
               -e 'AKIA[0-9A-Z]{16}' \
               -e '-----BEGIN [A-Z ]*PRIVATE KEY-----' \
+              -e 'sk-[A-Za-z0-9_-]{20,}' \
+              -e 'github_pat_[A-Za-z0-9_]{20,}' \
+              -e 'gh[oprsu]_[A-Za-z0-9]{30,}' \
               -e '(secret|token|password|api_key)[[:space:]]*=[[:space:]]*[A-Za-z0-9/+_-]{20,}' \
               -- ':!*.example' ':!.github/*' ':!SPEC.md' ':!README.md'; then
             echo "::error::Possible secret committed. Remove it and rotate the credential."; exit 1

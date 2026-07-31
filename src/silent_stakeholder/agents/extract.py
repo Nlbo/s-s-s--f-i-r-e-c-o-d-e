@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import json
 import re
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from ..llm import LLMClient
 from ..schemas import NeedUnit, Signal
@@ -110,7 +111,12 @@ def extract_need_units(
 ) -> list[NeedUnit]:
     if llm.offline:
         return [_rule_extract(s) for s in signals]
-    units: list[NeedUnit] = []
-    for i in range(0, len(signals), batch_size):
-        units.extend(_llm_extract_batch(llm, signals[i : i + batch_size]))
-    return units
+
+    batches = [signals[i : i + batch_size] for i in range(0, len(signals), batch_size)]
+    workers = max(1, llm.settings.llm_max_concurrency)
+    results: list[list[NeedUnit]] = [[] for _ in batches]
+    with ThreadPoolExecutor(max_workers=workers) as ex:  # cache makes calls idempotent
+        futures = {ex.submit(_llm_extract_batch, llm, b): i for i, b in enumerate(batches)}
+        for fut in as_completed(futures):
+            results[futures[fut]] = fut.result()
+    return [u for batch in results for u in batch]

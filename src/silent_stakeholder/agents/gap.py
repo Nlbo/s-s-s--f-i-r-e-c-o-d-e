@@ -71,6 +71,16 @@ def _theme_text(t: NeedTheme, sig_by_id: dict[str, Signal]) -> str:
     return f"{t.label}. " + " ".join(quotes)
 
 
+def _representative_need(t: NeedTheme, sig_by_id: dict[str, Signal]) -> str:
+    """A need phrased in the user's terms (SPEC §8) for the offline fallback: the most
+    intense member's own words, rather than a bag-of-keywords label."""
+    members = [sig_by_id[sid] for sid in t.signal_ids if sid in sig_by_id]
+    if not members:
+        return t.label
+    members.sort(key=lambda s: (s.star if s.star is not None else 3, -s.reactions))
+    return "Users report: " + members[0].text.strip()[:160]
+
+
 def _heuristic_verdict(
     theme: NeedTheme, matches: list[tuple[RoadmapItem, float]]
 ) -> tuple[Verdict, float, str]:
@@ -155,6 +165,9 @@ def detect_gaps(
     max_candidates: int = 15,
 ) -> list[GapCandidate]:
     sig_by_id = {s.id: s for s in signals}
+    # Exclude bare version-number milestones (no descriptive body): they carry no feature
+    # semantics, so they must not drive a verdict — consistent with the backtest (validate.py).
+    roadmap = [r for r in roadmap if r.kind == "issue" or len(r.body) > 30]
     candidates = _select_candidates(themes, sig_by_id, max_candidates)
     if not candidates:
         return []
@@ -190,7 +203,7 @@ def detect_gaps(
             ] or [RoadmapRef(id=r.id, type=r.kind, note=r.title[:80]) for r, _ in matches[:2]]
         else:
             verdict, coverage, rationale = _heuristic_verdict(theme, matches)
-            need_restated = theme.label
+            need_restated = _representative_need(theme, sig_by_id)
             latent_reasoning = (
                 f"pain_rate={theme.pain_rate:.2f} but explicit_request_rate="
                 f"{theme.explicit_request_rate:.2f}: users voice the pain, rarely the fix "

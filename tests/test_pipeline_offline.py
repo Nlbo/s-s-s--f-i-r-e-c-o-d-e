@@ -18,9 +18,10 @@ def _run(signals, roadmap):
     s = get_settings()
     llm = LLMClient(s, offline=True)
     units = extract_need_units(llm, signals)
+    sentiment = {u.signal_id: u.sentiment for u in units}
     themes = cluster_needs(llm, units, signals, min_size=4)
     cands = detect_gaps(llm, themes, signals, roadmap, max_candidates=10)
-    gaps = score_all(s, cands, signals)
+    gaps = score_all(s, cands, signals, sentiment)
     gaps, survives = critique_all(llm, gaps, cands, signals)
     top = rank_and_select(gaps, survives, top_n=5, min_n=3)
     return s, top

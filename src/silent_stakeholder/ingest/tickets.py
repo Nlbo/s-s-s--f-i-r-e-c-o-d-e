@@ -23,11 +23,12 @@ PARQUET_URL = (
 )
 _CACHE = RAW_DIR / "support_tickets.parquet"
 
-# job-category keywords shared with the product's user needs
+# specific job-category phrases shared with the product's user needs (kept tight to
+# avoid generic tickets inflating diversity — anchoring in gap.py is a second guard)
 _RELEVANT = (
-    "login", "log in", "sign in", "signin", "password", "account", "authenticate",
-    "access", "upload", "media", "image", "photo", "attach", "editor", "content",
-    "publish", "post", "draft", "save", "sync", "website", "blog", "cms",
+    "log in", "login", "sign in", "signin", "log-in", "password reset", "authenticat",
+    "upload", "media library", "image upload", "attach file", "editor", "publish",
+    "draft", "sync", "wordpress", "blog", "website", "cms",
 )
 
 

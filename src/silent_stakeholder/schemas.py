@@ -38,6 +38,7 @@ class RoadmapItem(BaseModel):
     state: str = "open"
     created_at: str | None = None
     closed_at: str | None = None
+    reactions: int = 0
     url: str | None = None
 
 

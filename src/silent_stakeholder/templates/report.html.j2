@@ -93,9 +93,8 @@
       <span>gap-clarity <b>{{ g.confidence_breakdown.G }}</b></span>
       <span>contradiction <b>{{ g.confidence_breakdown.X }}</b></span>
     </div>
-    {% if g.validation and (g.validation.note or g.validation.built_later is not none) %}
-    <div class="val">🔮 <b>Backtest:</b>
-      {% if g.validation.built_later %}Team shipped it later{% if g.validation.shipped_in %} — <code>{{ g.validation.shipped_in }}</code>{% endif %}{% if g.validation.lag_months is not none %} ({{ g.validation.lag_months }} months after T0){% endif %}.{% elif g.validation.built_later == false %}Not built after T0 — {% endif %}{{ g.validation.note }}</div>
+    {% if g.validation and g.validation.note %}
+    <div class="val">🔮 <b>Backtest:</b> {{ g.validation.note }}{% if g.validation.lag_months is not none %} <b>(+{{ g.validation.lag_months }} months)</b>{% endif %}</div>
     {% endif %}
     <details><summary>Evidence trace — {{ g.evidence_signals|length }} signals</summary>
       {% for e in g.evidence_signals %}
@@ -112,7 +111,8 @@
   {% endfor %}
 
   <footer>Every gap is provable from the linked signal IDs — no evidence, no gap.
-  Confidence is a transparent linear model over the six features shown (see <code>SPEC.md §6</code>).
+  Confidence is a transparent linear model over the six features shown (see <code>SPEC.md §6</code>);
+  calibration: {{ report.meta.get('calibration','?') }}.
   {{ report.meta.get('n_signals','?') }} signals · {{ report.meta.get('n_themes','?') }} themes · {{ report.meta.get('n_roadmap','?') }} roadmap items analysed.</footer>
 </div>
 <script>
