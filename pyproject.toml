@@ -1,0 +1,49 @@
+[project]
+name = "silent-stakeholder"
+version = "0.1.0"
+description = "The Silent Stakeholder — an AI system that surfaces latent, unspoken user needs a product roadmap is missing, with calibrated confidence and full evidence traces."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "pandas>=2.0",
+    "pyarrow>=14.0",
+    "numpy>=1.26",
+    "scikit-learn>=1.3",
+    "requests>=2.31",
+    "python-dotenv>=1.0",
+    "pydantic>=2.6",
+    "tenacity>=8.2",
+    "openai>=1.30",
+    "tqdm>=4.66",
+    "jinja2>=3.1",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "ruff>=0.5"]
+
+[project.scripts]
+sss = "silent_stakeholder.cli:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+# Security-relevant + correctness + style. S = flake8-bandit (security).
+select = ["E", "F", "I", "B", "UP", "S", "W"]
+ignore = ["S101"]  # allow assert in tests
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S", "B"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

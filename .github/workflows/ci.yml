@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+
+      - name: Lint (ruff + bandit security rules)
+        run: ruff check .
+
+      - name: Secret scan (fail if a credential is tracked)
+        run: |
+          # Lightweight, offline guard. .env is gitignored; .env.example holds only blanks.
+          if git grep -nEI \
+              -e 'AKIA[0-9A-Z]{16}' \
+              -e '-----BEGIN [A-Z ]*PRIVATE KEY-----' \
+              -e '(secret|token|password|api_key)[[:space:]]*=[[:space:]]*[A-Za-z0-9/+_-]{20,}' \
+              -- ':!*.example' ':!.github/*' ':!SPEC.md' ':!README.md'; then
+            echo "::error::Possible secret committed. Remove it and rotate the credential."; exit 1
+          fi
+          echo "No tracked secrets detected."
+
+      - name: Tests (no network; runs on committed fixtures)
+        run: pytest
