@@ -73,10 +73,10 @@ class LLMClient:
         try:
             data = json.loads(self._chat_raw(system, user))
         except Exception:  # noqa: BLE001 - any LLM/API failure falls back to the heuristic
-            data = {}  # a single transient error must not crash the whole pipeline
+            return {}  # transient failure: do NOT cache, so a later run can retry
         if not isinstance(data, dict):
             data = {}
-        cp.write_text(json.dumps(data))
+        cp.write_text(json.dumps(data))  # cache only successful parses
         return data
 
     # ---- embeddings --------------------------------------------------------

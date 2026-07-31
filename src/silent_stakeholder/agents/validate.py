@@ -116,8 +116,9 @@ def validate_gaps(
                 shipped_in=f"{best.id}: {best.title[:70]}",
                 lag_months=_months_between(t0, best.closed_at),
                 still_open=False,
-                note=f"Team later shipped {best.id} '{best.title[:50]}' "
-                f"(closed {best.closed_at[:10]}, sim {sim:.2f}).",
+                # "closed" != "shipped a feature" (could be wontfix/dup) — state it plainly.
+                note=f"Team later closed a matching issue {best.id} '{best.title[:50]}' "
+                f"({best.closed_at[:10]}, sim {sim:.2f}).",
             )
         else:  # matched but still open years later = acknowledged, not delivered
             g.validation = Validation(
@@ -125,5 +126,13 @@ def validate_gaps(
                 reaction_growth=best.reactions or None,
                 note=f"Acknowledged as {best.id} '{best.title[:45]}' but still OPEN "
                 f"({best.reactions}👍, sim {sim:.2f}) — demand persisted.",
+            )
+        # Reconcile with hindsight: a need the team addressed post-T0 was not truly
+        # IGNORED — it was under-prioritized (off the T0 roadmap, then done late).
+        if g.validation.built_later and g.verdict == "IGNORED":
+            g.verdict = "UNDER-PRIORITIZED"
+            g.verdict_rationale += (
+                " [Reclassified UNDER-PRIORITIZED by the backtest: absent from the T0 "
+                "roadmap, but the team closed a matching issue post-T0.]"
             )
     return gaps

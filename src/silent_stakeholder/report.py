@@ -10,6 +10,7 @@ from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
+from .agents.calibrate import corroborated
 from .config import OUT_DIR
 from .schemas import Gap, Report
 
@@ -21,13 +22,6 @@ _VERDICT_PHRASE = {
 }
 
 
-def _corroborated(g: Gap) -> bool:
-    v = g.validation
-    if g.verdict == "IGNORED":
-        return v.built_later is False
-    return bool(v.built_later)  # UNDER/MISUNDERSTOOD confirmed if shipped late
-
-
 def rank_and_select(
     gaps: list[Gap], survives: list[bool], *, top_n: int = 5, min_n: int = 3
 ) -> list[Gap]:
@@ -36,7 +30,9 @@ def rank_and_select(
     if len(survivors) < min_n:  # never return fewer than min_n; backfill by confidence
         rest = sorted((g for g, s in paired if not s), key=lambda g: g.confidence, reverse=True)
         survivors += rest[: min_n - len(survivors)]
-    survivors.sort(key=lambda g: g.confidence + (0.05 if _corroborated(g) else 0.0), reverse=True)
+    survivors.sort(
+        key=lambda g: g.confidence + (0.05 if corroborated(g) is True else 0.0), reverse=True
+    )
     top = survivors[:top_n]
     for i, g in enumerate(top, 1):
         g.rank = i

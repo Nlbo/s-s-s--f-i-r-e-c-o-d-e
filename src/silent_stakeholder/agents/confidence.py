@@ -7,6 +7,7 @@ vector, not a black box.
 from __future__ import annotations
 
 import math
+from collections import Counter
 
 from ..config import Settings
 from ..schemas import ConfidenceBreakdown, EvidenceSignal, Gap, Signal
@@ -63,7 +64,10 @@ def score_gap(
     n = len(members) or 1
 
     volume = min(1.0, math.log1p(n) / math.log1p(V_SAT))
-    diversity = len({s.source for s in members}) / 3
+    # A source counts toward diversity only with >= 2 signals, so a single loosely-matched
+    # generic ticket can't inflate D (the primary source still always counts).
+    src_counts = Counter(s.source for s in members)
+    diversity = max(len([s for s, c in src_counts.items() if c >= 2]), 1) / 3
     intensity = sum(_signal_intensity(s, sentiment_by_id.get(s.id, 0.0)) for s in members) / n
     cohesion = cand.theme.cohesion
     gap_clarity = cand.gap_clarity

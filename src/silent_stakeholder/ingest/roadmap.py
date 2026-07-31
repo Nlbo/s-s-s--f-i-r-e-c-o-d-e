@@ -13,6 +13,7 @@ lifts the limit to 5000/h for the full historical pull.
 
 from __future__ import annotations
 
+import hashlib
 import json
 import time
 from pathlib import Path
@@ -126,7 +127,9 @@ class GitHubClient:
         queries. Paced for the 30 req/min search limit; cached per page."""
         out: list[dict] = []
         page = 1
-        ck = query.replace(" ", "_").replace(":", "-").replace("/", "__")[:60]
+        # hash the FULL query — a truncated prefix collided across years (all shared the
+        # repo prefix), silently collapsing the multi-year backtest to a single year.
+        ck = hashlib.sha256(query.encode("utf-8")).hexdigest()[:16]
         while page <= max_pages:
             data = self._get(
                 "/search/issues",
@@ -140,7 +143,8 @@ class GitHubClient:
             if len(items) < 100:
                 break
             page += 1
-            time.sleep(2)  # stay under the 30/min search rate limit
+            if not (self.cache / f"search_{ck}_p{page}.json").exists():
+                time.sleep(2)  # pace only real network calls (30/min search limit)
         return out
 
 

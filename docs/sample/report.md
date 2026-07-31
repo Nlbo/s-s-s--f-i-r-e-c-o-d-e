@@ -1,54 +1,49 @@
 # 🔇 The Silent Stakeholder — org.wordpress.android
 
-*Roadmap snapshot T0 = 2017-01-01 · generated 2026-07-31 14:36 UTC · mode openai:gpt-5.1*
+*Roadmap snapshot T0 = 2017-01-01 · generated 2026-07-31 16:12 UTC · mode openai:gpt-5.1*
 
 ## The single most important unmet need
-> **“I just want to be able to create an account (and new blog) without mysterious errors. When something goes wrong, tell me clearly what the problem is and how to fix it, instead of failing silently or with a generic message that leaves me stuck.” — unaddressed by the roadmap despite the evidence (63% confidence).**
+> **Users need publishing to be rock‑solid: when they tap Post/Update, their content must reliably publish or update without cryptic errors (403 forbidden, generic post update errors, silent failures), including on self‑hosted sites and after app updates. They want to be able to write and then confident — under-prioritized by the roadmap despite the evidence (71% confidence).**
 
 ## Ranked gaps
 
-### 1. “I just want to be able to create an account (and new blog) without mysterious errors. When something goes wrong, tell me clearly what the problem is and how to fix it, instead of failing silently or with a generic message that leaves me stuck.”  ·  **IGNORED**  ·  confidence **63%**
+### 1. Users need publishing to be rock‑solid: when they tap Post/Update, their content must reliably publish or update without cryptic errors (403 forbidden, generic post update errors, silent failures), including on self‑hosted sites and after app updates. They want to be able to write and then confident  ·  **UNDER-PRIORITIZED**  ·  confidence **71%**
 
-**Why a gap:** The user need is about reliably creating a new account (and/or new blog) without opaque or blocking errors, especially in normal conditions. The sample signals show users often cannot create an account at all, see generic or misleading errors, and are left stuck (“not make a account”, “error occurred… not telling what’s the error”, invalid_client, silent partial creation). The nearest roadmap items are narrow, one-off bugs: a bad password error after creation (GH-970), a crash on account creation (GH-1469), a crash on slow connection (GH-688), and a wait-indicator UI glitch (GH-715). These add
+**Why a gap:** User signals are about a core, blocking failure to publish or update posts (403 forbidden on self‑hosted, generic post update errors, repeated failures after app updates). The nearest roadmap items only tangentially touch posting: GH-1296 is about clarifying insufficient privileges (permissions/roles UX), and GH-862 is an old, generic bug about losing posts on upload. Neither addresses the recurring, systemic inability to publish (especially 403s and post‑update regressions) as a first‑class reliability problem. There is no roadmap item that explicitly targets robust, end‑to‑end post publishin [Reclassified UNDER-PRIORITIZED by the backtest: absent from the T0 roadmap, but the team closed a matching issue post-T0.]
 
-*Latent because:* This need is latent because users mostly express raw frustration (“Bad… not make a account”, “Cant able create account showing error”) rather than a structured feature request like “please overhaul the signup flow and error handling.” The pain is extremely high: account creation is a gateway action, and when it fails, users are completely blocked from using the product, reflected in 1–2 star revie
+*Latent because:* The pain is very high because publishing is the core job‑to‑be‑done; when it fails, the entire app is useless (“can’t post since morning”, “always failed on posting”, “it does not let me post my articles”). Users express this as frustration with specific errors or with the latest update, not as a structured feature request like “please improve the reliability of the publishing pipeline” or “add be
 
-**Confidence** = V 0.388 · D 0.667 · I 0.733 · K 0.793 · G 0.7 · X 0.0 (raw 0.652)
+**Confidence** = V 0.897 · D 0.667 · I 0.499 · K 0.737 · G 0.75 · X 0.079 (raw 0.708)
 
-**Backtest:** No close post-T0 issue (nearest GH-6650 'Reader: when someone following blogs too quic', sim 0.47) — consistent with IGNORED.
+**Backtest:** Team later closed a matching issue GH-8300 'Blog Posts List Shows Error Message When Publishin' (2018-09-19, sim 0.58).
 
 **Evidence (6 signals):**
-- `R-4ba6b4ec` (review ★1) — Bad Its very bad not make a account
-- `R-48acd729` (review ★1) — Cant able create account showing error
-- `GH-671` (gh_issue ) — Creating an account with password "qwerty12345" fails. Actually, the user is created but can't be logged in at first time -> results an account without blog
+- `R-b4de1674` (review ★1) — Error I cannot able to get access to my self hosted website. Error shown that could not update data at this time. When I'm publishing a post a 403 error forbidden
+- `R-3f8a8eeb` (review ★1) — Can't log in after I updated my WordPress application. I can't log in again since updated my WordPress application. I hate this  can't post since morning.
+- `R-8eb07a04` (review ★1) — Can't publish blog post Blog post is saved as draft but won't publish. I clicked publish multiple times and it notifies me that the post is published however I can't see it when visiting my blog site. Gets really frustrating
+- `R-e078e696` (review ★1) — I can't post on my website it always left a draft what should i do ?
+- `GH-1230` (gh_issue ) — XML-RPC error 405 on self-hosted blog. Hello.  Since I updated the app to the latest version, I can no longer post content to my self-hosted WP blog. The error message says that XML-RPC services are disabled on this host.  The blog configur
+- `T-92811096` (ticket ) — Digital Assistance. The digital campaign occasionally fails to upload content, which might be caused by server timeout issues. Troubleshooting steps include restarting systems and verifying network connections to ensure stability and perfor
 
-- `GH-898` (gh_issue ) — NUX: Creating a new WordPress.com blog is failing. When I try to create a new blog with my existing account, it fails after 10 seconds or so.
+**Roadmap refs:** `GH-1296`, `GH-862`
 
-- `GH-2544` (gh_issue ) — error invalid_client message invalid client_id. 1. Using Android emulator on Android studio.
-2. Trying to create an account.
+*Adversarial check:* The evidence does point to a real reliability problem around publishing, but we should be careful not to overstate it as some newly discovered, deeply latent need.
 
-3.Keep getting this error even after creating/recreating new MyApp and hence getting a new client_id and client_se
-- `R-76f42d19` (review ★2) — Error Why its saying that an error uccured when i am creating new account..nd also its not telling whats the error..plz respond me fast nd plz fix this
+1. **This is a very basic, explicit expectation, not a subtle latent need.**
+   Users expecting “when I tap Post, it actually posts” is table‑stakes for any publishing app. The complaints are direct and literal:
+   - “Error shown that could not update data at this time. When I'm publishing a post a 403 error forbidden”
+   - “Can't log in after I updated my WordPress application. I hate this can't post since morning.”
+   - “Blog pos
 
-**Roadmap refs:** `GH-970`, `GH-1469`, `GH-688`, `GH-715`
+### 2. “When I add a video to my post—whether via Quick Video, from my gallery, or newly captured—it should upload successfully, stay attached to the post, and be visible to my viewers. I shouldn’t see constant upload errors, end up with empty posts, or publish a post that looks fine in the app but has no   ·  **UNDER-PRIORITIZED**  ·  confidence **67%**
 
-*Adversarial check:* The claimed gap is: reliable account/blog creation plus clear, actionable error feedback instead of silent or generic failures.
-
-1. **Is this just a frequent, surface-level complaint?**  
-The evidence is tightly clustered around the same core failure mode, not a grab bag of generic frustration:
-- R-4ba6b4ec: "not make a account" (account creation failure)
-- R-48acd729: "Cant able create account showing error" (creation blocked by an error)
-- R-76f42d19: explicitly: "its saying that an error uccured when i am creating new account..nd also its not telling whats the error" (generic, non-informati
-
-### 2. “When I add a video to my post—whether via Quick Video, from my gallery, or newly captured—it should upload successfully, stay attached to the post, and be visible to my viewers. I shouldn’t see constant upload errors, end up with empty posts, or publish a post that looks fine in the app but has no   ·  **IGNORED**  ·  confidence **63%**
-
-**Why a gap:** The user need is about reliably getting videos into posts and having them actually appear for viewers: uploads fail with errors, posts publish without the video, quick video posts end up empty, and error messages are confusing or misleading. The roadmap items nearby are mostly tangential: GH-250 is about a specific VideoPress alert, GH-603 about using a shortcode when sharing a video, GH-375 and GH-503 are image‑related, and GH-4579 is about YouTube iframe previews. None of these represent a coherent, prioritized effort to make video upload and publishing robust and understandable end‑to‑end. 
+**Why a gap:** The user need is about reliably getting videos into posts and having them actually appear for viewers: uploads fail with errors, posts publish without the video, quick video posts end up empty, and error messages are confusing or misleading. The roadmap items nearby are mostly tangential: GH-250 is about a specific VideoPress alert, GH-603 about using a shortcode when sharing a video, GH-375 and GH-503 are image‑related, and GH-4579 is about YouTube iframe previews. None of these represent a coherent, prioritized effort to make video upload and publishing robust and understandable end‑to‑end.  [Reclassified UNDER-PRIORITIZED by the backtest: absent from the T0 roadmap, but the team closed a matching issue post-T0.]
 
 *Latent because:* This need is highly painful (videos not uploading or disappearing undermines entire posts and frustrates both authors and viewers) but only weakly expressed as a single, clear feature request. Users describe symptoms—“videos won’t upload,” “error every time,” “viewers can’t see my videos,” “posts are empty,” “invalid file type,” “post uploaded without the video”—rather than articulating a unified 
 
 **Confidence** = V 0.459 · D 0.667 · I 0.533 · K 0.767 · G 0.8 · X 0.0 (raw 0.667)
 
-**Backtest:** Team later shipped GH-6654 'Async media: broken reattachment identification' (closed 2017-09-22, sim 0.63).
+**Backtest:** Team later closed a matching issue GH-6654 'Async media: broken reattachment identification' (2017-09-22, sim 0.63).
 
 **Evidence (6 signals):**
 - `R-a293a934` (review ★1) — So many glitches! Videos won't upload  the keyboard glitches. The mobile app sucks  the follow blog widget isn't working. It keeps sending my users to have to log in when they try to like or follow my blog. And I have tried to fix this over
@@ -74,107 +69,116 @@ We should improve this UX. Perhaps let the user know
 
 **Roadmap refs:** `GH-250`, `GH-603`, `GH-375`, `GH-503`, `GH-4579`
 
-*Adversarial check:* The claimed gap is: *"When I add a video to my post… it should upload successfully, stay attached, and be visible. I shouldn’t see constant upload errors, end up with empty posts, or publish a post that looks fine in the app but has no video."*
+*Adversarial check:* The claimed gap is that adding a video to a post should reliably result in a published post where the video is actually present and viewable, without confusing errors or silent failures. The evidence set is fairly consistent with that, and it’s not easily dismissed as mere noise or sarcasm.
 
-Trying to knock this down as just noise or already-covered:
+1. **Is this just a frequent, generic complaint?**  
+The 1‑star reviews are broad but specific about video:
+- R-a293a934: “Videos won't upload…” is bundled with other glitches, but video upload failure is explicitly called out as a pain point.
+- R-3327b693: “always error when uploading videos… every time” 
 
-1. **Is this just a generic, frequent complaint (not a coherent gap)?**  
-   The evidence is tightly clustered around the same failure mode: user believes they’ve attached a video to a post, but the final result is errors, empty posts, or missing video.
-   - R-a293a934: “Videos won't upload… 
+### 3. “I just want to be able to create an account (and new blog) without mysterious errors. When something goes wrong, tell me clearly what the problem is and how to fix it, instead of failing silently or with a generic message that leaves me stuck.”  ·  **UNDER-PRIORITIZED**  ·  confidence **65%**
 
-### 3. Users need the app to reliably load and refresh their blog posts and in-app blog view after installation and login, without crashes, generic connection errors, or being forced into an external browser. They expect that opening the app will consistently show their latest posts and content, and that t  ·  **IGNORED**  ·  confidence **63%**
+**Why a gap:** The user need is about reliably creating a new account (and/or new blog) without opaque or blocking errors, especially in normal conditions. The sample signals show users often cannot create an account at all, see generic or misleading errors, and are left stuck (“not make a account”, “error occurred… not telling what’s the error”, invalid_client, silent partial creation). The nearest roadmap items are narrow, one-off bugs: a bad password error after creation (GH-970), a crash on account creation (GH-1469), a crash on slow connection (GH-688), and a wait-indicator UI glitch (GH-715). These add [Reclassified UNDER-PRIORITIZED by the backtest: absent from the T0 roadmap, but the team closed a matching issue post-T0.]
 
-**Why a gap:** User reports center on a core, high-pain failure: after install or login, blog posts and feeds often do not load, do not refresh, or the in-app blog view stops working entirely, sometimes with generic connection errors or silent failures. This is experienced as “the app just doesn’t work” for its primary purpose (viewing posts) and leads directly to uninstalls. The nearest roadmap items are only tangentially related: GH-3370 fixes a specific NPE in PostsListAdapter (one crash mode, not the broader reliability of loading/refreshing posts); GH-181 addresses list not updating after deleting the l
+*Latent because:* This need is latent because users mostly express raw frustration (“Bad… not make a account”, “Cant able create account showing error”) rather than a structured feature request like “please overhaul the signup flow and error handling.” The pain is extremely high: account creation is a gateway action, and when it fails, users are completely blocked from using the product, reflected in 1–2 star revie
 
-*Latent because:* The pain is very high because this is the primary job of the app—if posts don’t load or refresh, the app is effectively useless, which is why users explicitly mention uninstalling and calling it “awful” or “pointless.” However, the explicit request rate is lower because users rarely articulate this as a structured feature or systemic reliability requirement; they just say “not working,” “posts fai
+**Confidence** = V 0.388 · D 0.667 · I 0.733 · K 0.793 · G 0.7 · X 0.0 (raw 0.652)
 
-**Confidence** = V 0.759 · D 0.667 · I 0.58 · K 0.713 · G 0.75 · X 0.068 (raw 0.691)
+**Backtest:** Team later closed a matching issue GH-8460 'Better Error Messaging for Invalid URLs' (2019-04-17, sim 0.51).
 
-**Backtest:** Team later shipped GH-5874 'Unable to retrieve posts in Reader after relogin' (closed 2017-11-13, sim 0.54).
+**Evidence (6 signals):**
+- `R-4ba6b4ec` (review ★1) — Bad Its very bad not make a account
+- `R-48acd729` (review ★1) — Cant able create account showing error
+- `GH-671` (gh_issue ) — Creating an account with password "qwerty12345" fails. Actually, the user is created but can't be logged in at first time -> results an account without blog
+
+- `GH-898` (gh_issue ) — NUX: Creating a new WordPress.com blog is failing. When I try to create a new blog with my existing account, it fails after 10 seconds or so.
+
+- `GH-2544` (gh_issue ) — error invalid_client message invalid client_id. 1. Using Android emulator on Android studio.
+2. Trying to create an account.
+
+3.Keep getting this error even after creating/recreating new MyApp and hence getting a new client_id and client_se
+- `R-76f42d19` (review ★2) — Error Why its saying that an error uccured when i am creating new account..nd also its not telling whats the error..plz respond me fast nd plz fix this
+
+**Roadmap refs:** `GH-970`, `GH-1469`, `GH-688`, `GH-715`
+
+*Adversarial check:* The core claimed gap is: account/blog creation frequently fails with unclear or misleading error handling, leaving users stuck.
+
+1. **Is this just a frequent, surface-level complaint?**  
+The evidence is tightly clustered around the same flow and the same failure mode:
+- R-4ba6b4ec (1★): "not make a account" – generic but clearly about account creation failure.
+- R-48acd729 (1★): "Cant able create account showing error" – again, account creation failing.
+- R-76f42d19 (2★): explicitly calls out that an error occurs during account creation *and* that the app "not telling whats the error".
+
+These
+
+### 4. Users need the app to reliably load, refresh, and display their blog posts inside the app over time—without intermittent failures, vague connection errors, or crashes—so that they can actually read and manage their blogs on mobile instead of being forced into an external browser or uninstalling the   ·  **UNDER-PRIORITIZED**  ·  confidence **64%**
+
+**Why a gap:** User reports consistently describe a core failure to view or refresh blog posts after initial use: posts lists not loading, connection errors, crashes on Android 7, and the app becoming effectively unusable for reading or managing posts. The nearest roadmap items are individual, narrow bugs: role-based weirdness (GH-3418), a specific AuthenticatedWebView failure (GH-1751), an NPE in PostsListAdapter (GH-3370), list not updating after delete (GH-181), and live site view breaking with plain permalinks (GH-4873). These address isolated technical defects but do not frame or prioritize the broader, [Reclassified UNDER-PRIORITIZED by the backtest: absent from the T0 roadmap, but the team closed a matching issue post-T0.]
+
+*Latent because:* The pain is very high because this is a fundamental use case: if posts don’t load or refresh, the app fails at its primary purpose. Users express this through 1–2 star reviews, uninstalls, and phrases like “pointless having app,” “I cannot operate this,” and “Just plain doesn’t work.” However, explicit feature-style requests are low: users rarely say “please improve post list reliability” or “add 
+
+**Confidence** = V 0.754 · D 0.333 · I 0.57 · K 0.714 · G 0.75 · X 0.07 (raw 0.638)
+
+**Backtest:** Team later closed a matching issue GH-8384 'Pull to refresh does not work on Blog Posts page i' (2018-10-04, sim 0.63).
 
 **Evidence (6 signals):**
 - `R-239bff1f` (review ★1) — Just plain doesn't work 'Posts couldn't be refreshed at this time'. No error message  no indication of what the problem is. Uninstalled.
 - `R-d469928d` (review ★1) — Disappointing It works really fine whenever I newly install it but after that it doesn't refresh the content and all other stuff anymore
 - `R-44ea902e` (review ★1) — Not working
 - `R-9264cbca` (review ★1) — Does the website and app has a problem today? Yesterday I was still editing so many stuff on my blog. But roday I can't even open the website! The app doesn't even work properly. pls send me a feedback on what's happening. :(
-- `R-27a70f72` (review ★1) — Please help I'm using samsung mega mobile device and after updating to new version  I can not edit even blog or pages. Cause on the screen  the write section appear and close half of the blog/pages which I want to edit and doesn't respond. 
+- `R-d493b2a7` (review ★1) — Lost my posts!! :'( Today morning when checked it it says nothing found!!! All my posts pages cmnts tags everythng is gone. Soo broke 💔💔
 - `GH-905` (gh_issue ) — ArrayIndexOutOfBoundsException in notification settings. - Open the preferences view.
 - Enter to the “Show/hide WordPress.com blogs” view. Go back.
 - Enter to the “Manage notifications”, go the Blogs section and try to check/uncheck any of 
 
 **Roadmap refs:** `GH-3418`, `GH-1751`, `GH-3370`, `GH-181`, `GH-4873`
 
-*Adversarial check:* The claimed gap is that users need the app to reliably load and refresh their blog posts and in‑app blog view after installation and login, without crashes, generic connection errors, or being forced into an external browser.
+*Adversarial check:* The claimed gap is that users need the app to reliably load, refresh, and display their blog posts over time, without intermittent failures, vague connection errors, or crashes, so they can actually read/manage blogs on mobile instead of being forced into a browser or uninstalling.
 
-Looking at the evidence:
-- R-239bff1f: "Posts couldn't be refreshed at this time" with no explanation, leading to uninstall. This directly supports unreliable post refresh and poor error handling.
-- R-d469928d: Works on fresh install but then "doesn't refresh the content and all other stuff anymore". This is a clear, repeated-refresh failure pattern, not a one‑off connec
+Trying to knock this down:
 
-### 4. Users want to be able to reliably reply to, like, and comment on blog comments directly from the app—especially from notifications—on their self‑hosted/Jetpack sites, without cryptic errors like “reply failed” or “answer not possible,” and with clear behavior when a thread is closed or permissions a  ·  **UNDER-PRIORITIZED**  ·  confidence **57%**
+1. **Could this just be generic "app is buggy" complaining?**  
+   The reviews are all 1-star and all about core content not loading or disappearing:
+   - "Posts couldn't be refreshed at this time" with no explanation, leading to uninstall.
+   - Works only right after install, then "does
 
-**Why a gap:** The user need is about reliably replying/liking/commenting from notifications (and generally in-app) on self‑hosted/Jetpack sites, where users frequently see generic failures like “reply failed” or “answer not possible.” The nearest roadmap items are mostly individual bug tickets: crashes when replying to comment notifications (GH-1553), moderation/permission edge cases (GH-1654, GH-3418), a specific moderation error when commenting on non-member sites (GH-4933), and a missing comment button in Reader for Jetpack sites (GH-3276). These show the team has addressed some related defects, but only
+### 5. Users want the comments experience to be easy to navigate and read, especially in long threads: they need a way to jump to the latest comments without endless scrolling, keep their place and selected comment when the list refreshes, have the view scroll to a sensible position (e.g., top of the comme  ·  **MISUNDERSTOOD**  ·  confidence **50%**
 
-*Latent because:* This need is latent because users mostly report it as isolated failures (“reply failed,” 403 errors, can’t answer comments in the app but can in the browser) rather than as a broad feature request. They assume replying from notifications should already work and only complain when it breaks, often framing it as a bug on their specific site or device. The pain is high: replying to comments is a core
+**Why a gap:** The roadmap clearly invests in the technical stability and mechanics of the comments feature (crashes, rotation bugs, list performance, infinite scroll, and even a broader 'rewrite comments'). However, the core user need expressed in the samples is about *navigating and viewing comments in a usable way*—quickly reaching the latest comments, preserving context/selection when refreshing, sensible scrolling behavior when replying, and making links usable. The roadmap items focus on backend/structural fixes and generic list improvements rather than the specific UX flows that are causing pain. For 
 
-**Confidence** = V 0.478 · D 0.667 · I 0.41 · K 0.752 · G 0.4 · X 0.1 (raw 0.485)
+*Latent because:* This need is latent because users mostly complain about specific annoyances (having to scroll through 500+ comments, losing their place after refresh, odd scrolling when replying, links not clickable) rather than explicitly asking for a redesigned comment navigation system. The pain is high—people are frustrated enough to describe the experience as tedious and to report multiple edge-case bugs—but
 
-**Backtest:** Team later shipped GH-6769 'Enable Jetpack Comments on Reader for Internal Aut' (closed 2017-10-24, sim 0.60).
+**Confidence** = V 0.597 · D 0.333 · I 0.389 · K 0.739 · G 0.45 · X 0.0 (raw 0.496)
 
-**Evidence (6 signals):**
-- `GH-2039` (gh_issue ) — Can't comment . Hello on my Blog I can't answer to comments with the Android App. It shows me "Answer not possible". With the browser it works. 
-
-Here the error log from my phone. 
-
-```
-11-30 19:23:44.674 I/ActivityManager(3856): START u0 {
-- `GH-1167` (gh_issue ) — Error 403 on Comment Details View for a Jetpack site. I see the following error when I open the comment detail view for a comment on eritreo.it/wp37 (Jetpacked site)
-
-```
-03-27 18:53:26.345: E/WordPress(8910): [2711] BasicNetwork.performReq
-- `GH-4342` (gh_issue ) — Error 404 when replying to comments with device language set to Arabic or Farsi (Persian). ### Expected behavior
-
-Users should be able to reply to comments (e.g. from the notifications comment detail view) no matter what device language the
-- `R-00b6f637` (review ★2) — I'm not able to reply to comments on a self hosted site. It keeps saying """"""""""""""""reply failed"""""""""""""""".""
-- `GH-382` (gh_issue ) — User can't reply to comment notifications via Jetpack and HTTPS. See: http://android.forums.wordpress.org/topic/comment-replies-fail-on-https-sites?replies=5
-
-- `GH-3977` (gh_issue ) — Obscur error message when replying to a closed thread. ### Steps to reproduce the behavior
-1. Go to the site Comments section
-2. Select a comment from a closed thread
-3. Try to reply and get a "Reply failed" toast
-
-XMLRPC response is pretty
-
-**Roadmap refs:** `GH-3276`, `GH-1654`, `GH-4933`, `GH-1553`, `GH-3418`
-
-*Adversarial check:* The claim is that users want to reliably reply to, like, and comment on blog comments directly from the app—especially from notifications—on self‑hosted/Jetpack sites, without cryptic errors, and with clear behavior when threads are closed or permissions apply.
-
-First, check whether this is just a noisy, generic complaint about comments, or a coherent product gap:
-- GH-2039: "I can't answer to comments with the Android App. It shows me 'Answer not possible'. With the browser it works." This is not a vague UX gripe; it’s a clear app‑only failure on a core action (replying) that works on the web
-
-### 5. Users need self‑hosted and regular account logins to "just work" reliably, without cryptic errors, repeated registration loops, IP/firewall blocks, or unexplained failures. When login does fail, they need clear, actionable feedback so they can fix the problem themselves instead of being locked out o  ·  **UNDER-PRIORITIZED**  ·  confidence **57%**
-
-**Why a gap:** Multiple roadmap items directly touch login issues, including self‑hosted login bugs (GH-962, GH-1343) and improving failure messaging (GH-4762). However, the user signals show a broad, recurring, high‑pain pattern: users frequently cannot log in or stay logged in to self‑hosted sites, encounter vague errors, firewall/IP blocking, and repeated failed sign‑ins. The roadmap items are narrow, one‑off bug fixes or UX tweaks rather than a systematic, high‑priority effort to make self‑hosted login robust, diagnosable, and forgiving. Given the very high pain rate and only moderate explicit request ra
-
-*Latent because:* This need is latent because users mostly express it as acute frustration with specific incidents ("can't log in," "error after first login," "blocks my IP," "always telling me error") rather than as a structured feature request like "please overhaul the self‑hosted login architecture." The pain is very high: 1‑ and 2‑star reviews, repeated attempts to log in, password resets, and even hosting/fire
-
-**Confidence** = V 0.988 · D 0.667 · I 0.699 · K 0.717 · G 0.4 · X 0.043 (raw 0.639)
-
-**Backtest:** Team later shipped GH-5843 'Not able to login to self hosted site account' (closed 2017-11-08, sim 0.55).
+**Backtest:** Team later closed a matching issue GH-6717 'Crash selecting multiple comments' (2017-10-18, sim 0.66).
 
 **Evidence (6 signals):**
-- `R-7f0a2162` (review ★1) — Login Problem Not able to login by this app. Please fix it.
-- `R-fb110b4a` (review ★1) — Software problem It's been two time since i had to register with same password and both the the times i was able to register.. got confirmation of registration .. but when i try to open it again with same link ot says""""""""""""""""email n
-- `R-2c52cbd8` (review ★1) — Not working It just showing me error after I tried logging in for d first time
-- `R-54f76e35` (review ★1) — Blocks my IP This app sets off my firewall each time I login - and causes my hosting to block my IP  even though it's my home IP.
-- `R-bb78da17` (review ★1) — Frankie Ifop I can't log into my self-hosted site. Always telling me error plus application log.
-- `GH-2012` (gh_issue ) — unable to login from China mainland. unable to login from China mainland, though setup  a vpn proxy. 
+- `GH-526` (gh_issue ) — Crash in CommentDetailFragment. I was in the notification list, and tapped on a comment and then immediately pressed the back button.
 
+```
+12-18 07:18:50.947      558-558/? E/AndroidRuntime﹕ FATAL EXCEPTION: main
+    Process: org.wordpress.
+- `GH-747` (gh_issue ) — NPE in comment list fragment. Found while monkey testing the app:
 
-**Roadmap refs:** `GH-962`, `GH-1343`, `GH-4762`
+<pre><code>
+// java.lang.RuntimeException: An error occured while executing doInBackground()
+//  at android.os.AsyncTask$3.done(AsyncTask.java:299)
+//  at java.util.concurre
+- `GH-453` (gh_issue ) — CommentListFragment's ViewSwitcher should be revisited. During development for Issue #333 I had to contend with the following:
 
-*Adversarial check:* The evidence does point to a real login‑reliability problem, but we should be careful not to overgeneralize.
+(Note: I removed the crashes when working on #333 but the behaviors are still broken)
 
-1) **Is this just generic “login is broken” noise?**  
-Most apps get a steady trickle of 1★ reviews saying “can’t log in.” On its own, that’s often just user error, forgotten passwords, or transient outages. However, the pattern here is more specific:
-- Repeated registration loops: user can register multiple times with the same password and gets confirmation, but then can’t log in with the same link (R-fb110b4a). That suggests a flow or state bug, not just user confusion.
-- First‑time 
+The mechanism for display
+- `GH-1617` (gh_issue ) — Reader loses place in comment adapter. From @aerych: "when i scroll the comment list, and it loads more comments, when it refreshes the list the scroll position changes and I've lost my place."
+
+- `GH-660` (gh_issue ) — Comment detail doesn't show URLs as links. ![device-2014-01-09-081357](https://f.cloud.github.com/assets/3903757/1877841/08a117ba-7930-11e3-8f08-3f4a49c55627.png)
+
+- `R-99018386` (review ★3) — Comments There needs to be a way for us to get to the latest comments. I'm of scrolling down 500+ comments after I close the app!!! 😬 めんどくせえええ!!! P.S. I meant the comments on a blog I follow. There should be a tab that allows me to skip to 
+
+**Roadmap refs:** `GH-754`, `GH-770`, `GH-1447`, `GH-1681`, `GH-757`
+
+*Adversarial check:* The claimed need is: better navigability and readability in long comment threads (jump to latest, preserve scroll position/selection on refresh, sensible scroll positioning). The verdict given is MISUNDERSTOOD, so we need to see if this is really just a misread of other issues (e.g., crashes) or if there is a genuine UX/navigation gap.
+
+1. **Evidence breakdown**
+- GH-526, GH-747: crash reports in CommentDetailFragment / comment list fragment. These are stability issues, not UX requests. They don’t support the specific need, but they also don’t contradict it; they’re just orthogonal.
+- GH-453: 

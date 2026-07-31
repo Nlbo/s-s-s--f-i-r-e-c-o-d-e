@@ -101,8 +101,9 @@ def critique_all(
     for gap, cand in tqdm(
         list(zip(gaps, cands, strict=True)), desc="  critic", unit="gap"
     ):
-        text, survives, mult = critique(llm, gap, cand, by_id)
+        # The critic is a survival gate + a stored rebuttal — it does NOT rescale the
+        # confidence, which must stay the calibrated probability (SPEC §6).
+        text, survives, _mult = critique(llm, gap, cand, by_id)
         gap.adversarial_check = text
-        gap.confidence = round(max(0.05, gap.confidence * mult), 3)
         survives_flags.append(survives)
     return gaps, survives_flags
