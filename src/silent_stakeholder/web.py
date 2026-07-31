@@ -23,12 +23,15 @@ from .pipeline import run as run_pipeline
 
 TEMPLATES = Path(__file__).parent / "templates"
 
+# Verified: package is in sealuzh/app_reviews AND the repo has a public issue tracker
+# with pre-T0 history. (DrKLO/Telegram and the Wikipedia app have issues disabled, so
+# Telegram uses the actively-maintained Desktop client's roadmap — same product family.)
 PRESETS = [
-    {"name": "WordPress (tuned)", "pkg": "org.wordpress.android",
+    {"name": "WordPress ⭐ (tuned)", "pkg": "org.wordpress.android",
      "repo": "wordpress-mobile/WordPress-Android"},
     {"name": "AntennaPod", "pkg": "de.danoeh.antennapod", "repo": "AntennaPod/AntennaPod"},
-    {"name": "Telegram", "pkg": "org.telegram.messenger", "repo": "DrKLO/Telegram"},
-    {"name": "Wikipedia", "pkg": "org.wikipedia", "repo": "wikimedia/apps-android-wikipedia"},
+    {"name": "Telegram (Desktop roadmap)", "pkg": "org.telegram.messenger",
+     "repo": "telegramdesktop/tdesktop"},
 ]
 
 # single-run status shared with the UI
