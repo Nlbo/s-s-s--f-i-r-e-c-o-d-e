@@ -90,6 +90,7 @@ class Settings:
 
     # Budgets / guardrails
     max_signals: int = field(default_factory=lambda: int(_get("MAX_SIGNALS", "6000")))
+    max_tickets: int = field(default_factory=lambda: int(_get("MAX_TICKETS", "800")))
     llm_max_concurrency: int = field(
         default_factory=lambda: int(_get("LLM_MAX_CONCURRENCY", "8"))
     )

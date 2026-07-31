@@ -24,22 +24,22 @@ def _signal_intensity(s: Signal) -> float:
 
 
 def _pick_evidence(members: list[Signal], k: int = 6) -> list[EvidenceSignal]:
-    # strongest first (lowest star / highest reactions), then ensure source variety
+    """Strongest evidence first, but guarantee one signal per present source so the
+    trace visibly spans reviews / github / tickets (SPEC: reads across both sources)."""
     ranked = sorted(members, key=_signal_intensity, reverse=True)
-    chosen: list[Signal] = []
-    seen_sources: set[str] = set()
+    by_source: dict[str, list[Signal]] = {}
     for s in ranked:
+        by_source.setdefault(s.source, []).append(s)
+
+    chosen: list[Signal] = [lst[0] for lst in by_source.values()]  # 1 per source
+    chosen_ids = {s.id for s in chosen}
+    for s in ranked:  # fill remaining slots by intensity
         if len(chosen) >= k:
             break
-        chosen.append(s)
-        seen_sources.add(s.source)
-    # try to include at least one of each present source
-    for s in ranked:
-        if len(chosen) >= k:
-            break
-        if s.source not in seen_sources:
+        if s.id not in chosen_ids:
             chosen.append(s)
-            seen_sources.add(s.source)
+            chosen_ids.add(s.id)
+    chosen = sorted(chosen[:k], key=_signal_intensity, reverse=True)
     return [
         EvidenceSignal(
             id=s.id, source=s.source, star=s.star, reactions=s.reactions,

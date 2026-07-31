@@ -16,6 +16,7 @@ from .agents.validate import validate_gaps
 from .config import Settings
 from .ingest.reviews import load_reviews
 from .ingest.roadmap import split_github
+from .ingest.tickets import load_tickets
 from .llm import LLMClient
 from .report import build_report, rank_and_select, write_report
 from .schemas import Signal
@@ -39,9 +40,10 @@ def run(settings: Settings, *, limit: int | None = None, offline: bool = False) 
     )
     roadmap_t0 = [r for r in roadmap_all if (r.created_at or "") <= t0]
     gh_pre = [g for g in gh_sigs if (g.date or "") <= t0]
-    signals: list[Signal] = (reviews + gh_pre)[: settings.max_signals]
-    print(f"  ingest  : {len(reviews)} reviews + {len(gh_pre)} gh-issues = {len(signals)} signals "
-          f"| roadmap@T0 {len(roadmap_t0)} ({len(roadmap_all)} total)")
+    tickets = load_tickets(limit=settings.max_tickets)
+    signals: list[Signal] = (reviews + gh_pre + tickets)[: settings.max_signals]
+    print(f"  ingest  : {len(reviews)} reviews + {len(gh_pre)} gh-issues + {len(tickets)} tickets "
+          f"= {len(signals)} signals | roadmap@T0 {len(roadmap_t0)} ({len(roadmap_all)} total)")
     if not settings.github_token:
         print("  note    : no GITHUB_TOKEN -> shallow roadmap + no backtest (add one for depth)")
 

@@ -18,6 +18,8 @@ from ..schemas import NeedTheme, RoadmapItem, RoadmapRef, Signal, Verdict
 
 LOW = 0.30       # below this max-similarity: nothing on the roadmap is close -> IGNORED
 COVERED = 0.62   # above this, with a real feature/priority item: adequately covered (drop)
+MIN_PRODUCT = 3  # a gap must be anchored in >= this many of the product's own signals
+PRODUCT = ("review", "gh_issue")  # tickets corroborate but cannot form a gap alone
 _BUGISH = ("bug", "crash", "anr", "broken")
 _FEATUREISH = ("enhancement", "feature", "task", "[pri]", "p1", "p2")
 
@@ -36,16 +38,28 @@ class GapCandidate:
     sample_signal_ids: list[str] = field(default_factory=list)
 
 
-def _select_candidates(themes: list[NeedTheme], k: int) -> list[NeedTheme]:
-    if not themes:
+def _select_candidates(
+    themes: list[NeedTheme], sig_by_id: dict[str, Signal], k: int
+) -> list[NeedTheme]:
+    """Keep only product-anchored themes (>= MIN_PRODUCT of the product's own signals),
+    so generic cross-source tickets can corroborate but never form a gap on their own."""
+    def product_support(t: NeedTheme) -> int:
+        return sum(
+            1 for sid in t.signal_ids if sig_by_id.get(sid) and sig_by_id[sid].source in PRODUCT
+        )
+
+    anchored = [
+        t for t in themes
+        if product_support(t) >= MIN_PRODUCT and product_support(t) >= 0.25 * t.size
+    ]
+    if not anchored:
         return []
-    max_size = max(t.size for t in themes) or 1
-    scored = sorted(
-        themes,
+    max_size = max(t.size for t in anchored) or 1
+    return sorted(
+        anchored,
         key=lambda t: 0.6 * t.latency + 0.4 * (t.size / max_size),
         reverse=True,
-    )
-    return scored[:k]
+    )[:k]
 
 
 def _roadmap_text(r: RoadmapItem) -> str:
@@ -141,7 +155,7 @@ def detect_gaps(
     max_candidates: int = 15,
 ) -> list[GapCandidate]:
     sig_by_id = {s.id: s for s in signals}
-    candidates = _select_candidates(themes, max_candidates)
+    candidates = _select_candidates(themes, sig_by_id, max_candidates)
     if not candidates:
         return []
 
