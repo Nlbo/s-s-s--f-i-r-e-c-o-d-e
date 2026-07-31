@@ -110,7 +110,9 @@ def create_app() -> FastAPI:
         with _lock:
             out = dict(_status)
         rp = OUT_DIR / "report.json"
-        if out.get("done") and not out.get("error") and rp.exists():
+        # surface the last report whenever one exists and we're not mid-run, so the panel
+        # can restore it across a page reload (or even a server restart).
+        if not out.get("running") and not out.get("error") and rp.exists():
             d = json.loads(rp.read_text())
             out["report"] = {
                 "one_sentence_gap": d.get("one_sentence_gap"),
@@ -127,7 +129,15 @@ def create_app() -> FastAPI:
     @app.get("/report.html", response_class=HTMLResponse)
     def report_html() -> str:
         p = OUT_DIR / "report.html"
-        return p.read_text() if p.exists() else "<p>No report yet — run an analysis.</p>"
+        if not p.exists():
+            return "<p>No report yet — run an analysis. <a href='/'>← Back</a></p>"
+        bar = (
+            '<div style="position:sticky;top:0;z-index:9999;background:#1677ff;'
+            'padding:10px 20px;box-shadow:0 2px 8px rgba(0,0,0,.15)">'
+            '<a href="/" style="color:#fff;font:600 14px/1.5 -apple-system,Segoe UI,Arial;'
+            'text-decoration:none">← Back to control panel</a></div>'
+        )
+        return p.read_text().replace("<body>", "<body>" + bar, 1)
 
     return app
 

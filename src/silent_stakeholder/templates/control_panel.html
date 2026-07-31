@@ -80,7 +80,7 @@
     <div class="oneliner" id="oneliner"></div>
     <div id="gaps"></div>
     <div style="margin-top:16px">
-      <a class="btn ghost" id="openReport" target="_blank" href="/report.html">Open full dashboard →</a>
+      <a class="btn ghost" id="openReport" href="/report.html">Open full dashboard →</a>
     </div>
   </div>
 </div>
@@ -98,6 +98,13 @@ async function init(){
   $('#ghnote').innerHTML = c.has_github_token
     ? '<span class="badge ok">GitHub token ✓ — full backtest</span>'
     : '<span class="badge no">no GitHub token — shallow roadmap, backtest N/A</span>';
+  // restore the last completed result across page reloads (cleared on a new run)
+  try{
+    const s=await (await fetch('/api/status')).json();
+    if(s.running){ $('#run').disabled=true; $('#progwrap').style.display='block';
+      setStage(s.stage||'…',s.frac||0); poll=setInterval(tick,1000); }
+    else if(s.report && !s.error){ showResults(s.report); }
+  }catch(e){}
 }
 function applyPreset(){const p=window._presets[+$('#preset').value];$('#pkg').value=p.pkg;$('#repo').value=p.repo;}
 $('#preset').addEventListener('change',applyPreset);
