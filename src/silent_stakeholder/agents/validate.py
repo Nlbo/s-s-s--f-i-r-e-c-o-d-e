@@ -35,14 +35,11 @@ def _months_between(a: str | None, b: str | None) -> int | None:
 def build_future_corpus(
     repo: str, token: str, t0: str, roadmap: list[RoadmapItem]
 ) -> list[RoadmapItem]:
-    """Descriptive roadmap/issue items created strictly after T0 (what was built/planned
-    later). Bare version-number milestones (empty body) are excluded — they carry no
-    feature semantics to match against, and counting them would fake a backtest."""
-    future = [
-        r
-        for r in roadmap
-        if (r.created_at or "") > t0 and (r.kind == "issue" or len(r.body) > 30)
-    ]
+    """Issue-level items created strictly after T0 (what was actually built/planned later).
+    Only issues count — version-number milestones carry no feature semantics, and matching
+    against them would fake a backtest. Without a token there are ~no post-T0 issues here,
+    so the backtest honestly reports "insufficient history" rather than a false verdict."""
+    future = [r for r in roadmap if (r.created_at or "") > t0 and r.kind == "issue"]
     # A token enables the deep post-T0 issue pull that makes the backtest strong.
     if token:
         gh = GitHubClient(repo, token)
