@@ -177,18 +177,18 @@
   <!-- 6 RESULTS -->
   <section class="slide">
     <div class="kicker reveal" style="--i:0">Results — validated by hindsight</div>
-    <h2 class="reveal" style="--i:1;margin-bottom:16px">The roadmap missed 5 needs — the team shipped 4 of them 8–10 months later</h2>
-    <div class="gap reveal" style="--i:2;padding:12px 20px"><div class="rk">1</div><div class="need">Clear, actionable errors when creating an account <span class="tag i" style="margin-left:8px">IGNORED</span></div>
-      <div class="proof" style="background:var(--error-bg);border-color:var(--error-border)"><div class="big" style="color:var(--error-text)">✕</div><div class="lil" style="color:var(--error-text)">still unfixed today</div></div></div>
-    <div class="gap reveal" style="--i:3;padding:12px 20px"><div class="rk">2</div><div class="need">Reliable video attachment in posts <span class="tag i" style="margin-left:8px">IGNORED</span></div>
+    <h2 class="reveal" style="--i:1;margin-bottom:16px">The roadmap missed 5 needs — the team fixed all 5, but 8–27 months late</h2>
+    <div class="gap reveal" style="--i:2;padding:12px 20px"><div class="rk">1</div><div class="need">Publishing that reliably works — no 403s / cryptic errors <span class="tag u" style="margin-left:8px">UNDER-PRIORITIZED</span></div>
+      <div class="proof"><div class="big"><span data-count="20">20</span>mo</div><div class="lil">GH-8300 publish error message</div></div></div>
+    <div class="gap reveal" style="--i:3;padding:12px 20px"><div class="rk">2</div><div class="need">Video attachment in posts that actually sticks <span class="tag u" style="margin-left:8px">UNDER-PRIORITIZED</span></div>
       <div class="proof"><div class="big"><span data-count="8">8</span>mo</div><div class="lil">GH-6654 async media reattachment</div></div></div>
-    <div class="gap reveal" style="--i:4;padding:12px 20px"><div class="rk">3</div><div class="need">Posts reliably load &amp; refresh after login <span class="tag i" style="margin-left:8px">IGNORED</span></div>
-      <div class="proof"><div class="big"><span data-count="10">10</span>mo</div><div class="lil">GH-5874 retrieve posts after relogin</div></div></div>
-    <div class="gap reveal" style="--i:5;padding:12px 20px"><div class="rk">4</div><div class="need">Reply / like / comment on comments in-app <span class="tag u" style="margin-left:8px">UNDER-PRIORITIZED</span></div>
-      <div class="proof"><div class="big"><span data-count="9">9</span>mo</div><div class="lil">GH-6769 Jetpack comments</div></div></div>
-    <div class="gap reveal" style="--i:6;padding:12px 20px"><div class="rk">5</div><div class="need">Self-hosted &amp; account login that “just works” <span class="tag u" style="margin-left:8px">UNDER-PRIORITIZED</span></div>
-      <div class="proof"><div class="big"><span data-count="10">10</span>mo</div><div class="lil">GH-5843 self-hosted login</div></div></div>
-    <p class="reveal muted" style="--i:7;margin-top:14px;font-size:14px">4,116 signals · 1,719-item T0 roadmap · confidence <b>calibrated on 15 backtested gaps</b> · every gap traces to signal IDs.</p>
+    <div class="gap reveal" style="--i:4;padding:12px 20px"><div class="rk">3</div><div class="need">Account creation without mysterious errors <span class="tag u" style="margin-left:8px">UNDER-PRIORITIZED</span></div>
+      <div class="proof"><div class="big"><span data-count="27">27</span>mo</div><div class="lil">GH-8460 better error messaging</div></div></div>
+    <div class="gap reveal" style="--i:5;padding:12px 20px"><div class="rk">4</div><div class="need">Posts reliably load &amp; refresh over time <span class="tag u" style="margin-left:8px">UNDER-PRIORITIZED</span></div>
+      <div class="proof"><div class="big"><span data-count="21">21</span>mo</div><div class="lil">GH-8384 pull-to-refresh posts</div></div></div>
+    <div class="gap reveal" style="--i:6;padding:12px 20px"><div class="rk">5</div><div class="need">A comments experience you can actually navigate <span class="tag m" style="margin-left:8px">MISUNDERSTOOD</span></div>
+      <div class="proof"><div class="big"><span data-count="9">9</span>mo</div><div class="lil">GH-6717 (fixed crashes, not the UX)</div></div></div>
+    <p class="reveal muted" style="--i:7;margin-top:14px;font-size:14px">4,116 signals · 1,719-item T0 roadmap · backtest confirmed <b>13/15 gaps genuine</b> · every gap traces to signal IDs.</p>
   </section>
 
   <!-- 7 CONFIDENCE -->
@@ -203,7 +203,7 @@
       <div class="feat hi reveal" style="--i:6"><span class="l">G</span><span class="nm">gap-clarity</span></div>
       <div class="feat reveal" style="--i:7"><span class="l">X</span><span class="nm">contradiction</span></div>
     </div>
-    <p class="lede reveal" style="--i:8;margin-top:24px;font-size:17px">Ask us to defend any score → we point at the vector. This run it's <b>calibrated on 15 backtested gaps</b> (11 corroborated) — a logistic fit, not a guess. When there aren't enough labels, we say “uncalibrated” instead of faking it.</p>
+    <p class="lede reveal" style="--i:8;margin-top:24px;font-size:17px">Ask us to defend any score → we point at the vector (50–71%, they differ). And we're disciplined: the backtest confirmed <b>13/15 gaps genuine</b> — too skewed to fit a real calibration curve, so we keep the transparent score and say “uncalibrated” rather than collapse every gap to one faked number.</p>
   </section>
 
   <!-- 8 WHY WE WIN -->
@@ -221,7 +221,7 @@
   <section class="slide dark">
     <div class="reveal" style="--i:0;font-size:52px">🔇</div>
     <h1 class="reveal" style="--i:1;margin-top:8px;font-size:clamp(30px,5vw,56px)">We saw the silent stakeholder<br/>before they did.</h1>
-    <p class="lede reveal" style="--i:2;margin-top:22px;font-size:22px">From 2016 data — 5 latent needs the roadmap missed. The team shipped 4 within <b>8–10 months</b>; the #1 — clear account-creation errors — is <b>still unfixed</b>.</p>
+    <p class="lede reveal" style="--i:2;margin-top:22px;font-size:22px">From 2016 data — 5 latent needs the roadmap missed. The team fixed all five, but <b>8–27 months late</b>; the backtest confirmed <b>13 of 15</b> flagged gaps as genuine.</p>
     <p class="reveal muted" style="--i:3;margin-top:26px;font-size:16px">github.com/Nlbo/s-s-s--f-i-r-e-c-o-d-e · run it · read the evidence · pick any gap to defend</p>
   </section>
 

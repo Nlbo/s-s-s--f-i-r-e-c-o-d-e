@@ -20,25 +20,25 @@ Two sides of ONE product (WordPress for Android):
 - **Signals**: 2016 app-store reviews + user-filed GitHub issues (👍 = demand) + cross-source support tickets.
 - **Roadmap**: GitHub milestones + priority/type-labeled issues = what the team committed to.
 
-Multi-agent pipeline: JTBD extraction → latent-theme clustering → **gap engine** (aligns each theme to the roadmap → IGNORED / UNDER-PRIORITIZED / MISUNDERSTOOD) → **calibrated confidence** → **adversarial critic** → **backtest validator**.
+Multi-agent pipeline: JTBD extraction → latent-theme clustering → **gap engine** (aligns each theme to the roadmap → IGNORED / UNDER-PRIORITIZED / MISUNDERSTOOD) → **transparent confidence** → **adversarial critic** → **backtest validator**.
 
 ## 4. The differentiator — a backtest, not an opinion (90s)
-The reviews are from 2016. We have the repo's full history to 2026. So we predict gaps **using only 2016 data**, then check what the team **actually built afterward**. This run: of 5 latent needs, the team **shipped 4 within 8–10 months** (GH-6654 / GH-5874 / GH-6769 / GH-5843) — we flagged them before the team acted — while the #1, clear account-creation errors, is **still unfixed**. That turns "trust us" into a checkable receipt, and gives us the label variety to **calibrate** confidence (logistic fit, N=15, 11 corroborated).
+The reviews are from 2016. We have the repo's full history to today. So we predict gaps **using only 2016 data**, then check what the team **actually did afterward**. This run: the team eventually addressed **all 5** flagged needs — but **8 to 27 months later** (GH-8300 / GH-6654 / GH-8460 / GH-8384 / GH-6717) — and across the 15 candidate gaps, the backtest confirmed **13 as genuine**. We flagged them up to 2+ years before the team acted. That turns "trust us" into a checkable receipt — and 13/15 is our precision-like validation number.
 
 ## 5. Confidence you can defend (45s)
-Confidence is **not** an LLM vibe — it's a transparent linear model over six measured features (volume, source-diversity, intensity, cohesion, gap-clarity, contradiction), documented in `SPEC.md §6`, then calibrated against the backtest. Ask us to defend any number and we point at its feature vector.
+Confidence is **not** an LLM vibe — it's a transparent linear model over six measured features (volume, source-diversity, intensity, cohesion, gap-clarity, contradiction), documented in `SPEC.md §6`. Scores vary (50–71%). We *only claim "calibrated"* when the backtest gives enough negative contrast to fit a curve — this run it didn't (13/15 genuine), so we keep the transparent score and say so. Ask us to defend any number and we point at its feature vector.
 
 ## 6. Demo (90s)
 Open `report.html` (self-contained dashboard): headline gap, filter by verdict, click a gap → its **evidence trace** with signal IDs spanning reviews + GitHub + tickets. Every gap is provable from the linked IDs. **No evidence, no gap.**
 
 ## 7. Results (say the headline)
 Analysed **4 116 signals** (2 287 reviews + 1 029 GitHub issues + 800 tickets) against a **1 719-item T0 roadmap** → 5 latent needs, **backtest-validated**:
-1. **Clear errors when creating an account** — IGNORED — **still unfixed today**.
-2. **Reliable video attachment** in posts — IGNORED — shipped **+8 months** (GH-6654).
-3. **Posts load/refresh after login** — IGNORED — shipped **+10 months** (GH-5874).
-4. **Comment on comments in-app** — UNDER-PRIORITIZED — shipped **+9 months** (GH-6769).
-5. **Login that "just works"** — UNDER-PRIORITIZED — shipped **+10 months** (GH-5843).
-> Headline: *"From 2016 data we flagged 5 needs the roadmap missed — the team shipped 4 within 8–10 months, and the #1 they never fixed. We saw the silent stakeholder before they did."*
+1. **Publishing that reliably works** (no 403s / cryptic errors) — UNDER — closed **+20 months** (GH-8300).
+2. **Video attachment** in posts that sticks — UNDER — closed **+8 months** (GH-6654).
+3. **Account creation** without mysterious errors — UNDER — closed **+27 months** (GH-8460).
+4. **Posts load & refresh** over time — UNDER — closed **+21 months** (GH-8384).
+5. **Comments you can navigate** — MISUNDERSTOOD — closed crashes, not the UX, **+9 months** (GH-6717).
+> Headline: *"From 2016 data we flagged 5 needs the roadmap missed — the team fixed every one, but 8 to 27 months later, and the backtest confirmed 13 of 15 gaps as genuine. We saw the silent stakeholder up to 2+ years before they acted."*
 
 ## 8. Why we win (map to the rubric) (30s)
 - **Correctness & rigor**: every gap traces to IDs; verdicts + confidence are backtested against real outcomes.

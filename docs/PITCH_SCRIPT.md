@@ -34,30 +34,30 @@ Delivery: slow down on the backtest slide (slide 6) — that's the moment. Numbe
 > So we predict the gaps using **only 2016 data** — and then we check what the team **actually shipped afterward**. Hindsight becomes our answer key."
 
 ### [SLIDE 6 — Results]  ~75s  *(slow down — this is the peak)*
-> "We analyzed **4,116 signals** against a **1,719-item** 2016 roadmap, and five latent needs came out on top — things the roadmap ignored or under-served.
+> "We analyzed **4,116 signals** against a **1,719-item** 2016 roadmap, and five latent needs came out on top — publishing that reliably works, video attachment, account-creation errors, posts loading over time, and a navigable comments experience.
 > And here's the receipt. *(point at the cards)*
-> Four of the five, the team **actually shipped 8 to 10 months later** — reliable video attachment, posts loading after login, in-app comment replies, and self-hosted login. We flagged every one from 2016 data, before the team acted.
-> But look at number one. *(pause)* Clear, actionable errors when you create an account — the roadmap ignored it, and to this day there's **no genuine fix**. That is the silent stakeholder, still waiting.
+> The team eventually addressed **every single one** — but look how late: eight months, twenty, twenty-one, and for account-creation errors, **twenty-seven months**. We flagged all of them from 2016 data, up to more than two years before the team acted.
+> And across all fifteen candidate gaps, the backtest confirmed **thirteen as genuine**. That's our precision.
 > That's not an opinion — it's a backtest. And every need traces to specific signal IDs. No evidence, no gap."
 
 ### [SLIDE 7 — Confidence you can defend]  ~40s
-> "Our confidence isn't a number the model made up. It's a transparent formula over six measured features — volume, source diversity, intensity, cohesion, gap-clarity, and contradiction.
-> Ask us to defend any score and we point at its vector. And this run it's genuinely **calibrated** — a logistic fit on fifteen backtested gaps, eleven of which checked out. When we don't have the labels for that, we say 'uncalibrated' instead of faking it. We'd rather be honest than impressive."
+> "Our confidence isn't a number the model made up. It's a transparent formula over six measured features — volume, source diversity, intensity, cohesion, gap-clarity, and contradiction — and the scores actually differ, from fifty to seventy-one percent.
+> Ask us to defend any score and we point at its vector. Now, we could have slapped a 'calibrated' label on this — but the backtest confirmed thirteen of fifteen, which is too skewed to fit a real curve; it would just collapse every gap to one number. So we kept the honest transparent score and told you why. We'd rather be honest than impressive."
 
 ### [SLIDE 8 — Why we win]  ~35s
 > "So: on **rigor**, every gap is provable and backtested. On **live defense**, our own critic already argued the other side, and the confidence breakdown answers 'defend this.' On **build quality**, it's spec-driven, typed, tested, with CI and a secret scan — and an honest, incremental commit history you can read."
 
 ### [SLIDE 9 — Closing]  ~20s
 > "We saw the silent stakeholder **before the team did** — and we can prove it.
-> From 2016 data, five latent needs the roadmap missed. The team shipped four of them within eight to ten months — and the first one, they still haven't fixed.
+> From 2016 data, five latent needs the roadmap missed. The team fixed every one — but eight to twenty-seven months late — and the backtest confirmed thirteen of fifteen gaps as genuine.
 > The repo, the runnable system, and the full evidence are right here. Thank you — we're happy to defend any gap you pick."
 
 ---
 
 ## If a judge interrupts (rapid answers)
-- **"Why is #1 first?"** → Highest calibrated confidence, and it's the one the roadmap **ignored and still never fixed** — the purest silent stakeholder. The others got shipped; this user is still stuck.
-- **"How can a gap be IGNORED but shipped later?"** → IGNORED is a verdict about the **2016 roadmap** — nothing planned addressed it. The team built it reactively 8–10 months later, which *proves* the roadmap missed it. #1 is the exception: never genuinely fixed at all.
-- **"Defend that confidence number."** → Point at the V·D·I·K·G·X vector on slide 7 / in `report.json`; weighted sum (weights in `SPEC.md §6`), then logistic-calibrated on 15 backtested gaps.
+- **"Why is #1 first?"** → Highest confidence (71%) and the strongest evidence — publishing is the core job-to-be-done, so 403s and silent failures make the whole app useless; and the team took **20 months** to even close a related issue.
+- **"How can a gap be IGNORED but shipped later?"** → It can't, and we don't show that — we **reconcile with hindsight**: if the team addressed it after T0, the verdict is *UNDER-PRIORITIZED*, not *ignored*. IGNORED is reserved for needs never genuinely addressed.
+- **"Defend that confidence number."** → Point at the V·D·I·K·G·X vector on slide 7 / in `report.json` — a weighted sum (weights in `SPEC.md §6`). It's the transparent score, *not* calibrated, because 13/15 corroborated is too skewed to fit a curve — and we say so.
 - **"Isn't this just a frequent complaint?"** → No — its latency is high: users felt it but didn't ask for the fix. A frequent complaint scores low on latency and we drop it.
-- **"That GitHub match could be a coincidence."** → Read the issue title in the note — e.g. `GH-5843 'Not able to login to self hosted site account'`. Same need, closed after our T0, and we require 0.50+ similarity.
+- **"That GitHub match could be a coincidence."** → Read the issue title in the note — e.g. `GH-8300 'Blog Posts List Shows Error Message When Publishing'`. Same need, closed after our T0, ≥0.50 similarity, and we say "closed a matching issue," not "shipped a feature."
 - **"A gap you missed?"** → Open the theme-coverage table: it either merged into a ranked gap, or was dropped for low latency or adequate roadmap coverage — the critic log shows why.
