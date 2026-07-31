@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>The Silent Stakeholder — {{ report.product }}</title>
+<style>
+  :root{--bg:#0d1117;--card:#161b22;--line:#30363d;--fg:#e6edf3;--mut:#8b949e;
+        --ign:#f85149;--under:#d29922;--mis:#a371f7;--ok:#3fb950;--accent:#58a6ff}
+  *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--fg);
+    font:15px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+  .wrap{max-width:960px;margin:0 auto;padding:32px 20px 80px}
+  h1{font-size:26px;margin:0 0 4px} .sub{color:var(--mut);margin:0 0 24px}
+  .headline{background:linear-gradient(135deg,#1f6feb22,#a371f722);border:1px solid var(--line);
+    border-radius:12px;padding:18px 20px;margin:0 0 28px}
+  .headline .k{color:var(--mut);font-size:12px;text-transform:uppercase;letter-spacing:.08em}
+  .headline .v{font-size:19px;font-weight:600;margin-top:6px}
+  .gap{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin:0 0 18px}
+  .gap h2{font-size:18px;margin:0 0 8px;display:flex;gap:10px;align-items:center}
+  .rank{background:var(--accent);color:#0d1117;border-radius:999px;width:26px;height:26px;
+    display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:14px}
+  .verdict{font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px;text-transform:uppercase;letter-spacing:.05em}
+  .IGNORED{background:var(--ign)22;color:var(--ign);border:1px solid var(--ign)}
+  .UNDER-PRIORITIZED{background:var(--under)22;color:var(--under);border:1px solid var(--under)}
+  .MISUNDERSTOOD{background:var(--mis)22;color:var(--mis);border:1px solid var(--mis)}
+  .conf{margin-left:auto;font-variant-numeric:tabular-nums;color:var(--mut)}
+  .conf b{color:var(--fg);font-size:17px}
+  .bar{height:6px;background:#21262d;border-radius:4px;overflow:hidden;margin:8px 0 12px}
+  .bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--ok))}
+  .why{color:var(--fg)} .latent{color:var(--mut);font-style:italic;margin:8px 0}
+  .feat{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+  .feat span{background:#21262d;border:1px solid var(--line);border-radius:6px;padding:2px 8px;font-size:12px;color:var(--mut)}
+  .feat span b{color:var(--fg)}
+  details{margin-top:10px;border-top:1px dashed var(--line);padding-top:10px}
+  summary{cursor:pointer;color:var(--accent);font-size:13px}
+  .ev{border-left:2px solid var(--line);padding:6px 0 6px 12px;margin:8px 0;font-size:13px}
+  .ev .id{color:var(--mut);font-family:ui-monospace,Menlo,monospace;font-size:11px}
+  .star{color:var(--under)} .react{color:var(--ok)}
+  .val{margin-top:10px;font-size:13px;color:var(--mut)}
+  .val b{color:var(--ok)}
+  footer{color:var(--mut);font-size:12px;margin-top:30px;border-top:1px solid var(--line);padding-top:16px}
+  code{background:#21262d;padding:1px 5px;border-radius:4px;font-size:12px}
+</style>
+</head>
+<body><div class="wrap">
+  <h1>🔇 The Silent Stakeholder</h1>
+  <p class="sub">{{ report.product }} · roadmap snapshot T0 = {{ report.t0 }} · generated {{ report.generated_at.strftime('%Y-%m-%d %H:%M') }} · mode {{ report.meta.get('mode','?') }}</p>
+
+  <div class="headline">
+    <div class="k">The single most important unmet need</div>
+    <div class="v">{{ report.one_sentence_gap }}</div>
+  </div>
+
+  {% for g in report.gaps %}
+  <div class="gap">
+    <h2><span class="rank">{{ g.rank }}</span> {{ g.need }}
+        <span class="verdict {{ g.verdict }}">{{ g.verdict }}</span>
+        <span class="conf">confidence <b>{{ (g.confidence*100)|round|int }}%</b></span></h2>
+    <div class="bar"><i style="width:{{ (g.confidence*100)|round|int }}%"></i></div>
+    <div class="why"><b>Why this is a gap:</b> {{ g.verdict_rationale }}</div>
+    <div class="latent">Latent because: {{ g.latent_reasoning }}</div>
+    <div class="feat">
+      <span>volume <b>{{ g.confidence_breakdown.V }}</b></span>
+      <span>diversity <b>{{ g.confidence_breakdown.D }}</b></span>
+      <span>intensity <b>{{ g.confidence_breakdown.I }}</b></span>
+      <span>cohesion <b>{{ g.confidence_breakdown.K }}</b></span>
+      <span>gap-clarity <b>{{ g.confidence_breakdown.G }}</b></span>
+      <span>contradiction <b>{{ g.confidence_breakdown.X }}</b></span>
+    </div>
+    {% if g.validation and (g.validation.note or g.validation.built_later is not none) %}
+    <div class="val">🔮 <b>Backtest:</b>
+      {% if g.validation.built_later %}Team shipped it later{% if g.validation.shipped_in %} — <code>{{ g.validation.shipped_in }}</code>{% endif %}{% if g.validation.lag_months is not none %} ({{ g.validation.lag_months }} months after T0){% endif %}.{% elif g.validation.built_later == false %}Not built after T0 — {% endif %}{{ g.validation.note }}</div>
+    {% endif %}
+    <details><summary>Evidence trace — {{ g.evidence_signals|length }} signals</summary>
+      {% for e in g.evidence_signals %}
+      <div class="ev"><span class="id">{{ e.id }} · {{ e.source }}{% if e.date %} · {{ e.date }}{% endif %}</span>
+        {% if e.star %}<span class="star">{{ '★' * e.star }}</span>{% endif %}
+        {% if e.reactions %}<span class="react">👍{{ e.reactions }}</span>{% endif %}
+        <div>{{ e.quote }}</div></div>
+      {% endfor %}
+      <div style="color:var(--mut);font-size:12px;margin-top:8px">Roadmap refs:
+        {% for r in g.roadmap_refs %}<code>{{ r.id }}</code>{% if r.note %} ({{ r.note }}){% endif %}{% if not loop.last %}, {% endif %}{% endfor %}</div>
+    </details>
+    <details><summary>Adversarial check</summary><div class="latent">{{ g.adversarial_check }}</div></details>
+  </div>
+  {% endfor %}
+
+  <footer>Every gap is provable from the linked signal IDs — no evidence, no gap.
+  Confidence is a transparent linear model over the six features shown (see <code>SPEC.md §6</code>).
+  {{ report.meta.get('n_signals','?') }} signals · {{ report.meta.get('n_themes','?') }} themes · {{ report.meta.get('n_roadmap','?') }} roadmap items analysed.</footer>
+</div></body></html>
