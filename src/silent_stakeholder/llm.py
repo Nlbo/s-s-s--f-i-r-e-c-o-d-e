@@ -72,8 +72,8 @@ class LLMClient:
             return json.loads(cp.read_text())
         try:
             data = json.loads(self._chat_raw(system, user))
-        except (json.JSONDecodeError, TypeError):
-            data = {}
+        except Exception:  # noqa: BLE001 - any LLM/API failure falls back to the heuristic
+            data = {}  # a single transient error must not crash the whole pipeline
         if not isinstance(data, dict):
             data = {}
         cp.write_text(json.dumps(data))
