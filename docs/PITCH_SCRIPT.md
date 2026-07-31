@@ -1,7 +1,42 @@
 # Pitch script — what to say, slide by slide
 
-**~6–7 min. Speak in English. Slides = `docs/Silent_Stakeholder_Pitch.pptx`.**
-Delivery: slow down on the backtest slide (slide 6) — that's the moment. Numbers in **bold** are the ones judges remember; say them clearly.
+> **Two versions below.** Use the **⏱️ 3-MINUTE version** for the pitch. The full ~6-min
+> version underneath is your rehearsal + Q&A prep. Speak English. Numbers in **bold** are
+> the ones judges remember — say them clearly.
+
+---
+
+# ⏱️ 3-MINUTE PITCH (~430 words)
+
+**Slide flow:** open on **1 (Title)** → flash **3 (Insight)** → **4 (Pipeline)** → dwell on
+**5 (Backtest)** and **6 (Results)** → land on **9 (Close)**. Don't read every slide — talk,
+and let the results slide do the heavy lifting.
+
+**[0:00–0:20 · Title]**
+> "We're **The Silent Stakeholder**. Every product has a user whose real need quietly drifts from what the team builds — they never file a ticket, they just churn. Reading complaints is easy; the valuable thing is surfacing the need users **feel but never say**. That's what we built."
+
+**[0:20–0:45 · Insight]**
+> "The key idea: a latent need is **high pain, low explicit-ask** — users describe the workaround, never the fix. We measure exactly that — **latency = pain × (1 − explicit-ask)**. That's how we avoid being a complaint-counter, which the brief says scores poorly."
+
+**[0:45–1:10 · Pipeline]**
+> "We take two sides of one product — WordPress for Android: user signals — 2016 reviews, GitHub issues, tickets — versus the team's roadmap. A pipeline of agents extracts the needs, clusters them, aligns each to the roadmap for a verdict — ignored, under-prioritized, or misunderstood — scores confidence, and backtests it. Every gap ships with evidence by ID. **No evidence, no gap.**"
+
+**[1:10–1:40 · The backtest]**
+> "Now — anyone can *claim* a gap. Here's how we **prove** it. The reviews are from 2016; we have the repo's full history to today. So we predict using **only 2016 data**, then check what the team **actually did afterward**. Hindsight is our answer key."
+
+**[1:40–2:30 · Results — the peak, slow down]**
+> "Five latent needs came out on top. And the team eventually addressed **every single one** — but look how late: eight months, twenty, twenty-one, and for account-creation errors, **twenty-seven months**. We flagged them up to **two years** before the team acted. Across fifteen candidates, the backtest confirmed **thirteen as genuine**. That's not an opinion — it's a receipt."
+
+**[2:30–3:00 · Rigor + close]**
+> "And confidence isn't a vibe — it's a transparent formula, scores range fifty to seventy-one percent, and we say 'uncalibrated' when the data can't back a curve. It's spec-driven, tested, honest commit history. **We saw the silent stakeholder before the team did — and we can prove it.** Thank you — pick any gap, we'll defend it."
+
+*(If you're over time: cut the Pipeline paragraph — the backtest + results carry the pitch.)*
+
+---
+
+# Full version (~6 min — rehearsal + Q&A)
+
+**Slides = `docs/Silent_Stakeholder_Pitch.pptx`.** Slow down on the backtest slide — that's the moment.
 
 ---
 
