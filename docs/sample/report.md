@@ -1,104 +1,180 @@
 # 🔇 The Silent Stakeholder — org.wordpress.android
 
-*Roadmap snapshot T0 = 2017-01-01 · generated 2026-07-31 11:04 UTC · mode openai:gpt-4.1-mini*
+*Roadmap snapshot T0 = 2017-01-01 · generated 2026-07-31 14:36 UTC · mode openai:gpt-5.1*
 
 ## The single most important unmet need
-> **Users need a reliable, fast, and user-friendly way to upload multiple images or media files without failures, delays, or merging errors, including multi-select functionality and minimal loading steps — under-prioritized by the roadmap despite the evidence (50% confidence).**
+> **“I just want to be able to create an account (and new blog) without mysterious errors. When something goes wrong, tell me clearly what the problem is and how to fix it, instead of failing silently or with a generic message that leaves me stuck.” — unaddressed by the roadmap despite the evidence (63% confidence).**
 
 ## Ranked gaps
 
-### 1. Users need a reliable, fast, and user-friendly way to upload multiple images or media files without failures, delays, or merging errors, including multi-select functionality and minimal loading steps.  ·  **UNDER-PRIORITIZED**  ·  confidence **50%**
+### 1. “I just want to be able to create an account (and new blog) without mysterious errors. When something goes wrong, tell me clearly what the problem is and how to fix it, instead of failing silently or with a generic message that leaves me stuck.”  ·  **IGNORED**  ·  confidence **63%**
 
-**Why a gap:** The roadmap includes several items addressing media upload issues, such as bugs with multiple image uploads (GH-3445), allowing any file upload (GH-4842), and inability to upload posts with pictures (GH-375). However, many user complaints highlight persistent problems with upload failures, slow or repeated upload attempts, lack of multi-select for uploads, and merging of multiple photos into one file. While some bugs are closed, the high pain rate and ongoing user frustration suggest these issues are not fully resolved or prioritized at a high enough level to meet user needs effectively. Other
+**Why a gap:** The user need is about reliably creating a new account (and/or new blog) without opaque or blocking errors, especially in normal conditions. The sample signals show users often cannot create an account at all, see generic or misleading errors, and are left stuck (“not make a account”, “error occurred… not telling what’s the error”, invalid_client, silent partial creation). The nearest roadmap items are narrow, one-off bugs: a bad password error after creation (GH-970), a crash on account creation (GH-1469), a crash on slow connection (GH-688), and a wait-indicator UI glitch (GH-715). These add
 
-*Latent because:* Despite high pain and frequent complaints about media upload problems, explicit requests are relatively low, possibly because users have become resigned to the issues or do not expect improvements. This latent dissatisfaction signals a critical need that is not strongly voiced but significantly impacts user experience.
+*Latent because:* This need is latent because users mostly express raw frustration (“Bad… not make a account”, “Cant able create account showing error”) rather than a structured feature request like “please overhaul the signup flow and error handling.” The pain is extremely high: account creation is a gateway action, and when it fails, users are completely blocked from using the product, reflected in 1–2 star revie
 
-**Confidence** = V 1.0 · D 0.667 · I 0.434 · K 0.729 · G 0.4 · X 0.126 (raw 0.583)
+**Confidence** = V 0.388 · D 0.667 · I 0.733 · K 0.793 · G 0.7 · X 0.0 (raw 0.652)
 
-**Backtest:** Team later shipped GH-5434 'Media browser fails to load images' (closed 2017-03-22, sim 0.57).
-
-**Evidence (6 signals):**
-- `R-d5ccafcd` (review ★1) — Disastrous Update Used to love this app but now just problem after problem. The whole thing is really clunky and seems to have a mind of its own Now pictures refuse to load. I'm not interested in doing anything fancy. I just want to be able
-- `R-0a1edb96` (review ★1) — One problem Please we liked it when if we wanted to up load a photo it just comes up  now just to up upload a photo it now has to load which takes time. Pls we do not like the idea of our photos loading.
-- `R-de632d51` (review ★1) — Upload fails Text or Image  nothing can be uploaded with this version. I will change my rating once it is fixed.
-- `R-6500f1be` (review ★1) — Not Able To Upload Images and Not Able to Add Website What The Hell This App Does ????
-- `R-310c35e4` (review ★1) — Garbage It would be worth 99 cents for an app that works. This one does. Totally unable to upload media. Why not build that feature in rather than just having the app sit and spin.
-- `GH-1983` (gh_issue ) — Upload fails unless connected to a charger. If my mobile is not on a charger, upload will stall for hours (and never resumes). This happens 100% of the time, I can effectively only use the app while charging - but then why use the app?
-
-Thi
-
-**Roadmap refs:** `GH-3445`, `GH-4842`, `GH-375`
-
-*Adversarial check:* The evidence strongly indicates frequent and severe user complaints about uploading multiple images or media files, including failures, delays, and usability issues. Multiple 1-star reviews explicitly mention upload failures, long loading times, and inability to upload media, which aligns closely with the claimed need. The latency score of 0.809 suggests this is a persistent issue, and although the max roadmap similarity is 0.623, it is not sufficiently high to confirm that the problem is fully addressed or prioritized. The confidence features show moderate to high relevance in some dimensions
-
-### 2. Users need reliable and consistent text formatting behavior in the editor, including correct application and removal of formatting, preservation of formatting when typing or pasting, and proper handling of formatting tags.  ·  **UNDER-PRIORITIZED**  ·  confidence **48%**
-
-**Why a gap:** The user need centers on issues with text formatting in the editor, such as formatting tags being misplaced, formatting lost after typing, and improper handling of pasted formatted text. The roadmap includes some related items addressing editor bugs and formatting around images or HTML escaping, but these do not comprehensively address the core formatting and editor behavior problems raised. The related items are mostly closed bugs or minor enhancements, indicating some attention but not a prioritized, broad fix for the formatting experience.
-
-*Latent because:* Although users experience high pain from formatting issues, explicit requests are low likely because users may accept workarounds or consider these issues as minor annoyances rather than urgent feature requests, making the need latent despite its impact.
-
-**Confidence** = V 0.388 · D 0.333 · I 0.45 · K 0.811 · G 0.7 · X 0.0 (raw 0.562)
-
-**Backtest:** Team later shipped GH-5685 'Changes in HTML mode not saved' (closed 2017-04-21, sim 0.56).
+**Backtest:** No close post-T0 issue (nearest GH-6650 'Reader: when someone following blogs too quic', sim 0.47) — consistent with IGNORED.
 
 **Evidence (6 signals):**
-- `GH-3863` (gh_issue ) — Visual Editor: Formatting applied before typing is lost. ### Steps to reproduce the behavior
+- `R-4ba6b4ec` (review ★1) — Bad Its very bad not make a account
+- `R-48acd729` (review ★1) — Cant able create account showing error
+- `GH-671` (gh_issue ) — Creating an account with password "qwerty12345" fails. Actually, the user is created but can't be logged in at first time -> results an account without blog
 
-Open a new post.  Select formatting (bold, or italic).  Start typing.  The format button is deselected, and plain text is added.
-### Expected beha
-- `GH-4067` (gh_issue ) — Visual editor: Removed bold/italic formatting re-applies after removal in 5.4-RC-1. ### Expected behavior
-1. Select bold or italic in visual editor
-2. Type word(s) in formatted text
-3. Select bold/italic again to clear selection
-4. Press sp
-- `GH-3865` (gh_issue ) — Visual Editor: Pasting formatted text into the title field yields HTML code. ### Steps to reproduce the behavior
+- `GH-898` (gh_issue ) — NUX: Creating a new WordPress.com blog is failing. When I try to create a new blog with my existing account, it fails after 10 seconds or so.
 
-Write, highlight, and copy formatted text.  Paste that text into the title bar of the post from the visual editor.  It appears
-- `GH-3864` (gh_issue ) — Visual Editor: Pasting formatted text into the HTML editor pseudo-retains formatting. ### Steps to reproduce the behavior
+- `GH-2544` (gh_issue ) — error invalid_client message invalid client_id. 1. Using Android emulator on Android studio.
+2. Trying to create an account.
 
-Write formatted text, copy it to the clipboard, switch to the HTML editor, paste the text in.  It looks formatted, bu
-- `GH-4963` (gh_issue ) — Removing bold/italic removes it from the previously applied word(s). ### Expected behavior
-While writing a post, I apply bold or italic to a word. I move the cursor to the next position. Since bold(or italic) is still selected, it will be 
-- `GH-491` (gh_issue ) — Editor: End tag can be set before starting tag. . In the editor tap to edit the content. 
+3.Keep getting this error even after creating/recreating new MyApp and hence getting a new client_id and client_se
+- `R-76f42d19` (review ★2) — Error Why its saying that an error uccured when i am creating new account..nd also its not telling whats the error..plz respond me fast nd plz fix this
 
-Somewhere in the middle of the content, tap one of the formatting options.  I chose bold. 
-Notice the opening bold tag is set, and the bold option is
+**Roadmap refs:** `GH-970`, `GH-1469`, `GH-688`, `GH-715`
 
-**Roadmap refs:** `GH-138`, `GH-721`, `GH-450`
+*Adversarial check:* The claimed gap is: reliable account/blog creation plus clear, actionable error feedback instead of silent or generic failures.
 
-*Adversarial check:* The evidence consists of multiple distinct user reports describing inconsistent and unreliable text formatting behavior in the editor, such as formatting being lost when typing, formatting reapplying after removal, and improper handling of pasted formatted text. These issues are documented in recent GitHub issues with detailed reproduction steps, indicating they are not isolated or sarcastic complaints. The maximum roadmap similarity score of 0.612 suggests that while some related work may be planned, the problem is not fully addressed or prioritized. The confidence features show moderate to h
+1. **Is this just a frequent, surface-level complaint?**  
+The evidence is tightly clustered around the same core failure mode, not a grab bag of generic frustration:
+- R-4ba6b4ec: "not make a account" (account creation failure)
+- R-48acd729: "Cant able create account showing error" (creation blocked by an error)
+- R-76f42d19: explicitly: "its saying that an error uccured when i am creating new account..nd also its not telling whats the error" (generic, non-informati
 
-### 3. Users need a reliable and user-friendly media library experience within the post editor, including the ability to search images by name, see recently uploaded images immediately, prevent images from disappearing, and have videos visible in the media library.  ·  **UNDER-PRIORITIZED**  ·  confidence **45%**
+### 2. “When I add a video to my post—whether via Quick Video, from my gallery, or newly captured—it should upload successfully, stay attached to the post, and be visible to my viewers. I shouldn’t see constant upload errors, end up with empty posts, or publish a post that looks fine in the app but has no   ·  **IGNORED**  ·  confidence **63%**
 
-**Why a gap:** The roadmap includes several closed issues addressing bugs related to media library image display and handling in the post editor, such as missing thumbnails, broken images, and loading status. However, many user signals highlight ongoing problems like inability to search images by name, images disappearing after upload, media library not updating automatically, blank images, and missing videos in the media library. These issues indicate broader and more persistent usability problems that are not fully addressed or prioritized in the roadmap, which mostly focuses on bug fixes rather than featu
+**Why a gap:** The user need is about reliably getting videos into posts and having them actually appear for viewers: uploads fail with errors, posts publish without the video, quick video posts end up empty, and error messages are confusing or misleading. The roadmap items nearby are mostly tangential: GH-250 is about a specific VideoPress alert, GH-603 about using a shortcode when sharing a video, GH-375 and GH-503 are image‑related, and GH-4579 is about YouTube iframe previews. None of these represent a coherent, prioritized effort to make video upload and publishing robust and understandable end‑to‑end. 
 
-*Latent because:* Although users experience high pain from media library issues (e.g., images disappearing, no search, missing videos), explicit requests for these features or fixes are low, possibly because users have adapted workarounds or do not expect these capabilities, making the need latent despite its impact on usability.
+*Latent because:* This need is highly painful (videos not uploading or disappearing undermines entire posts and frustrates both authors and viewers) but only weakly expressed as a single, clear feature request. Users describe symptoms—“videos won’t upload,” “error every time,” “viewers can’t see my videos,” “posts are empty,” “invalid file type,” “post uploaded without the video”—rather than articulating a unified 
 
-**Confidence** = V 0.438 · D 0.667 · I 0.375 · K 0.75 · G 0.5 · X 0.0 (raw 0.531)
+**Confidence** = V 0.459 · D 0.667 · I 0.533 · K 0.767 · G 0.8 · X 0.0 (raw 0.667)
 
-**Backtest:** Team later shipped GH-6955 'Editor: Media picker allows adding videos to galle' (closed 2017-12-20, sim 0.66).
+**Backtest:** Team later shipped GH-6654 'Async media: broken reattachment identification' (closed 2017-09-22, sim 0.63).
 
 **Evidence (6 signals):**
-- `GH-4593` (gh_issue ) — No videos in media library when trying to add to a post. ### Expected behavior
+- `R-a293a934` (review ★1) — So many glitches! Videos won't upload  the keyboard glitches. The mobile app sucks  the follow blog widget isn't working. It keeps sending my users to have to log in when they try to like or follow my blog. And I have tried to fix this over
+- `R-3327b693` (review ★1) — Why is it that there's always error when uploading videos? I have videopress but it has this error everytime
+- `GH-74` (gh_issue ) — Quick Video posts are empty. Went back to look at my quick video posts in a browser and noticed that they were all empty. 
+Tried another post via the app and it was empty too. 
+The blog I was testing with does not use video press if that ma
+- `GH-190` (gh_issue ) — Quick Vid: Error uploading. Invalid File Type. Not sure if this is a server issue or app issue. 
+When publishing a quick video the following error appears. 
+"Error: An error occurred while uploading media: Could not write file wpid-VID_2013
+- `GH-929` (gh_issue ) — Submitting post before video downloads results in no video. - Create a new post
+- Insert a video from your gallery
+- Submit the post as soon as the "Downloading media" toast appears
 
-When using the `Select from media library" media option in the post editor, I'd expect to see videos there as well if library has some.
-### Actual behavior
+Post will be uploaded without the video.
 
-Onl
-- `R-b5b7369c` (review ★2) — Does not update automatically Like when I added an image from my desktop computer and make a post using this app adding the image on the post  the recently uploaded image does not display. I have to go back to home  click on media and refre
-- `GH-4363` (gh_issue ) — Media: Media library does not load media for sites with basic HTTP auth. ### Expected behavior
+- `GH-3758` (gh_issue ) — Getting a media error if VideoPress is not enabled. Publishing a post with a video ends up in a Android notification stating:
 
-I expect to be able to view media in the site's media library (My Site > Media or in the Editor > Add media > Select from media library).
-### Ac
-- `GH-1314` (gh_issue ) — Disappearing images in post editor after activity is closed. 1. Enable `Don't keep activities` option in device settings.
-2. Open app, tap new post button.
-3. Add an image from the device gallery. Observe it is added to the post.
-4. Add ano
-- `GH-3321` (gh_issue ) — Media Library: Image disappears from view shortly after upload - 4.6-rc-3. When uploading a picture to the media library I see it show up in the view momentarily, and then it disappears.  After leaving and going back in it shows up just fin
-- `GH-2456` (gh_issue ) — Featured images not working when selected from WP Media Library. 1. Create a new post with the app.
-2. Tap the image icon and choose “Select from media library” or choose an image from the "Site images" tab with the media picker (for 3.9+)
+> Media Error
+> Get the VideoPress upgrade to upload video!
+
+We should improve this UX. Perhaps let the user know
+
+**Roadmap refs:** `GH-250`, `GH-603`, `GH-375`, `GH-503`, `GH-4579`
+
+*Adversarial check:* The claimed gap is: *"When I add a video to my post… it should upload successfully, stay attached, and be visible. I shouldn’t see constant upload errors, end up with empty posts, or publish a post that looks fine in the app but has no video."*
+
+Trying to knock this down as just noise or already-covered:
+
+1. **Is this just a generic, frequent complaint (not a coherent gap)?**  
+   The evidence is tightly clustered around the same failure mode: user believes they’ve attached a video to a post, but the final result is errors, empty posts, or missing video.
+   - R-a293a934: “Videos won't upload… 
+
+### 3. Users need the app to reliably load and refresh their blog posts and in-app blog view after installation and login, without crashes, generic connection errors, or being forced into an external browser. They expect that opening the app will consistently show their latest posts and content, and that t  ·  **IGNORED**  ·  confidence **63%**
+
+**Why a gap:** User reports center on a core, high-pain failure: after install or login, blog posts and feeds often do not load, do not refresh, or the in-app blog view stops working entirely, sometimes with generic connection errors or silent failures. This is experienced as “the app just doesn’t work” for its primary purpose (viewing posts) and leads directly to uninstalls. The nearest roadmap items are only tangentially related: GH-3370 fixes a specific NPE in PostsListAdapter (one crash mode, not the broader reliability of loading/refreshing posts); GH-181 addresses list not updating after deleting the l
+
+*Latent because:* The pain is very high because this is the primary job of the app—if posts don’t load or refresh, the app is effectively useless, which is why users explicitly mention uninstalling and calling it “awful” or “pointless.” However, the explicit request rate is lower because users rarely articulate this as a structured feature or systemic reliability requirement; they just say “not working,” “posts fai
+
+**Confidence** = V 0.759 · D 0.667 · I 0.58 · K 0.713 · G 0.75 · X 0.068 (raw 0.691)
+
+**Backtest:** Team later shipped GH-5874 'Unable to retrieve posts in Reader after relogin' (closed 2017-11-13, sim 0.54).
+
+**Evidence (6 signals):**
+- `R-239bff1f` (review ★1) — Just plain doesn't work 'Posts couldn't be refreshed at this time'. No error message  no indication of what the problem is. Uninstalled.
+- `R-d469928d` (review ★1) — Disappointing It works really fine whenever I newly install it but after that it doesn't refresh the content and all other stuff anymore
+- `R-44ea902e` (review ★1) — Not working
+- `R-9264cbca` (review ★1) — Does the website and app has a problem today? Yesterday I was still editing so many stuff on my blog. But roday I can't even open the website! The app doesn't even work properly. pls send me a feedback on what's happening. :(
+- `R-27a70f72` (review ★1) — Please help I'm using samsung mega mobile device and after updating to new version  I can not edit even blog or pages. Cause on the screen  the write section appear and close half of the blog/pages which I want to edit and doesn't respond. 
+- `GH-905` (gh_issue ) — ArrayIndexOutOfBoundsException in notification settings. - Open the preferences view.
+- Enter to the “Show/hide WordPress.com blogs” view. Go back.
+- Enter to the “Manage notifications”, go the Blogs section and try to check/uncheck any of 
+
+**Roadmap refs:** `GH-3418`, `GH-1751`, `GH-3370`, `GH-181`, `GH-4873`
+
+*Adversarial check:* The claimed gap is that users need the app to reliably load and refresh their blog posts and in‑app blog view after installation and login, without crashes, generic connection errors, or being forced into an external browser.
+
+Looking at the evidence:
+- R-239bff1f: "Posts couldn't be refreshed at this time" with no explanation, leading to uninstall. This directly supports unreliable post refresh and poor error handling.
+- R-d469928d: Works on fresh install but then "doesn't refresh the content and all other stuff anymore". This is a clear, repeated-refresh failure pattern, not a one‑off connec
+
+### 4. Users want to be able to reliably reply to, like, and comment on blog comments directly from the app—especially from notifications—on their self‑hosted/Jetpack sites, without cryptic errors like “reply failed” or “answer not possible,” and with clear behavior when a thread is closed or permissions a  ·  **UNDER-PRIORITIZED**  ·  confidence **57%**
+
+**Why a gap:** The user need is about reliably replying/liking/commenting from notifications (and generally in-app) on self‑hosted/Jetpack sites, where users frequently see generic failures like “reply failed” or “answer not possible.” The nearest roadmap items are mostly individual bug tickets: crashes when replying to comment notifications (GH-1553), moderation/permission edge cases (GH-1654, GH-3418), a specific moderation error when commenting on non-member sites (GH-4933), and a missing comment button in Reader for Jetpack sites (GH-3276). These show the team has addressed some related defects, but only
+
+*Latent because:* This need is latent because users mostly report it as isolated failures (“reply failed,” 403 errors, can’t answer comments in the app but can in the browser) rather than as a broad feature request. They assume replying from notifications should already work and only complain when it breaks, often framing it as a bug on their specific site or device. The pain is high: replying to comments is a core
+
+**Confidence** = V 0.478 · D 0.667 · I 0.41 · K 0.752 · G 0.4 · X 0.1 (raw 0.485)
+
+**Backtest:** Team later shipped GH-6769 'Enable Jetpack Comments on Reader for Internal Aut' (closed 2017-10-24, sim 0.60).
+
+**Evidence (6 signals):**
+- `GH-2039` (gh_issue ) — Can't comment . Hello on my Blog I can't answer to comments with the Android App. It shows me "Answer not possible". With the browser it works. 
+
+Here the error log from my phone. 
+
+```
+11-30 19:23:44.674 I/ActivityManager(3856): START u0 {
+- `GH-1167` (gh_issue ) — Error 403 on Comment Details View for a Jetpack site. I see the following error when I open the comment detail view for a comment on eritreo.it/wp37 (Jetpacked site)
+
+```
+03-27 18:53:26.345: E/WordPress(8910): [2711] BasicNetwork.performReq
+- `GH-4342` (gh_issue ) — Error 404 when replying to comments with device language set to Arabic or Farsi (Persian). ### Expected behavior
+
+Users should be able to reply to comments (e.g. from the notifications comment detail view) no matter what device language the
+- `R-00b6f637` (review ★2) — I'm not able to reply to comments on a self hosted site. It keeps saying """"""""""""""""reply failed"""""""""""""""".""
+- `GH-382` (gh_issue ) — User can't reply to comment notifications via Jetpack and HTTPS. See: http://android.forums.wordpress.org/topic/comment-replies-fail-on-https-sites?replies=5
+
+- `GH-3977` (gh_issue ) — Obscur error message when replying to a closed thread. ### Steps to reproduce the behavior
+1. Go to the site Comments section
+2. Select a comment from a closed thread
+3. Try to reply and get a "Reply failed" toast
+
+XMLRPC response is pretty
+
+**Roadmap refs:** `GH-3276`, `GH-1654`, `GH-4933`, `GH-1553`, `GH-3418`
+
+*Adversarial check:* The claim is that users want to reliably reply to, like, and comment on blog comments directly from the app—especially from notifications—on self‑hosted/Jetpack sites, without cryptic errors, and with clear behavior when threads are closed or permissions apply.
+
+First, check whether this is just a noisy, generic complaint about comments, or a coherent product gap:
+- GH-2039: "I can't answer to comments with the Android App. It shows me 'Answer not possible'. With the browser it works." This is not a vague UX gripe; it’s a clear app‑only failure on a core action (replying) that works on the web
+
+### 5. Users need self‑hosted and regular account logins to "just work" reliably, without cryptic errors, repeated registration loops, IP/firewall blocks, or unexplained failures. When login does fail, they need clear, actionable feedback so they can fix the problem themselves instead of being locked out o  ·  **UNDER-PRIORITIZED**  ·  confidence **57%**
+
+**Why a gap:** Multiple roadmap items directly touch login issues, including self‑hosted login bugs (GH-962, GH-1343) and improving failure messaging (GH-4762). However, the user signals show a broad, recurring, high‑pain pattern: users frequently cannot log in or stay logged in to self‑hosted sites, encounter vague errors, firewall/IP blocking, and repeated failed sign‑ins. The roadmap items are narrow, one‑off bug fixes or UX tweaks rather than a systematic, high‑priority effort to make self‑hosted login robust, diagnosable, and forgiving. Given the very high pain rate and only moderate explicit request ra
+
+*Latent because:* This need is latent because users mostly express it as acute frustration with specific incidents ("can't log in," "error after first login," "blocks my IP," "always telling me error") rather than as a structured feature request like "please overhaul the self‑hosted login architecture." The pain is very high: 1‑ and 2‑star reviews, repeated attempts to log in, password resets, and even hosting/fire
+
+**Confidence** = V 0.988 · D 0.667 · I 0.699 · K 0.717 · G 0.4 · X 0.043 (raw 0.639)
+
+**Backtest:** Team later shipped GH-5843 'Not able to login to self hosted site account' (closed 2017-11-08, sim 0.55).
+
+**Evidence (6 signals):**
+- `R-7f0a2162` (review ★1) — Login Problem Not able to login by this app. Please fix it.
+- `R-fb110b4a` (review ★1) — Software problem It's been two time since i had to register with same password and both the the times i was able to register.. got confirmation of registration .. but when i try to open it again with same link ot says""""""""""""""""email n
+- `R-2c52cbd8` (review ★1) — Not working It just showing me error after I tried logging in for d first time
+- `R-54f76e35` (review ★1) — Blocks my IP This app sets off my firewall each time I login - and causes my hosting to block my IP  even though it's my home IP.
+- `R-bb78da17` (review ★1) — Frankie Ifop I can't log into my self-hosted site. Always telling me error plus application log.
+- `GH-2012` (gh_issue ) — unable to login from China mainland. unable to login from China mainland, though setup  a vpn proxy. 
 
 
-**Roadmap refs:** `GH-1317`, `GH-503`, `GH-230`
+**Roadmap refs:** `GH-962`, `GH-1343`, `GH-4762`
 
-*Adversarial check:* The evidence consistently highlights multiple user complaints about the media library experience within the post editor, including missing videos, disappearing images, and lack of immediate update for recently uploaded images. These issues are reported across different tickets without indication that they are resolved or planned imminently, and the maximum roadmap similarity score of 0.691 suggests partial but incomplete alignment with current priorities. The confidence features show moderate to low confidence in existing features addressing these needs. While some complaints might be isolated
+*Adversarial check:* The evidence does point to a real login‑reliability problem, but we should be careful not to overgeneralize.
+
+1) **Is this just generic “login is broken” noise?**  
+Most apps get a steady trickle of 1★ reviews saying “can’t log in.” On its own, that’s often just user error, forgotten passwords, or transient outages. However, the pattern here is more specific:
+- Repeated registration loops: user can register multiple times with the same password and gets confirmation, but then can’t log in with the same link (R-fb110b4a). That suggests a flow or state bug, not just user confusion.
+- First‑time 

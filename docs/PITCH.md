@@ -23,7 +23,7 @@ Two sides of ONE product (WordPress for Android):
 Multi-agent pipeline: JTBD extraction → latent-theme clustering → **gap engine** (aligns each theme to the roadmap → IGNORED / UNDER-PRIORITIZED / MISUNDERSTOOD) → **calibrated confidence** → **adversarial critic** → **backtest validator**.
 
 ## 4. The differentiator — a backtest, not an opinion (90s)
-The reviews are from 2016. We have the repo's full history to 2026. So we predict gaps **using only 2016 data**, then check what the team **actually built afterward**. This run: **3/3** predicted under-prioritized needs were shipped by the team **2, 3, and 11 months after T0** (GH-5434 / GH-5685 / GH-6955) — we flagged them before the team acted. That turns "trust us" into a checkable receipt. (We stay honest on the number: with all three confirmed one way, there's no negative class to fit a calibration curve, so we report the transparent score, not a fake calibrated %.)
+The reviews are from 2016. We have the repo's full history to 2026. So we predict gaps **using only 2016 data**, then check what the team **actually built afterward**. This run: of 5 latent needs, the team **shipped 4 within 8–10 months** (GH-6654 / GH-5874 / GH-6769 / GH-5843) — we flagged them before the team acted — while the #1, clear account-creation errors, is **still unfixed**. That turns "trust us" into a checkable receipt, and gives us the label variety to **calibrate** confidence (logistic fit, N=15, 11 corroborated).
 
 ## 5. Confidence you can defend (45s)
 Confidence is **not** an LLM vibe — it's a transparent linear model over six measured features (volume, source-diversity, intensity, cohesion, gap-clarity, contradiction), documented in `SPEC.md §6`, then calibrated against the backtest. Ask us to defend any number and we point at its feature vector.
@@ -32,11 +32,13 @@ Confidence is **not** an LLM vibe — it's a transparent linear model over six m
 Open `report.html` (self-contained dashboard): headline gap, filter by verdict, click a gap → its **evidence trace** with signal IDs spanning reviews + GitHub + tickets. Every gap is provable from the linked IDs. **No evidence, no gap.**
 
 ## 7. Results (say the headline)
-Analysed **4 116 signals** (2 287 reviews + 1 029 GitHub issues + 800 tickets) against a **1 719-item T0 roadmap**. Top 3 under-served needs, **all validated by the backtest**:
-1. **Reliable multi-image / media upload** (multi-select, no merge/fail) — team shipped a fix **+2 months** after T0 (GH-5434).
-2. **Consistent text-formatting** in the editor — shipped **+3 months** (GH-5685).
-3. **Reliable media-library** experience — shipped **+11 months** (GH-6955).
-> Headline: *"Using only 2016 data we flagged 3 under-prioritized needs — the team shipped fixes for all three within 2–11 months. We saw the silent stakeholder before they did."*
+Analysed **4 116 signals** (2 287 reviews + 1 029 GitHub issues + 800 tickets) against a **1 719-item T0 roadmap** → 5 latent needs, **backtest-validated**:
+1. **Clear errors when creating an account** — IGNORED — **still unfixed today**.
+2. **Reliable video attachment** in posts — IGNORED — shipped **+8 months** (GH-6654).
+3. **Posts load/refresh after login** — IGNORED — shipped **+10 months** (GH-5874).
+4. **Comment on comments in-app** — UNDER-PRIORITIZED — shipped **+9 months** (GH-6769).
+5. **Login that "just works"** — UNDER-PRIORITIZED — shipped **+10 months** (GH-5843).
+> Headline: *"From 2016 data we flagged 5 needs the roadmap missed — the team shipped 4 within 8–10 months, and the #1 they never fixed. We saw the silent stakeholder before they did."*
 
 ## 8. Why we win (map to the rubric) (30s)
 - **Correctness & rigor**: every gap traces to IDs; verdicts + confidence are backtested against real outcomes.

@@ -4,7 +4,7 @@
 
 **Firecode Hackathon submission.** Full spec: [`SPEC.md`](SPEC.md) · submission packet: [`SUBMISSION.md`](SUBMISSION.md) · **animated pitch deck: [`docs/pitch-deck.html`](docs/pitch-deck.html)** · pitch script: [`docs/PITCH_SCRIPT.md`](docs/PITCH_SCRIPT.md) · **dashboard: [`docs/sample/report.html`](docs/sample/report.html)** (both Ant-Design styled).
 
-> **Headline result (WordPress for Android):** from **2016-only** signals we surfaced 3 under-prioritized needs — reliable multi-image upload, consistent text formatting, and the media-library experience. The **backtest proves it**: the team shipped fixes for all three **2–11 months later** (GH-5434 / GH-5685 / GH-6955). We saw the silent stakeholder before they did.
+> **Headline result (WordPress for Android, gpt-5.1 run):** from **2016-only** signals we surfaced **5 latent needs** the roadmap missed. The **backtest proves it**: the team shipped **4 of the 5 within 8–10 months** (GH-6654 / GH-5874 / GH-6769 / GH-5843), while the #1 — clear, actionable errors when creating an account — is **still unfixed today**. Confidence is calibrated on 15 backtested gaps. We saw the silent stakeholder before they did.
 
 ## What it does
 Given **one product** (WordPress for Android), it reads two sides — **what the team is building** (GitHub roadmap: milestones + prioritized issues) and **what users are signaling** (app-store reviews + user-filed issues + support tickets) — and surfaces the **top 3–5 latent, unspoken needs** the roadmap is missing or under-serving.

@@ -33,30 +33,31 @@ Delivery: slow down on the backtest slide (slide 6) — that's the moment. Numbe
 > The reviews are from **2016**. We have the repository's entire history to today.
 > So we predict the gaps using **only 2016 data** — and then we check what the team **actually shipped afterward**. Hindsight becomes our answer key."
 
-### [SLIDE 6 — Results]  ~70s  *(slow down — this is the peak)*
-> "We analyzed **4,116 signals** against a **1,719-item** 2016 roadmap. Three under-served needs came out on top: reliable multi-image upload, consistent text formatting in the editor, and the media-library experience.
-> And here's the receipt. *(point at the green cards)*
-> The team shipped a media-browser fix **two months** later. The editor-save fix, **three months** later. The media multi-select fix, **eleven months** later.
-> We flagged all three from 2016 data — **before the team acted on them**. That's not an opinion. That's a backtest. And every one of those needs traces back to specific signal IDs — no evidence, no gap."
+### [SLIDE 6 — Results]  ~75s  *(slow down — this is the peak)*
+> "We analyzed **4,116 signals** against a **1,719-item** 2016 roadmap, and five latent needs came out on top — things the roadmap ignored or under-served.
+> And here's the receipt. *(point at the cards)*
+> Four of the five, the team **actually shipped 8 to 10 months later** — reliable video attachment, posts loading after login, in-app comment replies, and self-hosted login. We flagged every one from 2016 data, before the team acted.
+> But look at number one. *(pause)* Clear, actionable errors when you create an account — the roadmap ignored it, and to this day there's **no genuine fix**. That is the silent stakeholder, still waiting.
+> That's not an opinion — it's a backtest. And every need traces to specific signal IDs. No evidence, no gap."
 
 ### [SLIDE 7 — Confidence you can defend]  ~40s
 > "Our confidence isn't a number the model made up. It's a transparent formula over six measured features — volume, source diversity, intensity, cohesion, gap-clarity, and contradiction.
-> Ask us to defend any score and we point at its vector. And we're disciplined about the word *calibrated*: we only say it when the backtest gives us enough labels to fit a curve — otherwise we tell you it's uncalibrated. We'd rather be honest than impressive."
+> Ask us to defend any score and we point at its vector. And this run it's genuinely **calibrated** — a logistic fit on fifteen backtested gaps, eleven of which checked out. When we don't have the labels for that, we say 'uncalibrated' instead of faking it. We'd rather be honest than impressive."
 
 ### [SLIDE 8 — Why we win]  ~35s
 > "So: on **rigor**, every gap is provable and backtested. On **live defense**, our own critic already argued the other side, and the confidence breakdown answers 'defend this.' On **build quality**, it's spec-driven, typed, tested, with CI and a secret scan — and an honest, incremental commit history you can read."
 
 ### [SLIDE 9 — Closing]  ~20s
 > "We saw the silent stakeholder **before the team did** — and we can prove it.
-> From 2016 data, three under-prioritized needs; the team shipped all three within two to eleven months.
+> From 2016 data, five latent needs the roadmap missed. The team shipped four of them within eight to ten months — and the first one, they still haven't fixed.
 > The repo, the runnable system, and the full evidence are right here. Thank you — we're happy to defend any gap you pick."
 
 ---
 
 ## If a judge interrupts (rapid answers)
-- **"Why is #1 first?"** → Highest confidence *and* the shortest backtest lag — the team shipped it in 2 months, so the under-prioritization was real and urgent.
-- **"Defend that confidence number."** → Point at the V·D·I·K·G·X vector on slide 7 / in `report.json`; it's a weighted sum, weights in `SPEC.md §6`.
+- **"Why is #1 first?"** → Highest calibrated confidence, and it's the one the roadmap **ignored and still never fixed** — the purest silent stakeholder. The others got shipped; this user is still stuck.
+- **"How can a gap be IGNORED but shipped later?"** → IGNORED is a verdict about the **2016 roadmap** — nothing planned addressed it. The team built it reactively 8–10 months later, which *proves* the roadmap missed it. #1 is the exception: never genuinely fixed at all.
+- **"Defend that confidence number."** → Point at the V·D·I·K·G·X vector on slide 7 / in `report.json`; weighted sum (weights in `SPEC.md §6`), then logistic-calibrated on 15 backtested gaps.
 - **"Isn't this just a frequent complaint?"** → No — its latency is high: users felt it but didn't ask for the fix. A frequent complaint scores low on latency and we drop it.
-- **"That GitHub match could be a coincidence."** → Read the issue title in the note — `GH-5434 'Media browser fails to load images'`. It's the same need, and it closed after our T0. We also require a 0.50+ similarity.
+- **"That GitHub match could be a coincidence."** → Read the issue title in the note — e.g. `GH-5843 'Not able to login to self hosted site account'`. Same need, closed after our T0, and we require 0.50+ similarity.
 - **"A gap you missed?"** → Open the theme-coverage table: it either merged into a ranked gap, or was dropped for low latency or adequate roadmap coverage — the critic log shows why.
-- **"Why no IGNORED gaps?"** → Honest finding: WordPress is well-maintained — almost everything gets addressed eventually, just late. That's *under-prioritized*, and the backtest confirms it. On a neglected product you'd see IGNORED.
