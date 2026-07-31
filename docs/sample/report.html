@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>The Silent Stakeholder — org.wordpress.android</title>
+<style>
+  :root{--bg:#0d1117;--card:#161b22;--line:#30363d;--fg:#e6edf3;--mut:#8b949e;
+        --ign:#f85149;--under:#d29922;--mis:#a371f7;--ok:#3fb950;--accent:#58a6ff}
+  *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--fg);
+    font:15px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+  .wrap{max-width:960px;margin:0 auto;padding:32px 20px 80px}
+  h1{font-size:26px;margin:0 0 4px} .sub{color:var(--mut);margin:0 0 24px}
+  .headline{background:linear-gradient(135deg,#1f6feb22,#a371f722);border:1px solid var(--line);
+    border-radius:12px;padding:18px 20px;margin:0 0 28px}
+  .headline .k{color:var(--mut);font-size:12px;text-transform:uppercase;letter-spacing:.08em}
+  .headline .v{font-size:19px;font-weight:600;margin-top:6px}
+  .gap{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin:0 0 18px}
+  .gap h2{font-size:18px;margin:0 0 8px;display:flex;gap:10px;align-items:center}
+  .rank{background:var(--accent);color:#0d1117;border-radius:999px;width:26px;height:26px;
+    display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:14px}
+  .verdict{font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px;text-transform:uppercase;letter-spacing:.05em}
+  .IGNORED{background:var(--ign)22;color:var(--ign);border:1px solid var(--ign)}
+  .UNDER-PRIORITIZED{background:var(--under)22;color:var(--under);border:1px solid var(--under)}
+  .MISUNDERSTOOD{background:var(--mis)22;color:var(--mis);border:1px solid var(--mis)}
+  .conf{margin-left:auto;font-variant-numeric:tabular-nums;color:var(--mut)}
+  .conf b{color:var(--fg);font-size:17px}
+  .bar{height:6px;background:#21262d;border-radius:4px;overflow:hidden;margin:8px 0 12px}
+  .bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--ok))}
+  .why{color:var(--fg)} .latent{color:var(--mut);font-style:italic;margin:8px 0}
+  .feat{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+  .feat span{background:#21262d;border:1px solid var(--line);border-radius:6px;padding:2px 8px;font-size:12px;color:var(--mut)}
+  .feat span b{color:var(--fg)}
+  details{margin-top:10px;border-top:1px dashed var(--line);padding-top:10px}
+  summary{cursor:pointer;color:var(--accent);font-size:13px}
+  .ev{border-left:2px solid var(--line);padding:6px 0 6px 12px;margin:8px 0;font-size:13px}
+  .ev .id{color:var(--mut);font-family:ui-monospace,Menlo,monospace;font-size:11px}
+  .star{color:var(--under)} .react{color:var(--ok)}
+  .val{margin-top:10px;font-size:13px;color:var(--mut)}
+  .val b{color:var(--ok)}
+  footer{color:var(--mut);font-size:12px;margin-top:30px;border-top:1px solid var(--line);padding-top:16px}
+  code{background:#21262d;padding:1px 5px;border-radius:4px;font-size:12px}
+  .stats{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 20px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 14px;flex:1;min-width:120px}
+  .stat .n{font-size:22px;font-weight:700} .stat .l{color:var(--mut);font-size:12px}
+  .controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 20px}
+  .chip{background:var(--card);border:1px solid var(--line);color:var(--fg);border-radius:999px;
+    padding:6px 12px;font-size:13px;cursor:pointer;user-select:none}
+  .chip.active{background:var(--accent);color:#0d1117;border-color:var(--accent);font-weight:600}
+  #q{flex:1;min-width:180px;background:var(--card);border:1px solid var(--line);color:var(--fg);
+    border-radius:8px;padding:8px 12px;font-size:13px}
+  .gap.hidden{display:none} .empty{color:var(--mut);text-align:center;padding:30px}
+</style>
+</head>
+<body><div class="wrap">
+  <h1>🔇 The Silent Stakeholder</h1>
+  <p class="sub">org.wordpress.android · roadmap snapshot T0 = 2017-01-01 · generated 2026-07-31 10:28 · mode openai:gpt-4.1-mini</p>
+
+  <div class="headline">
+    <div class="k">The single most important unmet need</div>
+    <div class="v">Users need a reliable, fast, and user-friendly way to upload multiple images or media files without failures, delays, or merging errors, including multi-select functionality and minimal loading steps — under-prioritized by the roadmap despite the evidence (50% confidence).</div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="n">3</div><div class="l">ranked gaps</div></div>
+    <div class="stat"><div class="n">4116</div><div class="l">user signals</div></div>
+    <div class="stat"><div class="n">133</div><div class="l">need themes</div></div>
+    <div class="stat"><div class="n">1719</div><div class="l">roadmap items</div></div>
+    <div class="stat"><div class="n">48%</div><div class="l">avg confidence</div></div>
+  </div>
+
+  <div class="controls">
+    <span class="chip active" data-f="all">All</span>
+    <span class="chip" data-f="IGNORED">Ignored</span>
+    <span class="chip" data-f="UNDER-PRIORITIZED">Under-prioritized</span>
+    <span class="chip" data-f="MISUNDERSTOOD">Misunderstood</span>
+    <input id="q" type="search" placeholder="search needs & evidence…"/>
+  </div>
+
+  
+  <div class="gap" data-verdict="UNDER-PRIORITIZED">
+    <h2><span class="rank">1</span> Users need a reliable, fast, and user-friendly way to upload multiple images or media files without failures, delays, or merging errors, including multi-select functionality and minimal loading steps.
+        <span class="verdict UNDER-PRIORITIZED">UNDER-PRIORITIZED</span>
+        <span class="conf">confidence <b>50%</b></span></h2>
+    <div class="bar"><i style="width:50%"></i></div>
+    <div class="why"><b>Why this is a gap:</b> The roadmap includes several items addressing media upload issues, such as bugs with multiple image uploads (GH-3445), allowing any file upload (GH-4842), and inability to upload posts with pictures (GH-375). However, many user complaints highlight persistent problems with upload failures, slow or repeated upload attempts, lack of multi-select for uploads, and merging of multiple photos into one file. While some bugs are closed, the high pain rate and ongoing user frustration suggest these issues are not fully resolved or prioritized at a high enough level to meet user needs effectively. Other</div>
+    <div class="latent">Latent because: Despite high pain and frequent complaints about media upload problems, explicit requests are relatively low, possibly because users have become resigned to the issues or do not expect improvements. This latent dissatisfaction signals a critical need that is not strongly voiced but significantly impacts user experience.</div>
+    <div class="feat">
+      <span>volume <b>1.0</b></span>
+      <span>diversity <b>0.667</b></span>
+      <span>intensity <b>0.434</b></span>
+      <span>cohesion <b>0.729</b></span>
+      <span>gap-clarity <b>0.4</b></span>
+      <span>contradiction <b>0.126</b></span>
+    </div>
+    
+    <div class="val">🔮 <b>Backtest:</b> Team later shipped GH-5434 (closed 2017-03-22, sim 0.57). <b>(+2 months)</b></div>
+    
+    <details><summary>Evidence trace — 6 signals</summary>
+      
+      <div class="ev"><span class="id">R-d5ccafcd · review · 2016-11-18</span>
+        <span class="star">★</span>
+        
+        <div>Disastrous Update Used to love this app but now just problem after problem. The whole thing is really clunky and seems to have a mind of its own Now pictures refuse to load. I&#39;m not interested in doing anything fancy. I just want to be able</div></div>
+      
+      <div class="ev"><span class="id">R-0a1edb96 · review · 2016-11-01</span>
+        <span class="star">★</span>
+        
+        <div>One problem Please we liked it when if we wanted to up load a photo it just comes up  now just to up upload a photo it now has to load which takes time. Pls we do not like the idea of our photos loading.</div></div>
+      
+      <div class="ev"><span class="id">R-de632d51 · review · 2016-10-28</span>
+        <span class="star">★</span>
+        
+        <div>Upload fails Text or Image  nothing can be uploaded with this version. I will change my rating once it is fixed.</div></div>
+      
+      <div class="ev"><span class="id">R-6500f1be · review · 2016-10-21</span>
+        <span class="star">★</span>
+        
+        <div>Not Able To Upload Images and Not Able to Add Website What The Hell This App Does ????</div></div>
+      
+      <div class="ev"><span class="id">R-310c35e4 · review · 2016-10-14</span>
+        <span class="star">★</span>
+        
+        <div>Garbage It would be worth 99 cents for an app that works. This one does. Totally unable to upload media. Why not build that feature in rather than just having the app sit and spin.</div></div>
+      
+      <div class="ev"><span class="id">GH-1983 · gh_issue · 2014-11-07</span>
+        
+        
+        <div>Upload fails unless connected to a charger. If my mobile is not on a charger, upload will stall for hours (and never resumes). This happens 100% of the time, I can effectively only use the app while charging - but then why use the app?
+
+Thi</div></div>
+      
+      <div style="color:var(--mut);font-size:12px;margin-top:8px">Roadmap refs:
+        <code>GH-3445</code> (Media Library: Sharing multiple images to media library doesn&#39;t upload all image), <code>GH-4842</code> (Media Library: Allow uploading any file), <code>GH-375</code> (Cannot upload a post with a pictures in it)</div>
+    </details>
+    <details><summary>Adversarial check</summary><div class="latent">The evidence strongly indicates frequent and severe user complaints about uploading multiple images or media files, including failures, delays, and usability issues. Multiple 1-star reviews explicitly mention upload failures, long loading times, and inability to upload media, which aligns closely with the claimed need. The latency score of 0.809 suggests this is a persistent issue, and although the max roadmap similarity is 0.623, it is not sufficiently high to confirm that the problem is fully addressed or prioritized. The confidence features show moderate to high relevance in some dimensions</div></details>
+  </div>
+  
+  <div class="gap" data-verdict="UNDER-PRIORITIZED">
+    <h2><span class="rank">2</span> Users need reliable and consistent text formatting behavior in the editor, including correct application and removal of formatting, preservation of formatting when typing or pasting, and proper handling of formatting tags.
+        <span class="verdict UNDER-PRIORITIZED">UNDER-PRIORITIZED</span>
+        <span class="conf">confidence <b>48%</b></span></h2>
+    <div class="bar"><i style="width:48%"></i></div>
+    <div class="why"><b>Why this is a gap:</b> The user need centers on issues with text formatting in the editor, such as formatting tags being misplaced, formatting lost after typing, and improper handling of pasted formatted text. The roadmap includes some related items addressing editor bugs and formatting around images or HTML escaping, but these do not comprehensively address the core formatting and editor behavior problems raised. The related items are mostly closed bugs or minor enhancements, indicating some attention but not a prioritized, broad fix for the formatting experience.</div>
+    <div class="latent">Latent because: Although users experience high pain from formatting issues, explicit requests are low likely because users may accept workarounds or consider these issues as minor annoyances rather than urgent feature requests, making the need latent despite its impact.</div>
+    <div class="feat">
+      <span>volume <b>0.388</b></span>
+      <span>diversity <b>0.333</b></span>
+      <span>intensity <b>0.45</b></span>
+      <span>cohesion <b>0.811</b></span>
+      <span>gap-clarity <b>0.7</b></span>
+      <span>contradiction <b>0.0</b></span>
+    </div>
+    
+    <div class="val">🔮 <b>Backtest:</b> Team later shipped GH-5685 (closed 2017-04-21, sim 0.56). <b>(+3 months)</b></div>
+    
+    <details><summary>Evidence trace — 6 signals</summary>
+      
+      <div class="ev"><span class="id">GH-3863 · gh_issue · 2016-03-14</span>
+        
+        
+        <div>Visual Editor: Formatting applied before typing is lost. ### Steps to reproduce the behavior
+
+Open a new post.  Select formatting (bold, or italic).  Start typing.  The format button is deselected, and plain text is added.
+### Expected beha</div></div>
+      
+      <div class="ev"><span class="id">GH-4067 · gh_issue · 2016-05-05</span>
+        
+        
+        <div>Visual editor: Removed bold/italic formatting re-applies after removal in 5.4-RC-1. ### Expected behavior
+1. Select bold or italic in visual editor
+2. Type word(s) in formatted text
+3. Select bold/italic again to clear selection
+4. Press sp</div></div>
+      
+      <div class="ev"><span class="id">GH-3865 · gh_issue · 2016-03-14</span>
+        
+        
+        <div>Visual Editor: Pasting formatted text into the title field yields HTML code. ### Steps to reproduce the behavior
+
+Write, highlight, and copy formatted text.  Paste that text into the title bar of the post from the visual editor.  It appears</div></div>
+      
+      <div class="ev"><span class="id">GH-3864 · gh_issue · 2016-03-14</span>
+        
+        
+        <div>Visual Editor: Pasting formatted text into the HTML editor pseudo-retains formatting. ### Steps to reproduce the behavior
+
+Write formatted text, copy it to the clipboard, switch to the HTML editor, paste the text in.  It looks formatted, bu</div></div>
+      
+      <div class="ev"><span class="id">GH-4963 · gh_issue · 2016-12-26</span>
+        
+        
+        <div>Removing bold/italic removes it from the previously applied word(s). ### Expected behavior
+While writing a post, I apply bold or italic to a word. I move the cursor to the next position. Since bold(or italic) is still selected, it will be </div></div>
+      
+      <div class="ev"><span class="id">GH-491 · gh_issue · 2013-12-16</span>
+        
+        
+        <div>Editor: End tag can be set before starting tag. . In the editor tap to edit the content. 
+
+Somewhere in the middle of the content, tap one of the formatting options.  I chose bold. 
+Notice the opening bold tag is set, and the bold option is</div></div>
+      
+      <div style="color:var(--mut);font-size:12px;margin-top:8px">Roadmap refs:
+        <code>GH-138</code> (Post Editor: Formatting blocks can be applied around images), <code>GH-721</code> (Post Editor: Blog title is escaped HTML), <code>GH-450</code> (Post Editor: Hard to tap on image and image settings don&#39;t update when editing a)</div>
+    </details>
+    <details><summary>Adversarial check</summary><div class="latent">The evidence consists of multiple distinct user reports describing inconsistent and unreliable text formatting behavior in the editor, such as formatting being lost when typing, formatting reapplying after removal, and improper handling of pasted formatted text. These issues are documented in recent GitHub issues with detailed reproduction steps, indicating they are not isolated or sarcastic complaints. The maximum roadmap similarity score of 0.612 suggests that while some related work may be planned, the problem is not fully addressed or prioritized. The confidence features show moderate to h</div></details>
+  </div>
+  
+  <div class="gap" data-verdict="UNDER-PRIORITIZED">
+    <h2><span class="rank">3</span> Users need a reliable and user-friendly media library experience within the post editor, including the ability to search images by name, see recently uploaded images immediately, prevent images from disappearing, and have videos visible in the media library.
+        <span class="verdict UNDER-PRIORITIZED">UNDER-PRIORITIZED</span>
+        <span class="conf">confidence <b>45%</b></span></h2>
+    <div class="bar"><i style="width:45%"></i></div>
+    <div class="why"><b>Why this is a gap:</b> The roadmap includes several closed issues addressing bugs related to media library image display and handling in the post editor, such as missing thumbnails, broken images, and loading status. However, many user signals highlight ongoing problems like inability to search images by name, images disappearing after upload, media library not updating automatically, blank images, and missing videos in the media library. These issues indicate broader and more persistent usability problems that are not fully addressed or prioritized in the roadmap, which mostly focuses on bug fixes rather than featu</div>
+    <div class="latent">Latent because: Although users experience high pain from media library issues (e.g., images disappearing, no search, missing videos), explicit requests for these features or fixes are low, possibly because users have adapted workarounds or do not expect these capabilities, making the need latent despite its impact on usability.</div>
+    <div class="feat">
+      <span>volume <b>0.438</b></span>
+      <span>diversity <b>0.667</b></span>
+      <span>intensity <b>0.375</b></span>
+      <span>cohesion <b>0.75</b></span>
+      <span>gap-clarity <b>0.5</b></span>
+      <span>contradiction <b>0.0</b></span>
+    </div>
+    
+    <div class="val">🔮 <b>Backtest:</b> Team later shipped GH-6955 (closed 2017-12-20, sim 0.66). <b>(+11 months)</b></div>
+    
+    <details><summary>Evidence trace — 6 signals</summary>
+      
+      <div class="ev"><span class="id">GH-4593 · gh_issue · 2016-10-03</span>
+        
+        
+        <div>No videos in media library when trying to add to a post. ### Expected behavior
+
+When using the `Select from media library&#34; media option in the post editor, I&#39;d expect to see videos there as well if library has some.
+### Actual behavior
+
+Onl</div></div>
+      
+      <div class="ev"><span class="id">R-b5b7369c · review · 2016-11-21</span>
+        <span class="star">★★</span>
+        
+        <div>Does not update automatically Like when I added an image from my desktop computer and make a post using this app adding the image on the post  the recently uploaded image does not display. I have to go back to home  click on media and refre</div></div>
+      
+      <div class="ev"><span class="id">GH-4363 · gh_issue · 2016-07-07</span>
+        
+        
+        <div>Media: Media library does not load media for sites with basic HTTP auth. ### Expected behavior
+
+I expect to be able to view media in the site&#39;s media library (My Site &gt; Media or in the Editor &gt; Add media &gt; Select from media library).
+### Ac</div></div>
+      
+      <div class="ev"><span class="id">GH-1314 · gh_issue · 2014-04-27</span>
+        
+        
+        <div>Disappearing images in post editor after activity is closed. 1. Enable `Don&#39;t keep activities` option in device settings.
+2. Open app, tap new post button.
+3. Add an image from the device gallery. Observe it is added to the post.
+4. Add ano</div></div>
+      
+      <div class="ev"><span class="id">GH-3321 · gh_issue · 2015-10-09</span>
+        
+        
+        <div>Media Library: Image disappears from view shortly after upload - 4.6-rc-3. When uploading a picture to the media library I see it show up in the view momentarily, and then it disappears.  After leaving and going back in it shows up just fin</div></div>
+      
+      <div class="ev"><span class="id">GH-2456 · gh_issue · 2015-03-24</span>
+        
+        
+        <div>Featured images not working when selected from WP Media Library. 1. Create a new post with the app.
+2. Tap the image icon and choose “Select from media library” or choose an image from the &#34;Site images&#34; tab with the media picker (for 3.9+)
+</div></div>
+      
+      <div style="color:var(--mut);font-size:12px;margin-top:8px">Roadmap refs:
+        <code>GH-1317</code> (Adding a picture from Media library doesn&#39;t show the thumbnail in editor), <code>GH-503</code> (Media: Broken images after canceling a post.  Also Crash), <code>GH-230</code> (Post / Media : Adding image from media library needs to show loading status)</div>
+    </details>
+    <details><summary>Adversarial check</summary><div class="latent">The evidence consistently highlights multiple user complaints about the media library experience within the post editor, including missing videos, disappearing images, and lack of immediate update for recently uploaded images. These issues are reported across different tickets without indication that they are resolved or planned imminently, and the maximum roadmap similarity score of 0.691 suggests partial but incomplete alignment with current priorities. The confidence features show moderate to low confidence in existing features addressing these needs. While some complaints might be isolated</div></details>
+  </div>
+  
+
+  <footer>Every gap is provable from the linked signal IDs — no evidence, no gap.
+  Confidence is a transparent linear model over the six features shown (see <code>SPEC.md §6</code>);
+  calibration: uncalibrated: all 15 backtest labels one outcome (no contrast).
+  4116 signals · 133 themes · 1719 roadmap items analysed.</footer>
+</div>
+<script>
+(function(){
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.gap'));
+  var chips = Array.prototype.slice.call(document.querySelectorAll('.chip'));
+  var q = document.getElementById('q');
+  var filter = 'all';
+  function apply(){
+    var term = (q.value || '').trim().toLowerCase();
+    var shown = 0;
+    cards.forEach(function(c){
+      var okV = filter === 'all' || c.getAttribute('data-verdict') === filter;
+      var okQ = !term || c.textContent.toLowerCase().indexOf(term) !== -1;
+      var vis = okV && okQ;
+      c.classList.toggle('hidden', !vis);
+      if(vis) shown++;
+    });
+    var e = document.getElementById('empty');
+    if(!shown && !e){ e=document.createElement('div'); e.id='empty'; e.className='empty';
+      e.textContent='No gaps match this filter.'; q.parentNode.parentNode.appendChild(e); }
+    else if(shown && e){ e.remove(); }
+  }
+  chips.forEach(function(ch){ ch.addEventListener('click', function(){
+    chips.forEach(function(x){ x.classList.remove('active'); });
+    ch.classList.add('active'); filter = ch.getAttribute('data-f'); apply();
+  });});
+  q.addEventListener('input', apply);
+})();
+</script>
+</body></html>

@@ -2,7 +2,9 @@
 
 > Every product has a stakeholder who never files a ticket, never joins sprint planning: the user whose real need quietly diverges from what the team is building. This system finds those needs — **and proves them from the data.**
 
-**Firecode Hackathon submission.** Full spec: [`SPEC.md`](SPEC.md).
+**Firecode Hackathon submission.** Full spec: [`SPEC.md`](SPEC.md) · submission packet: [`SUBMISSION.md`](SUBMISSION.md) · pitch: [`docs/PITCH.md`](docs/PITCH.md) · sample output: [`docs/sample/report.md`](docs/sample/report.md).
+
+> **Headline result (WordPress for Android):** from **2016-only** signals we surfaced 3 under-prioritized needs — reliable multi-image upload, consistent text formatting, and the media-library experience. The **backtest proves it**: the team shipped fixes for all three **2–11 months later** (GH-5434 / GH-5685 / GH-6955). We saw the silent stakeholder before they did.
 
 ## What it does
 Given **one product** (WordPress for Android), it reads two sides — **what the team is building** (GitHub roadmap: milestones + prioritized issues) and **what users are signaling** (app-store reviews + user-filed issues + support tickets) — and surfaces the **top 3–5 latent, unspoken needs** the roadmap is missing or under-serving.
