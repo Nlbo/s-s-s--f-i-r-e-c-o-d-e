@@ -63,6 +63,7 @@ class NeedTheme(BaseModel):
     latency: float = 0.0              # SPEC §5: pain_rate * (1 - explicit_request_rate)
     pain_rate: float = 0.0
     explicit_request_rate: float = 0.0
+    cohesion: float = 0.0             # mean cosine of members to centroid (feature K)
 
 
 class EvidenceSignal(BaseModel):

@@ -82,6 +82,12 @@ def cluster_needs(
         n = len(members)
         pain_rate = pain / n
         explicit_rate = explicit / n
+        # cohesion = mean cosine of members to their (normalized) centroid; embeddings
+        # are already L2-normalized so this is just mean dot-product to the centroid.
+        sub = emb[idx]
+        centroid = sub.mean(axis=0)
+        cnorm = np.linalg.norm(centroid)
+        cohesion = float((sub @ centroid).mean() / cnorm) if cnorm > 0 else 0.0
         themes.append(
             NeedTheme(
                 id=stable_id("TH-", *sorted(sig_ids)[:5], cl, length=6),
@@ -91,6 +97,7 @@ def cluster_needs(
                 pain_rate=round(pain_rate, 3),
                 explicit_request_rate=round(explicit_rate, 3),
                 latency=round(pain_rate * (1 - explicit_rate), 3),
+                cohesion=round(max(0.0, min(1.0, cohesion)), 3),
             )
         )
     themes.sort(key=lambda t: (t.latency, t.size), reverse=True)
