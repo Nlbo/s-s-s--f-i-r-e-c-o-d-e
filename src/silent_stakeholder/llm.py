@@ -66,7 +66,8 @@ class LLMClient:
         """Return a parsed JSON object. Offline -> {} (callers must handle)."""
         if self.offline:
             return {}
-        cp = self._cache_path("chat", system + "\x1f" + user)
+        # model is part of the cache key so switching models yields fresh (not reused) results
+        cp = self._cache_path("chat", self._chat_model + "\x1f" + system + "\x1f" + user)
         if cp.exists():
             return json.loads(cp.read_text())
         try:
