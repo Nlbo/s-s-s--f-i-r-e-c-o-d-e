@@ -2,7 +2,7 @@
 
 > Every product has a stakeholder who never files a ticket, never joins sprint planning: the user whose real need quietly diverges from what the team is building. This system finds those needs — **and proves them from the data.**
 
-**Firecode Hackathon submission.** Full spec: [`SPEC.md`](SPEC.md) · submission packet: [`SUBMISSION.md`](SUBMISSION.md) · pitch: [`docs/PITCH.md`](docs/PITCH.md) · sample output: [`docs/sample/report.md`](docs/sample/report.md).
+**Firecode Hackathon submission.** Full spec: [`SPEC.md`](SPEC.md) · submission packet: [`SUBMISSION.md`](SUBMISSION.md) · **animated pitch deck: [`docs/pitch-deck.html`](docs/pitch-deck.html)** · pitch script: [`docs/PITCH_SCRIPT.md`](docs/PITCH_SCRIPT.md) · **dashboard: [`docs/sample/report.html`](docs/sample/report.html)** (both Ant-Design styled).
 
 > **Headline result (WordPress for Android):** from **2016-only** signals we surfaced 3 under-prioritized needs — reliable multi-image upload, consistent text formatting, and the media-library experience. The **backtest proves it**: the team shipped fixes for all three **2–11 months later** (GH-5434 / GH-5685 / GH-6955). We saw the silent stakeholder before they did.
 

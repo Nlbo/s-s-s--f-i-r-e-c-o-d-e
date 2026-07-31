@@ -5,142 +5,220 @@
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>The Silent Stakeholder — {{ report.product }}</title>
 <style>
-  :root{--bg:#0d1117;--card:#161b22;--line:#30363d;--fg:#e6edf3;--mut:#8b949e;
-        --ign:#f85149;--under:#d29922;--mis:#a371f7;--ok:#3fb950;--accent:#58a6ff}
-  *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--fg);
-    font:15px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
-  .wrap{max-width:960px;margin:0 auto;padding:32px 20px 80px}
-  h1{font-size:26px;margin:0 0 4px} .sub{color:var(--mut);margin:0 0 24px}
-  .headline{background:linear-gradient(135deg,#1f6feb22,#a371f722);border:1px solid var(--line);
-    border-radius:12px;padding:18px 20px;margin:0 0 28px}
-  .headline .k{color:var(--mut);font-size:12px;text-transform:uppercase;letter-spacing:.08em}
-  .headline .v{font-size:19px;font-weight:600;margin-top:6px}
-  .gap{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin:0 0 18px}
-  .gap h2{font-size:18px;margin:0 0 8px;display:flex;gap:10px;align-items:center}
-  .rank{background:var(--accent);color:#0d1117;border-radius:999px;width:26px;height:26px;
-    display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:14px}
-  .verdict{font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px;text-transform:uppercase;letter-spacing:.05em}
-  .IGNORED{background:var(--ign)22;color:var(--ign);border:1px solid var(--ign)}
-  .UNDER-PRIORITIZED{background:var(--under)22;color:var(--under);border:1px solid var(--under)}
-  .MISUNDERSTOOD{background:var(--mis)22;color:var(--mis);border:1px solid var(--mis)}
-  .conf{margin-left:auto;font-variant-numeric:tabular-nums;color:var(--mut)}
-  .conf b{color:var(--fg);font-size:17px}
-  .bar{height:6px;background:#21262d;border-radius:4px;overflow:hidden;margin:8px 0 12px}
-  .bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--ok))}
-  .why{color:var(--fg)} .latent{color:var(--mut);font-style:italic;margin:8px 0}
-  .feat{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
-  .feat span{background:#21262d;border:1px solid var(--line);border-radius:6px;padding:2px 8px;font-size:12px;color:var(--mut)}
-  .feat span b{color:var(--fg)}
-  details{margin-top:10px;border-top:1px dashed var(--line);padding-top:10px}
-  summary{cursor:pointer;color:var(--accent);font-size:13px}
-  .ev{border-left:2px solid var(--line);padding:6px 0 6px 12px;margin:8px 0;font-size:13px}
-  .ev .id{color:var(--mut);font-family:ui-monospace,Menlo,monospace;font-size:11px}
-  .star{color:var(--under)} .react{color:var(--ok)}
-  .val{margin-top:10px;font-size:13px;color:var(--mut)}
-  .val b{color:var(--ok)}
-  footer{color:var(--mut);font-size:12px;margin-top:30px;border-top:1px solid var(--line);padding-top:16px}
-  code{background:#21262d;padding:1px 5px;border-radius:4px;font-size:12px}
-  .stats{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 20px}
-  .stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 14px;flex:1;min-width:120px}
-  .stat .n{font-size:22px;font-weight:700} .stat .l{color:var(--mut);font-size:12px}
-  .controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 20px}
-  .chip{background:var(--card);border:1px solid var(--line);color:var(--fg);border-radius:999px;
-    padding:6px 12px;font-size:13px;cursor:pointer;user-select:none}
-  .chip.active{background:var(--accent);color:#0d1117;border-color:var(--accent);font-weight:600}
-  #q{flex:1;min-width:180px;background:var(--card);border:1px solid var(--line);color:var(--fg);
-    border-radius:8px;padding:8px 12px;font-size:13px}
-  .gap.hidden{display:none} .empty{color:var(--mut);text-align:center;padding:30px}
+  /* ---- Ant Design v5 design tokens ---- */
+  :root{
+    --primary:#1677ff; --primary-bg:#e6f4ff; --primary-border:#91caff;
+    --success:#52c41a; --success-bg:#f6ffed; --success-border:#b7eb8f; --success-text:#389e0d;
+    --warning:#faad14; --warning-bg:#fffbe6; --warning-border:#ffe58f; --warning-text:#d48806;
+    --error:#ff4d4f; --error-bg:#fff1f0; --error-border:#ffccc7; --error-text:#cf1322;
+    --purple:#722ed1; --purple-bg:#f9f0ff; --purple-border:#d3adf7; --purple-text:#531dab;
+    --cyan:#13c2c2;
+    --text:rgba(0,0,0,.88); --text2:rgba(0,0,0,.65); --text3:rgba(0,0,0,.45);
+    --border:#f0f0f0; --border2:#d9d9d9; --bg:#f5f5f5; --container:#fff;
+    --radius:8px; --radius-sm:6px;
+    --shadow:0 1px 2px 0 rgba(0,0,0,.03),0 1px 6px -1px rgba(0,0,0,.02),0 2px 4px 0 rgba(0,0,0,.02);
+    --shadow-lg:0 6px 16px 0 rgba(0,0,0,.08),0 3px 6px -4px rgba(0,0,0,.12),0 9px 28px 8px rgba(0,0,0,.05);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-size:14px;line-height:1.5715;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1040px;margin:0 auto;padding:32px 24px 72px}
+  a{color:var(--primary);text-decoration:none}
+
+  /* header */
+  .pagehead{margin:0 0 24px;animation:fadeInDown .5s both}
+  .pagehead h1{font-size:26px;font-weight:600;margin:0 0 4px;letter-spacing:-.3px}
+  .pagehead .meta{color:var(--text3);font-size:13px}
+  .pagehead .dot{margin:0 8px;color:var(--border2)}
+
+  /* headline alert */
+  .alert{display:flex;gap:12px;background:var(--primary-bg);border:1px solid var(--primary-border);
+    border-radius:var(--radius);padding:16px 20px;margin:0 0 24px;animation:fadeInUp .5s .05s both}
+  .alert .ico{font-size:20px;line-height:1.4}
+  .alert .k{color:var(--text3);font-size:12px;text-transform:uppercase;letter-spacing:.6px;font-weight:600}
+  .alert .v{font-size:16px;font-weight:600;margin-top:4px;line-height:1.5}
+
+  /* statistics row */
+  .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin:0 0 24px}
+  .stat{background:var(--container);border:1px solid var(--border);border-radius:var(--radius);
+    padding:16px 20px;box-shadow:var(--shadow);animation:fadeInUp .5s both;transition:box-shadow .3s,transform .3s}
+  .stat:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+  .stat .t{color:var(--text2);font-size:13px;margin-bottom:4px}
+  .stat .n{font-size:28px;font-weight:600;line-height:1;color:var(--text)}
+  .stat .n.p{color:var(--primary)} .stat .n.s{color:var(--success)}
+
+  /* controls */
+  .controls{display:flex;gap:12px;align-items:center;margin:0 0 20px;flex-wrap:wrap;
+    animation:fadeInUp .5s .1s both}
+  .seg{display:inline-flex;background:#0000000a;border-radius:var(--radius-sm);padding:2px}
+  .seg .chip{border:none;background:transparent;color:var(--text2);border-radius:4px;
+    padding:5px 14px;font-size:13px;cursor:pointer;transition:.2s;font-family:inherit}
+  .seg .chip.active{background:var(--container);color:var(--text);box-shadow:0 1px 2px rgba(0,0,0,.08);font-weight:500}
+  .search{flex:1;min-width:180px;max-width:280px;border:1px solid var(--border2);border-radius:var(--radius-sm);
+    padding:6px 12px;font-size:13px;font-family:inherit;transition:.2s;outline:none}
+  .search:focus{border-color:var(--primary);box-shadow:0 0 0 2px var(--primary-bg)}
+
+  /* gap card */
+  .card{background:var(--container);border:1px solid var(--border);border-radius:var(--radius);
+    box-shadow:var(--shadow);margin:0 0 18px;overflow:hidden;animation:fadeInUp .5s both;
+    transition:box-shadow .3s,transform .3s}
+  .card:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+  .card.hidden{display:none}
+  .card .head{display:flex;align-items:center;gap:12px;padding:16px 24px;border-bottom:1px solid var(--border)}
+  .rank{width:28px;height:28px;flex:none;border-radius:50%;background:var(--primary);color:#fff;
+    display:inline-flex;align-items:center;justify-content:center;font-weight:600;font-size:14px}
+  .need{font-size:16px;font-weight:600;flex:1;line-height:1.4}
+  .tag{font-size:12px;font-weight:500;padding:1px 8px;border-radius:4px;white-space:nowrap;line-height:20px}
+  .tag.IGNORED{background:var(--error-bg);color:var(--error-text);border:1px solid var(--error-border)}
+  .tag.UNDER-PRIORITIZED{background:var(--warning-bg);color:var(--warning-text);border:1px solid var(--warning-border)}
+  .tag.MISUNDERSTOOD{background:var(--purple-bg);color:var(--purple-text);border:1px solid var(--purple-border)}
+  .conf{text-align:right;flex:none}
+  .conf .c{font-size:22px;font-weight:600;line-height:1;color:var(--primary)}
+  .conf .l{font-size:11px;color:var(--text3)}
+  .body{padding:16px 24px 20px}
+  .prog{height:6px;background:#f5f5f5;border-radius:100px;overflow:hidden;margin:0 0 16px}
+  .prog>i{display:block;height:100%;width:0;border-radius:100px;
+    background:linear-gradient(90deg,var(--primary),#69b1ff);transition:width 1s cubic-bezier(.23,1,.32,1) .2s}
+  .why{color:var(--text);margin:0 0 8px} .why b{font-weight:600}
+  .latent{color:var(--text2);font-style:italic;font-size:13px;margin:0 0 14px}
+  .feats{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 14px}
+  .feat{font-size:12px;padding:1px 8px;border-radius:4px;background:#fafafa;border:1px solid var(--border);
+    color:var(--text2)} .feat b{color:var(--text);font-weight:600}
+  .feat.g{background:var(--success-bg);border-color:var(--success-border);color:var(--success-text)}
+  /* backtest timeline */
+  .bt{display:flex;gap:10px;background:var(--success-bg);border:1px solid var(--success-border);
+    border-radius:var(--radius-sm);padding:10px 14px;margin:0 0 6px}
+  .bt.na{background:#fafafa;border-color:var(--border)}
+  .bt .d{width:8px;height:8px;border-radius:50%;background:var(--success);margin-top:6px;flex:none}
+  .bt.na .d{background:var(--text3)}
+  .bt .txt{font-size:13px;color:var(--text)} .bt .txt b{color:var(--success-text)}
+  .lag{display:inline-block;font-size:12px;font-weight:600;color:var(--success-text);
+    background:var(--container);border:1px solid var(--success-border);border-radius:4px;padding:0 6px;margin-left:6px}
+  /* collapse */
+  details{border-top:1px solid var(--border);margin-top:14px}
+  details>summary{cursor:pointer;list-style:none;padding:10px 0 2px;color:var(--primary);font-size:13px;
+    display:flex;align-items:center;gap:6px}
+  details>summary::-webkit-details-marker{display:none}
+  details>summary::before{content:"▸";transition:transform .2s;display:inline-block}
+  details[open]>summary::before{transform:rotate(90deg)}
+  .ev{padding:8px 0 8px 14px;border-left:2px solid var(--border);margin:8px 0;font-size:13px}
+  .ev .id{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;color:var(--text3);
+    background:#fafafa;border:1px solid var(--border);border-radius:4px;padding:0 5px}
+  .src{font-size:11px;padding:0 6px;border-radius:4px;border:1px solid;line-height:18px}
+  .src.review{color:var(--primary);background:var(--primary-bg);border-color:var(--primary-border)}
+  .src.gh_issue{color:var(--purple-text);background:var(--purple-bg);border-color:var(--purple-border)}
+  .src.ticket{color:var(--cyan);background:#e6fffb;border-color:#87e8de}
+  .star{color:var(--warning)} .react{color:var(--success)}
+  .refs{color:var(--text3);font-size:12px;margin-top:8px}
+  code{background:#fafafa;border:1px solid var(--border);border-radius:4px;padding:0 5px;font-size:12px}
+  footer{color:var(--text3);font-size:12px;margin-top:28px;padding-top:16px;border-top:1px solid var(--border)}
+  .empty{text-align:center;color:var(--text3);padding:40px}
+
+  @keyframes fadeInUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes fadeInDown{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:translateY(0)}}
+  @media(max-width:760px){.stats{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
 <body><div class="wrap">
-  <h1>🔇 The Silent Stakeholder</h1>
-  <p class="sub">{{ report.product }} · roadmap snapshot T0 = {{ report.t0 }} · generated {{ report.generated_at.strftime('%Y-%m-%d %H:%M') }} · mode {{ report.meta.get('mode','?') }}</p>
+  <div class="pagehead">
+    <h1>🔇 The Silent Stakeholder</h1>
+    <div class="meta">{{ report.product }}<span class="dot">·</span>roadmap T0 {{ report.t0 }}
+      <span class="dot">·</span>{{ report.generated_at.strftime('%Y-%m-%d %H:%M') }}
+      <span class="dot">·</span>{{ report.meta.get('mode','?') }}</div>
+  </div>
 
-  <div class="headline">
-    <div class="k">The single most important unmet need</div>
-    <div class="v">{{ report.one_sentence_gap }}</div>
+  <div class="alert">
+    <div class="ico">🎯</div>
+    <div><div class="k">The single most important unmet need</div>
+      <div class="v">{{ report.one_sentence_gap }}</div></div>
   </div>
 
   <div class="stats">
-    <div class="stat"><div class="n">{{ report.gaps|length }}</div><div class="l">ranked gaps</div></div>
-    <div class="stat"><div class="n">{{ report.meta.get('n_signals','?') }}</div><div class="l">user signals</div></div>
-    <div class="stat"><div class="n">{{ report.meta.get('n_themes','?') }}</div><div class="l">need themes</div></div>
-    <div class="stat"><div class="n">{{ report.meta.get('n_roadmap','?') }}</div><div class="l">roadmap items</div></div>
-    <div class="stat"><div class="n">{{ ((report.gaps|sum(attribute='confidence') / (report.gaps|length or 1))*100)|round|int }}%</div><div class="l">avg confidence</div></div>
+    {% set avg = ((report.gaps|sum(attribute='confidence') / (report.gaps|length or 1))*100)|round|int %}
+    <div class="stat" style="animation-delay:.10s"><div class="t">Ranked gaps</div><div class="n p" data-count="{{ report.gaps|length }}">{{ report.gaps|length }}</div></div>
+    <div class="stat" style="animation-delay:.16s"><div class="t">User signals</div><div class="n" data-count="{{ report.meta.get('n_signals',0) }}">{{ report.meta.get('n_signals','?') }}</div></div>
+    <div class="stat" style="animation-delay:.22s"><div class="t">Need themes</div><div class="n" data-count="{{ report.meta.get('n_themes',0) }}">{{ report.meta.get('n_themes','?') }}</div></div>
+    <div class="stat" style="animation-delay:.28s"><div class="t">Roadmap items</div><div class="n" data-count="{{ report.meta.get('n_roadmap',0) }}">{{ report.meta.get('n_roadmap','?') }}</div></div>
+    <div class="stat" style="animation-delay:.34s"><div class="t">Avg confidence</div><div class="n s" data-count="{{ avg }}" data-suffix="%">{{ avg }}%</div></div>
   </div>
 
   <div class="controls">
-    <span class="chip active" data-f="all">All</span>
-    <span class="chip" data-f="IGNORED">Ignored</span>
-    <span class="chip" data-f="UNDER-PRIORITIZED">Under-prioritized</span>
-    <span class="chip" data-f="MISUNDERSTOOD">Misunderstood</span>
-    <input id="q" type="search" placeholder="search needs & evidence…"/>
+    <div class="seg">
+      <button class="chip active" data-f="all">All</button>
+      <button class="chip" data-f="IGNORED">Ignored</button>
+      <button class="chip" data-f="UNDER-PRIORITIZED">Under-prioritized</button>
+      <button class="chip" data-f="MISUNDERSTOOD">Misunderstood</button>
+    </div>
+    <input id="q" class="search" type="search" placeholder="🔍 search needs & evidence"/>
   </div>
 
   {% for g in report.gaps %}
-  <div class="gap" data-verdict="{{ g.verdict }}">
-    <h2><span class="rank">{{ g.rank }}</span> {{ g.need }}
-        <span class="verdict {{ g.verdict }}">{{ g.verdict }}</span>
-        <span class="conf">confidence <b>{{ (g.confidence*100)|round|int }}%</b></span></h2>
-    <div class="bar"><i style="width:{{ (g.confidence*100)|round|int }}%"></i></div>
-    <div class="why"><b>Why this is a gap:</b> {{ g.verdict_rationale }}</div>
-    <div class="latent">Latent because: {{ g.latent_reasoning }}</div>
-    <div class="feat">
-      <span>volume <b>{{ g.confidence_breakdown.V }}</b></span>
-      <span>diversity <b>{{ g.confidence_breakdown.D }}</b></span>
-      <span>intensity <b>{{ g.confidence_breakdown.I }}</b></span>
-      <span>cohesion <b>{{ g.confidence_breakdown.K }}</b></span>
-      <span>gap-clarity <b>{{ g.confidence_breakdown.G }}</b></span>
-      <span>contradiction <b>{{ g.confidence_breakdown.X }}</b></span>
+  <div class="card" data-verdict="{{ g.verdict }}" style="animation-delay:{{ 0.15 + loop.index0 * 0.08 }}s">
+    <div class="head">
+      <span class="rank">{{ g.rank }}</span>
+      <span class="need">{{ g.need }}</span>
+      <span class="tag {{ g.verdict }}">{{ g.verdict }}</span>
+      <span class="conf"><div class="c" data-count="{{ (g.confidence*100)|round|int }}" data-suffix="%">{{ (g.confidence*100)|round|int }}%</div><div class="l">confidence</div></span>
     </div>
-    {% if g.validation and g.validation.note %}
-    <div class="val">🔮 <b>Backtest:</b> {{ g.validation.note }}{% if g.validation.lag_months is not none %} <b>(+{{ g.validation.lag_months }} months)</b>{% endif %}</div>
-    {% endif %}
-    <details><summary>Evidence trace — {{ g.evidence_signals|length }} signals</summary>
-      {% for e in g.evidence_signals %}
-      <div class="ev"><span class="id">{{ e.id }} · {{ e.source }}{% if e.date %} · {{ e.date }}{% endif %}</span>
-        {% if e.star %}<span class="star">{{ '★' * e.star }}</span>{% endif %}
-        {% if e.reactions %}<span class="react">👍{{ e.reactions }}</span>{% endif %}
-        <div>{{ e.quote }}</div></div>
-      {% endfor %}
-      <div style="color:var(--mut);font-size:12px;margin-top:8px">Roadmap refs:
-        {% for r in g.roadmap_refs %}<code>{{ r.id }}</code>{% if r.note %} ({{ r.note }}){% endif %}{% if not loop.last %}, {% endif %}{% endfor %}</div>
-    </details>
-    <details><summary>Adversarial check</summary><div class="latent">{{ g.adversarial_check }}</div></details>
+    <div class="body">
+      <div class="prog"><i data-w="{{ (g.confidence*100)|round|int }}"></i></div>
+      <div class="why"><b>Why a gap:</b> {{ g.verdict_rationale }}</div>
+      <div class="latent">Latent because: {{ g.latent_reasoning }}</div>
+      <div class="feats">
+        <span class="feat">volume <b>{{ g.confidence_breakdown.V }}</b></span>
+        <span class="feat">diversity <b>{{ g.confidence_breakdown.D }}</b></span>
+        <span class="feat">intensity <b>{{ g.confidence_breakdown.I }}</b></span>
+        <span class="feat">cohesion <b>{{ g.confidence_breakdown.K }}</b></span>
+        <span class="feat g">gap-clarity <b>{{ g.confidence_breakdown.G }}</b></span>
+        <span class="feat">contradiction <b>{{ g.confidence_breakdown.X }}</b></span>
+      </div>
+      {% if g.validation and g.validation.note %}
+      <div class="bt {{ 'na' if g.validation.built_later is none else '' }}">
+        <span class="d"></span>
+        <span class="txt">🔮 <b>Backtest:</b> {{ g.validation.note }}{% if g.validation.lag_months is not none %}<span class="lag">+{{ g.validation.lag_months }} mo</span>{% endif %}</span>
+      </div>
+      {% endif %}
+      <details><summary>Evidence trace — {{ g.evidence_signals|length }} signals</summary>
+        {% for e in g.evidence_signals %}
+        <div class="ev"><span class="id">{{ e.id }}</span> <span class="src {{ e.source }}">{{ e.source }}</span>
+          {% if e.star %}<span class="star">{{ '★' * e.star }}</span>{% endif %}
+          {% if e.reactions %}<span class="react">👍{{ e.reactions }}</span>{% endif %}
+          {% if e.date %}<span style="color:var(--text3)">· {{ e.date }}</span>{% endif %}
+          <div style="margin-top:4px">{{ e.quote }}</div></div>
+        {% endfor %}
+        <div class="refs">Roadmap refs: {% for r in g.roadmap_refs %}<code>{{ r.id }}</code>{% if r.note %} <span style="color:var(--text3)">{{ r.note }}</span>{% endif %}{% if not loop.last %} · {% endif %}{% endfor %}</div>
+      </details>
+      <details><summary>Adversarial check</summary><div class="latent" style="padding:8px 0 4px">{{ g.adversarial_check }}</div></details>
+    </div>
   </div>
   {% endfor %}
 
   <footer>Every gap is provable from the linked signal IDs — no evidence, no gap.
-  Confidence is a transparent linear model over the six features shown (see <code>SPEC.md §6</code>);
-  calibration: {{ report.meta.get('calibration','?') }}.
-  {{ report.meta.get('n_signals','?') }} signals · {{ report.meta.get('n_themes','?') }} themes · {{ report.meta.get('n_roadmap','?') }} roadmap items analysed.</footer>
+  Confidence is a transparent linear model over the six features shown (<code>SPEC.md §6</code>);
+  calibration: {{ report.meta.get('calibration','?') }}.</footer>
 </div>
 <script>
 (function(){
-  var cards = Array.prototype.slice.call(document.querySelectorAll('.gap'));
-  var chips = Array.prototype.slice.call(document.querySelectorAll('.chip'));
-  var q = document.getElementById('q');
-  var filter = 'all';
-  function apply(){
-    var term = (q.value || '').trim().toLowerCase();
-    var shown = 0;
-    cards.forEach(function(c){
-      var okV = filter === 'all' || c.getAttribute('data-verdict') === filter;
-      var okQ = !term || c.textContent.toLowerCase().indexOf(term) !== -1;
-      var vis = okV && okQ;
-      c.classList.toggle('hidden', !vis);
-      if(vis) shown++;
-    });
-    var e = document.getElementById('empty');
-    if(!shown && !e){ e=document.createElement('div'); e.id='empty'; e.className='empty';
-      e.textContent='No gaps match this filter.'; q.parentNode.parentNode.appendChild(e); }
-    else if(shown && e){ e.remove(); }
-  }
-  chips.forEach(function(ch){ ch.addEventListener('click', function(){
-    chips.forEach(function(x){ x.classList.remove('active'); });
-    ch.classList.add('active'); filter = ch.getAttribute('data-f'); apply();
-  });});
-  q.addEventListener('input', apply);
+  // progress bar fill
+  document.querySelectorAll('.prog>i').forEach(function(i){
+    requestAnimationFrame(function(){ i.style.width = i.getAttribute('data-w')+'%'; }); });
+  // count-up stats
+  document.querySelectorAll('[data-count]').forEach(function(el){
+    var end=+el.getAttribute('data-count'), suf=el.getAttribute('data-suffix')||'', t0=null, dur=900;
+    if(end>0){ function step(ts){ if(!t0)t0=ts; var p=Math.min((ts-t0)/dur,1);
+      el.textContent=Math.round(end*(p<1?(1-Math.pow(1-p,3)):1))+suf; if(p<1)requestAnimationFrame(step);} requestAnimationFrame(step);} });
+  // filter + search
+  var cards=[].slice.call(document.querySelectorAll('.card'));
+  var chips=[].slice.call(document.querySelectorAll('.chip')); var q=document.getElementById('q'); var f='all';
+  function apply(){ var term=(q.value||'').trim().toLowerCase(), shown=0;
+    cards.forEach(function(c){ var okV=f==='all'||c.getAttribute('data-verdict')===f;
+      var okQ=!term||c.textContent.toLowerCase().indexOf(term)!==-1; var vis=okV&&okQ;
+      c.classList.toggle('hidden',!vis); if(vis)shown++; });
+    var e=document.getElementById('empty');
+    if(!shown&&!e){e=document.createElement('div');e.id='empty';e.className='empty';e.textContent='No gaps match.';q.parentNode.parentNode.appendChild(e);} else if(shown&&e){e.remove();} }
+  chips.forEach(function(ch){ch.addEventListener('click',function(){chips.forEach(function(x){x.classList.remove('active');});ch.classList.add('active');f=ch.getAttribute('data-f');apply();});});
+  q.addEventListener('input',apply);
 })();
 </script>
 </body></html>
