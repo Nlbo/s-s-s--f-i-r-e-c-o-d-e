@@ -1,6 +1,7 @@
 # Submission — The Silent Stakeholder
 
 **Repo:** https://github.com/Nlbo/s-s-s--f-i-r-e-c-o-d-e
+**Pitch deck:** [`docs/Silent_Stakeholder_Pitch.pptx`](docs/Silent_Stakeholder_Pitch.pptx)
 **Product analysed:** WordPress for Android (`org.wordpress.android`)
 **Data:** `sealuzh/app_reviews` (2 287 reviews ≤ T0) + `wordpress-mobile/WordPress-Android` GitHub roadmap & issues + `Tobi-Bueck/customer-support-tickets`. T0 = 2017-01-01 (reviews are ~2016; roadmap reconstructed as of T0).
 
