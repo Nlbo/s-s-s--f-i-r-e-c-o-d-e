@@ -22,9 +22,13 @@ def _heuristic(gap: Gap, cand: GapCandidate) -> tuple[str, bool, float]:
             f"low latency ({cand.theme.latency:.2f}): users mostly state this explicitly, "
             "so it's closer to a surface complaint than a hidden need"
         )
-    if cand.max_sim > COVERAGE_CEIL and gap.verdict != "MISUNDERSTOOD":
+    # A highly-similar roadmap item only *falsifies* an IGNORED claim. For
+    # UNDER-PRIORITIZED / MISUNDERSTOOD a related item is expected by definition —
+    # penalising them for it contradicts the verdict, so it is not an objection there.
+    if gap.verdict == "IGNORED" and cand.max_sim > COVERAGE_CEIL:
         objections.append(
-            f"a roadmap item is {cand.max_sim:.2f} similar — it may already be covered"
+            f"claimed IGNORED, but a roadmap item is {cand.max_sim:.2f} similar — "
+            "it may already be covered"
         )
     if gap.confidence_breakdown.X > 0.4:
         objections.append(

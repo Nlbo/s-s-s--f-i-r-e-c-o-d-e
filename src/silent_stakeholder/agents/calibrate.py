@@ -36,8 +36,10 @@ def calibrate(gaps: list[Gap]) -> tuple[str, bool]:
     labeled = [(x, int(y)) for x, y in labels if y is not None]
     n = len(labeled)
     classes = {y for _, y in labeled}
-    if n < MIN_LABELS or len(classes) < 2:
-        return (f"uncalibrated (transparent score; only {n} backtest labels)", False)
+    if n < MIN_LABELS:
+        return (f"uncalibrated: only {n} backtest labels (need >= {MIN_LABELS})", False)
+    if len(classes) < 2:
+        return (f"uncalibrated: all {n} backtest labels one outcome (no contrast)", False)
 
     from sklearn.linear_model import LogisticRegression
 
