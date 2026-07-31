@@ -12,6 +12,7 @@ import json
 from dataclasses import dataclass, field
 
 import numpy as np
+from tqdm import tqdm
 
 from ..llm import LLMClient
 from ..schemas import NeedTheme, RoadmapItem, RoadmapRef, Signal, Verdict
@@ -179,7 +180,7 @@ def detect_gaps(
     r_emb = joint[len(candidates):]
 
     out: list[GapCandidate] = []
-    for i, theme in enumerate(candidates):
+    for i, theme in enumerate(tqdm(candidates, desc="  gap-verdicts", unit="theme")):
         if len(roadmap) == 0:
             matches: list[tuple[RoadmapItem, float]] = []
         else:

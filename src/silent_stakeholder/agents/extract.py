@@ -13,6 +13,8 @@ import json
 import re
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
+from tqdm import tqdm
+
 from ..llm import LLMClient
 from ..schemas import NeedUnit, Signal
 
@@ -117,6 +119,8 @@ def extract_need_units(
     results: list[list[NeedUnit]] = [[] for _ in batches]
     with ThreadPoolExecutor(max_workers=workers) as ex:  # cache makes calls idempotent
         futures = {ex.submit(_llm_extract_batch, llm, b): i for i, b in enumerate(batches)}
-        for fut in as_completed(futures):
+        for fut in tqdm(
+            as_completed(futures), total=len(batches), desc="  extract", unit="batch"
+        ):
             results[futures[fut]] = fut.result()
     return [u for batch in results for u in batch]

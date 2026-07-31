@@ -7,6 +7,8 @@ from __future__ import annotations
 
 import json
 
+from tqdm import tqdm
+
 from ..llm import LLMClient
 from ..schemas import Gap, Signal
 from .gap import GapCandidate
@@ -96,7 +98,9 @@ def critique_all(
     """Annotate each gap with its critique + adjusted confidence; return (gaps, survives)."""
     by_id = {s.id: s for s in signals}
     survives_flags: list[bool] = []
-    for gap, cand in zip(gaps, cands, strict=True):
+    for gap, cand in tqdm(
+        list(zip(gaps, cands, strict=True)), desc="  critic", unit="gap"
+    ):
         text, survives, mult = critique(llm, gap, cand, by_id)
         gap.adversarial_check = text
         gap.confidence = round(max(0.05, gap.confidence * mult), 3)
