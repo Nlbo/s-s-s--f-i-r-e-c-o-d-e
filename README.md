@@ -10,7 +10,7 @@ Given **one product** (WordPress for Android), it reads two sides — **what the
 It is **not a complaint summarizer.** For every gap it outputs the four required things:
 
 1. **The need** — in the user's terms
-2. **A calibrated confidence score** — from a transparent formula, not a vibe ([§6](SPEC.md#6-confidence-model-calibrated-not-decorative))
+2. **A confidence score** — a transparent formula, not a vibe; and *calibrated* against the backtest when there are enough hindsight labels (otherwise honestly marked "uncalibrated") ([§6](SPEC.md#6-confidence-model-calibrated-not-decorative))
 3. **An evidence trace** — every gap links to specific signal IDs. *No evidence, no gap.*
 4. **A gap verdict** — `IGNORED` / `UNDER-PRIORITIZED` / `MISUNDERSTOOD`
 

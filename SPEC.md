@@ -129,7 +129,7 @@ confidence = clip(raw, 0.05, 0.95)
 ```
 
 - Weights are documented and tunable in one place (`config`). `G` dominates because a *roadmap* gap is fundamentally about roadmap absence.
-- **Calibration:** when backtest labels exist (§7), fit a monotonic/logistic map from `raw`→observed-correctness so the reported % is empirically meaningful. 90%-sure and 55%-sure then *actually* differ.
+- **Calibration (honest):** when the backtest (§7) yields **≥ 8 labels with both outcomes**, we fit a logistic map `raw → P(verdict correct)` (`agents/calibrate.py`) so the reported % is empirically meaningful. With fewer labels (e.g. no `GITHUB_TOKEN`) we do **not** pretend — confidence stays the transparent score and the report says *"uncalibrated"*. We only claim calibration when data backs it.
 - Every gap ships its **feature breakdown**, so "defend this score" is answered by pointing at the vector.
 
 ---
