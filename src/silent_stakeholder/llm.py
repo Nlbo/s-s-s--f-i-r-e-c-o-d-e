@@ -28,6 +28,7 @@ class LLMClient:
         self.backend = backend
         self.offline = backend == "offline"          # gates chat (extract/verdict/critic)
         self._embed_openai = backend == "openai" and bool(settings.openai_embed_model)
+        self._embed_warned = False
         self._client = None
         self._chat_model = ""
         LLM_CACHE_DIR.mkdir(parents=True, exist_ok=True)
@@ -59,6 +60,7 @@ class LLMClient:
             ],
             response_format={"type": "json_object"},
             temperature=0,
+            seed=0,  # best-effort reproducibility (LLMs aren't bit-exact even at temp=0)
         )
         return resp.choices[0].message.content or "{}"
 
@@ -80,17 +82,39 @@ class LLMClient:
         return data
 
     # ---- embeddings --------------------------------------------------------
+    def _emb_path(self, model: str, text: str) -> Path:
+        h = hashlib.sha256((model + "\x1f" + text).encode("utf-8")).hexdigest()[:16]
+        return LLM_CACHE_DIR / f"emb_{h}.npy"
+
     @retry(stop=stop_after_attempt(4), wait=wait_exponential(min=1, max=20))
+    def _embed_api(self, model: str, batch: list[str]) -> list[list[float]]:
+        resp = self._client.embeddings.create(model=model, input=batch)
+        return [d.embedding for d in resp.data]
+
     def _embed_openai_call(self, texts: list[str]) -> np.ndarray:
         assert self._client is not None
-        vecs: list[list[float]] = []
-        for i in range(0, len(texts), 256):
-            batch = [t[:8000] for t in texts[i : i + 256]]
-            resp = self._client.embeddings.create(
-                model=self.settings.openai_embed_model, input=batch
-            )
-            vecs.extend(d.embedding for d in resp.data)
-        return np.asarray(vecs, dtype=np.float32)
+        model = self.settings.openai_embed_model
+        # per-text disk cache so re-runs reproduce the same vectors (embeddings aren't
+        # bit-exact between API calls -> would otherwise shift clustering run to run).
+        out: list[np.ndarray | None] = [None] * len(texts)
+        misses: list[str] = []
+        miss_idx: list[int] = []
+        for i, t in enumerate(texts):
+            t = t[:8000]
+            cp = self._emb_path(model, t)
+            if cp.exists():
+                out[i] = np.load(cp)
+            else:
+                misses.append(t)
+                miss_idx.append(i)
+        for start in range(0, len(misses), 256):
+            batch = misses[start : start + 256]
+            for k, emb in enumerate(self._embed_api(model, batch)):
+                gi = miss_idx[start + k]
+                v = np.asarray(emb, dtype=np.float32)
+                out[gi] = v
+                np.save(self._emb_path(model, batch[k]), v)
+        return np.vstack(out)
 
     def embed(self, texts: list[str]) -> np.ndarray:
         """Return L2-normalized embeddings for `texts`.
@@ -105,6 +129,10 @@ class LLMClient:
             try:
                 vecs = self._embed_openai_call(texts)
             except Exception:  # noqa: BLE001 - API hiccup -> deterministic embeddings, never crash
+                if not self._embed_warned:
+                    print("  WARN    : OpenAI embeddings failed -> TF-IDF fallback; clustering "
+                          "quality is degraded for this run (re-run for full quality).")
+                    self._embed_warned = True
                 vecs = self._embed_tfidf(texts)
         else:
             vecs = self._embed_tfidf(texts)
@@ -124,10 +152,14 @@ class LLMClient:
         from sklearn.decomposition import TruncatedSVD
         from sklearn.feature_extraction.text import TfidfVectorizer
 
+        min_df = 2 if len(texts) >= 20 else 1  # tiny corpora would prune to nothing at 2
         tfidf = TfidfVectorizer(
-            stop_words="english", ngram_range=(1, 2), min_df=2, max_features=20000
+            stop_words="english", ngram_range=(1, 2), min_df=min_df, max_features=20000
         )
-        X = tfidf.fit_transform(texts)
+        try:
+            X = tfidf.fit_transform(texts)
+        except ValueError:  # e.g. all stop-words -> no terms; give a trivial safe space
+            return np.eye(len(texts), dtype=np.float32)
         n_comp = int(min(256, max(2, min(X.shape) - 1)))
         if X.shape[1] <= n_comp or X.shape[0] <= 2:
             return X.toarray().astype(np.float32)

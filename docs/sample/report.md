@@ -1,4 +1,4 @@
-# 🔇 The Silent Stakeholder — org.wordpress.android
+# The Silent Stakeholder — org.wordpress.android
 
 *Roadmap snapshot T0 = 2017-01-01 · generated 2026-07-31 16:12 UTC · mode openai:gpt-5.1*
 

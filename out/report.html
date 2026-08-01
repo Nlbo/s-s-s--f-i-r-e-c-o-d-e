@@ -1,0 +1,596 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>The Silent Stakeholder — org.wordpress.android</title>
+<style>
+  /* ---- Ant Design v5 design tokens ---- */
+  :root{
+    --primary:#1677ff; --primary-bg:#e6f4ff; --primary-border:#91caff;
+    --success:#52c41a; --success-bg:#f6ffed; --success-border:#b7eb8f; --success-text:#389e0d;
+    --warning:#faad14; --warning-bg:#fffbe6; --warning-border:#ffe58f; --warning-text:#d48806;
+    --error:#ff4d4f; --error-bg:#fff1f0; --error-border:#ffccc7; --error-text:#cf1322;
+    --purple:#722ed1; --purple-bg:#f9f0ff; --purple-border:#d3adf7; --purple-text:#531dab;
+    --cyan:#13c2c2;
+    --text:rgba(0,0,0,.88); --text2:rgba(0,0,0,.65); --text3:rgba(0,0,0,.45);
+    --border:#f0f0f0; --border2:#d9d9d9; --bg:#f5f5f5; --container:#fff;
+    --radius:8px; --radius-sm:6px;
+    --shadow:0 1px 2px 0 rgba(0,0,0,.03),0 1px 6px -1px rgba(0,0,0,.02),0 2px 4px 0 rgba(0,0,0,.02);
+    --shadow-lg:0 6px 16px 0 rgba(0,0,0,.08),0 3px 6px -4px rgba(0,0,0,.12),0 9px 28px 8px rgba(0,0,0,.05);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-size:14px;line-height:1.5715;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1040px;margin:0 auto;padding:32px 24px 72px}
+  a{color:var(--primary);text-decoration:none}
+
+  /* header */
+  .pagehead{margin:0 0 24px;animation:fadeInDown .5s both}
+  .pagehead h1{font-size:26px;font-weight:600;margin:0 0 4px;letter-spacing:-.3px}
+  .pagehead .meta{color:var(--text3);font-size:13px}
+  .pagehead .dot{margin:0 8px;color:var(--border2)}
+
+  /* headline alert */
+  .alert{display:flex;gap:12px;background:var(--primary-bg);border:1px solid var(--primary-border);
+    border-radius:var(--radius);padding:16px 20px;margin:0 0 24px;animation:fadeInUp .5s .05s both}
+  .alert .ico{font-size:20px;line-height:1.4}
+  .alert .k{color:var(--text3);font-size:12px;text-transform:uppercase;letter-spacing:.6px;font-weight:600}
+  .alert .v{font-size:16px;font-weight:600;margin-top:4px;line-height:1.5}
+
+  /* statistics row */
+  .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin:0 0 24px}
+  .stat{background:var(--container);border:1px solid var(--border);border-radius:var(--radius);
+    padding:16px 20px;box-shadow:var(--shadow);animation:fadeInUp .5s both;transition:box-shadow .3s,transform .3s}
+  .stat:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+  .stat .t{color:var(--text2);font-size:13px;margin-bottom:4px}
+  .stat .n{font-size:28px;font-weight:600;line-height:1;color:var(--text)}
+  .stat .n.p{color:var(--primary)} .stat .n.s{color:var(--success)}
+
+  /* controls */
+  .controls{display:flex;gap:12px;align-items:center;margin:0 0 20px;flex-wrap:wrap;
+    animation:fadeInUp .5s .1s both}
+  .seg{display:inline-flex;background:#0000000a;border-radius:var(--radius-sm);padding:2px}
+  .seg .chip{border:none;background:transparent;color:var(--text2);border-radius:4px;
+    padding:5px 14px;font-size:13px;cursor:pointer;transition:.2s;font-family:inherit}
+  .seg .chip.active{background:var(--container);color:var(--text);box-shadow:0 1px 2px rgba(0,0,0,.08);font-weight:500}
+  .search{flex:1;min-width:180px;max-width:280px;border:1px solid var(--border2);border-radius:var(--radius-sm);
+    padding:6px 12px;font-size:13px;font-family:inherit;transition:.2s;outline:none}
+  .search:focus{border-color:var(--primary);box-shadow:0 0 0 2px var(--primary-bg)}
+
+  /* gap card */
+  .card{background:var(--container);border:1px solid var(--border);border-radius:var(--radius);
+    box-shadow:var(--shadow);margin:0 0 18px;overflow:hidden;animation:fadeInUp .5s both;
+    transition:box-shadow .3s,transform .3s}
+  .card:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+  .card.hidden{display:none}
+  .card .head{display:flex;align-items:center;gap:12px;padding:16px 24px;border-bottom:1px solid var(--border)}
+  .rank{width:28px;height:28px;flex:none;border-radius:50%;background:var(--primary);color:#fff;
+    display:inline-flex;align-items:center;justify-content:center;font-weight:600;font-size:14px}
+  .need{font-size:16px;font-weight:600;flex:1;line-height:1.4}
+  .tag{font-size:12px;font-weight:500;padding:1px 8px;border-radius:4px;white-space:nowrap;line-height:20px}
+  .tag.IGNORED{background:var(--error-bg);color:var(--error-text);border:1px solid var(--error-border)}
+  .tag.UNDER-PRIORITIZED{background:var(--warning-bg);color:var(--warning-text);border:1px solid var(--warning-border)}
+  .tag.MISUNDERSTOOD{background:var(--purple-bg);color:var(--purple-text);border:1px solid var(--purple-border)}
+  .conf{text-align:right;flex:none}
+  .conf .c{font-size:22px;font-weight:600;line-height:1;color:var(--primary)}
+  .conf .l{font-size:11px;color:var(--text3)}
+  .body{padding:16px 24px 20px}
+  .prog{height:6px;background:#f5f5f5;border-radius:100px;overflow:hidden;margin:0 0 16px}
+  .prog>i{display:block;height:100%;width:0;border-radius:100px;
+    background:linear-gradient(90deg,var(--primary),#69b1ff);transition:width 1s cubic-bezier(.23,1,.32,1) .2s}
+  .why{color:var(--text);margin:0 0 8px} .why b{font-weight:600}
+  .latent{color:var(--text2);font-style:italic;font-size:13px;margin:0 0 14px}
+  .feats{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 14px}
+  .feat{font-size:12px;padding:1px 8px;border-radius:4px;background:#fafafa;border:1px solid var(--border);
+    color:var(--text2)} .feat b{color:var(--text);font-weight:600}
+  .feat.g{background:var(--success-bg);border-color:var(--success-border);color:var(--success-text)}
+  /* backtest timeline */
+  .bt{display:flex;gap:10px;background:var(--success-bg);border:1px solid var(--success-border);
+    border-radius:var(--radius-sm);padding:10px 14px;margin:0 0 6px}
+  .bt.na{background:#fafafa;border-color:var(--border)}
+  .bt .d{width:8px;height:8px;border-radius:50%;background:var(--success);margin-top:6px;flex:none}
+  .bt.na .d{background:var(--text3)}
+  .bt .txt{font-size:13px;color:var(--text)} .bt .txt b{color:var(--success-text)}
+  .lag{display:inline-block;font-size:12px;font-weight:600;color:var(--success-text);
+    background:var(--container);border:1px solid var(--success-border);border-radius:4px;padding:0 6px;margin-left:6px}
+  /* collapse */
+  details{border-top:1px solid var(--border);margin-top:14px}
+  details>summary{cursor:pointer;list-style:none;padding:10px 0 2px;color:var(--primary);font-size:13px;
+    display:flex;align-items:center;gap:6px}
+  details>summary::-webkit-details-marker{display:none}
+  details>summary::before{content:"▸";transition:transform .2s;display:inline-block}
+  details[open]>summary::before{transform:rotate(90deg)}
+  .ev{padding:8px 0 8px 14px;border-left:2px solid var(--border);margin:8px 0;font-size:13px}
+  .ev .id{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;color:var(--text3);
+    background:#fafafa;border:1px solid var(--border);border-radius:4px;padding:0 5px}
+  .src{font-size:11px;padding:0 6px;border-radius:4px;border:1px solid;line-height:18px}
+  .src.review{color:var(--primary);background:var(--primary-bg);border-color:var(--primary-border)}
+  .src.gh_issue{color:var(--purple-text);background:var(--purple-bg);border-color:var(--purple-border)}
+  .src.ticket{color:var(--cyan);background:#e6fffb;border-color:#87e8de}
+  .star{color:var(--warning)} .react{color:var(--success)}
+  .refs{color:var(--text3);font-size:12px;margin-top:8px}
+  code{background:#fafafa;border:1px solid var(--border);border-radius:4px;padding:0 5px;font-size:12px}
+  footer{color:var(--text3);font-size:12px;margin-top:28px;padding-top:16px;border-top:1px solid var(--border)}
+  .empty{text-align:center;color:var(--text3);padding:40px}
+
+  @keyframes fadeInUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes fadeInDown{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:translateY(0)}}
+  @media(max-width:760px){.stats{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body><div class="wrap">
+  <div class="pagehead">
+    <h1>The Silent Stakeholder</h1>
+    <div class="meta">org.wordpress.android<span class="dot">·</span>roadmap T0 2017-01-01
+      <span class="dot">·</span>2026-07-31 16:12
+      <span class="dot">·</span>openai:gpt-5.1</div>
+  </div>
+
+  <div class="alert">
+    <div class="ico">🎯</div>
+    <div><div class="k">The single most important unmet need</div>
+      <div class="v">Users need publishing to be rock‑solid: when they tap Post/Update, their content must reliably publish or update without cryptic errors (403 forbidden, generic post update errors, silent failures), including on self‑hosted sites and after app updates. They want to be able to write and then confident — under-prioritized by the roadmap despite the evidence (71% confidence).</div></div>
+  </div>
+
+  <div class="stats">
+    
+    <div class="stat" style="animation-delay:.10s"><div class="t">Ranked gaps</div><div class="n p" data-count="5">5</div></div>
+    <div class="stat" style="animation-delay:.16s"><div class="t">User signals</div><div class="n" data-count="4116">4116</div></div>
+    <div class="stat" style="animation-delay:.22s"><div class="t">Need themes</div><div class="n" data-count="133">133</div></div>
+    <div class="stat" style="animation-delay:.28s"><div class="t">Roadmap items</div><div class="n" data-count="1719">1719</div></div>
+    <div class="stat" style="animation-delay:.34s"><div class="t">Avg confidence</div><div class="n s" data-count="63" data-suffix="%">63%</div></div>
+  </div>
+
+  <div class="controls">
+    <div class="seg">
+      <button class="chip active" data-f="all">All</button>
+      <button class="chip" data-f="IGNORED">Ignored</button>
+      <button class="chip" data-f="UNDER-PRIORITIZED">Under-prioritized</button>
+      <button class="chip" data-f="MISUNDERSTOOD">Misunderstood</button>
+    </div>
+    <input id="q" class="search" type="search" placeholder="🔍 search needs & evidence"/>
+  </div>
+
+  
+  <div class="card" data-verdict="UNDER-PRIORITIZED" style="animation-delay:0.15s">
+    <div class="head">
+      <span class="rank">1</span>
+      <span class="need">Users need publishing to be rock‑solid: when they tap Post/Update, their content must reliably publish or update without cryptic errors (403 forbidden, generic post update errors, silent failures), including on self‑hosted sites and after app updates. They want to be able to write and then confident</span>
+      <span class="tag UNDER-PRIORITIZED">UNDER-PRIORITIZED</span>
+      <span class="conf"><div class="c" data-count="71" data-suffix="%">71%</div><div class="l">confidence</div></span>
+    </div>
+    <div class="body">
+      <div class="prog"><i data-w="71"></i></div>
+      <div class="why"><b>Why a gap:</b> User signals are about a core, blocking failure to publish or update posts (403 forbidden on self‑hosted, generic post update errors, repeated failures after app updates). The nearest roadmap items only tangentially touch posting: GH-1296 is about clarifying insufficient privileges (permissions/roles UX), and GH-862 is an old, generic bug about losing posts on upload. Neither addresses the recurring, systemic inability to publish (especially 403s and post‑update regressions) as a first‑class reliability problem. There is no roadmap item that explicitly targets robust, end‑to‑end post publishin [Reclassified UNDER-PRIORITIZED by the backtest: absent from the T0 roadmap, but the team closed a matching issue post-T0.]</div>
+      <div class="latent">Latent because: The pain is very high because publishing is the core job‑to‑be‑done; when it fails, the entire app is useless (“can’t post since morning”, “always failed on posting”, “it does not let me post my articles”). Users express this as frustration with specific errors or with the latest update, not as a structured feature request like “please improve the reliability of the publishing pipeline” or “add be</div>
+      <div class="feats">
+        <span class="feat">volume <b>0.897</b></span>
+        <span class="feat">diversity <b>0.667</b></span>
+        <span class="feat">intensity <b>0.499</b></span>
+        <span class="feat">cohesion <b>0.737</b></span>
+        <span class="feat g">gap-clarity <b>0.75</b></span>
+        <span class="feat">contradiction <b>0.079</b></span>
+      </div>
+      
+      <div class="bt ">
+        <span class="d"></span>
+        <span class="txt">🔮 <b>Backtest:</b> Team later closed a matching issue GH-8300 &#39;Blog Posts List Shows Error Message When Publishin&#39; (2018-09-19, sim 0.58).<span class="lag">+20 mo</span></span>
+      </div>
+      
+      <details><summary>Evidence trace — 6 signals</summary>
+        
+        <div class="ev"><span class="id">R-b4de1674</span> <span class="src review">review</span>
+          <span class="star">★</span>
+          
+          <span style="color:var(--text3)">· 2016-11-11</span>
+          <div style="margin-top:4px">Error I cannot able to get access to my self hosted website. Error shown that could not update data at this time. When I&#39;m publishing a post a 403 error forbidden</div></div>
+        
+        <div class="ev"><span class="id">R-3f8a8eeb</span> <span class="src review">review</span>
+          <span class="star">★</span>
+          
+          <span style="color:var(--text3)">· 2016-10-22</span>
+          <div style="margin-top:4px">Can&#39;t log in after I updated my WordPress application. I can&#39;t log in again since updated my WordPress application. I hate this  can&#39;t post since morning.</div></div>
+        
+        <div class="ev"><span class="id">R-8eb07a04</span> <span class="src review">review</span>
+          <span class="star">★</span>
+          
+          <span style="color:var(--text3)">· 2016-09-26</span>
+          <div style="margin-top:4px">Can&#39;t publish blog post Blog post is saved as draft but won&#39;t publish. I clicked publish multiple times and it notifies me that the post is published however I can&#39;t see it when visiting my blog site. Gets really frustrating</div></div>
+        
+        <div class="ev"><span class="id">R-e078e696</span> <span class="src review">review</span>
+          <span class="star">★</span>
+          
+          <span style="color:var(--text3)">· 2016-09-20</span>
+          <div style="margin-top:4px">I can&#39;t post on my website it always left a draft what should i do ?</div></div>
+        
+        <div class="ev"><span class="id">GH-1230</span> <span class="src gh_issue">gh_issue</span>
+          
+          
+          <span style="color:var(--text3)">· 2014-04-07</span>
+          <div style="margin-top:4px">XML-RPC error 405 on self-hosted blog. Hello.  Since I updated the app to the latest version, I can no longer post content to my self-hosted WP blog. The error message says that XML-RPC services are disabled on this host.  The blog configur</div></div>
+        
+        <div class="ev"><span class="id">T-92811096</span> <span class="src ticket">ticket</span>
+          
+          
+          
+          <div style="margin-top:4px">Digital Assistance. The digital campaign occasionally fails to upload content, which might be caused by server timeout issues. Troubleshooting steps include restarting systems and verifying network connections to ensure stability and perfor</div></div>
+        
+        <div class="refs">Roadmap refs: <code>GH-1296</code> <span style="color:var(--text3)">Better handling of insufficient posting privileges</span> · <code>GH-862</code> <span style="color:var(--text3)">Some users are losing posts when attempting upload</span></div>
+      </details>
+      <details><summary>Adversarial check</summary><div class="latent" style="padding:8px 0 4px">The evidence does point to a real reliability problem around publishing, but we should be careful not to overstate it as some newly discovered, deeply latent need.
+
+1. **This is a very basic, explicit expectation, not a subtle latent need.**
+   Users expecting “when I tap Post, it actually posts” is table‑stakes for any publishing app. The complaints are direct and literal:
+   - “Error shown that could not update data at this time. When I&#39;m publishing a post a 403 error forbidden”
+   - “Can&#39;t log in after I updated my WordPress application. I hate this can&#39;t post since morning.”
+   - “Blog pos</div></details>
+    </div>
+  </div>
+  
+  <div class="card" data-verdict="UNDER-PRIORITIZED" style="animation-delay:0.22999999999999998s">
+    <div class="head">
+      <span class="rank">2</span>
+      <span class="need">“When I add a video to my post—whether via Quick Video, from my gallery, or newly captured—it should upload successfully, stay attached to the post, and be visible to my viewers. I shouldn’t see constant upload errors, end up with empty posts, or publish a post that looks fine in the app but has no </span>
+      <span class="tag UNDER-PRIORITIZED">UNDER-PRIORITIZED</span>
+      <span class="conf"><div class="c" data-count="67" data-suffix="%">67%</div><div class="l">confidence</div></span>
+    </div>
+    <div class="body">
+      <div class="prog"><i data-w="67"></i></div>
+      <div class="why"><b>Why a gap:</b> The user need is about reliably getting videos into posts and having them actually appear for viewers: uploads fail with errors, posts publish without the video, quick video posts end up empty, and error messages are confusing or misleading. The roadmap items nearby are mostly tangential: GH-250 is about a specific VideoPress alert, GH-603 about using a shortcode when sharing a video, GH-375 and GH-503 are image‑related, and GH-4579 is about YouTube iframe previews. None of these represent a coherent, prioritized effort to make video upload and publishing robust and understandable end‑to‑end.  [Reclassified UNDER-PRIORITIZED by the backtest: absent from the T0 roadmap, but the team closed a matching issue post-T0.]</div>
+      <div class="latent">Latent because: This need is highly painful (videos not uploading or disappearing undermines entire posts and frustrates both authors and viewers) but only weakly expressed as a single, clear feature request. Users describe symptoms—“videos won’t upload,” “error every time,” “viewers can’t see my videos,” “posts are empty,” “invalid file type,” “post uploaded without the video”—rather than articulating a unified </div>
+      <div class="feats">
+        <span class="feat">volume <b>0.459</b></span>
+        <span class="feat">diversity <b>0.667</b></span>
+        <span class="feat">intensity <b>0.533</b></span>
+        <span class="feat">cohesion <b>0.767</b></span>
+        <span class="feat g">gap-clarity <b>0.8</b></span>
+        <span class="feat">contradiction <b>0.0</b></span>
+      </div>
+      
+      <div class="bt ">
+        <span class="d"></span>
+        <span class="txt">🔮 <b>Backtest:</b> Team later closed a matching issue GH-6654 &#39;Async media: broken reattachment identification&#39; (2017-09-22, sim 0.63).<span class="lag">+8 mo</span></span>
+      </div>
+      
+      <details><summary>Evidence trace — 6 signals</summary>
+        
+        <div class="ev"><span class="id">R-a293a934</span> <span class="src review">review</span>
+          <span class="star">★</span>
+          
+          <span style="color:var(--text3)">· 2016-07-12</span>
+          <div style="margin-top:4px">So many glitches! Videos won&#39;t upload  the keyboard glitches. The mobile app sucks  the follow blog widget isn&#39;t working. It keeps sending my users to have to log in when they try to like or follow my blog. And I have tried to fix this over</div></div>
+        
+        <div class="ev"><span class="id">R-3327b693</span> <span class="src review">review</span>
+          <span class="star">★</span>
+          
+          <span style="color:var(--text3)">· 2016-04-07</span>
+          <div style="margin-top:4px">Why is it that there&#39;s always error when uploading videos? I have videopress but it has this error everytime</div></div>
+        
+        <div class="ev"><span class="id">GH-74</span> <span class="src gh_issue">gh_issue</span>
+          
+          
+          <span style="color:var(--text3)">· 2013-09-19</span>
+          <div style="margin-top:4px">Quick Video posts are empty. Went back to look at my quick video posts in a browser and noticed that they were all empty. 
+Tried another post via the app and it was empty too. 
+The blog I was testing with does not use video press if that ma</div></div>
+        
+        <div class="ev"><span class="id">GH-190</span> <span class="src gh_issue">gh_issue</span>
+          
+          
+          <span style="color:var(--text3)">· 2013-10-23</span>
+          <div style="margin-top:4px">Quick Vid: Error uploading. Invalid File Type. Not sure if this is a server issue or app issue. 
+When publishing a quick video the following error appears. 
+&#34;Error: An error occurred while uploading media: Could not write file wpid-VID_2013</div></div>
+        
+        <div class="ev"><span class="id">GH-929</span> <span class="src gh_issue">gh_issue</span>
+          
+          
+          <span style="color:var(--text3)">· 2014-02-19</span>
+          <div style="margin-top:4px">Submitting post before video downloads results in no video. - Create a new post
+- Insert a video from your gallery
+- Submit the post as soon as the &#34;Downloading media&#34; toast appears
+
+Post will be uploaded without the video.
+</div></div>
+        
+        <div class="ev"><span class="id">GH-3758</span> <span class="src gh_issue">gh_issue</span>
+          
+          
+          <span style="color:var(--text3)">· 2016-02-16</span>
+          <div style="margin-top:4px">Getting a media error if VideoPress is not enabled. Publishing a post with a video ends up in a Android notification stating:
+
+&gt; Media Error
+&gt; Get the VideoPress upgrade to upload video!
+
+We should improve this UX. Perhaps let the user know</div></div>
+        
+        <div class="refs">Roadmap refs: <code>GH-250</code> <span style="color:var(--text3)">VideoPress alert stopped working for WP.com blogs</span> · <code>GH-603</code> <span style="color:var(--text3)">Media: Sharing a video to a WP.com post doesn&#39;t use VideoPress shortcode</span> · <code>GH-375</code> <span style="color:var(--text3)">Cannot upload a post with a pictures in it</span> · <code>GH-503</code> <span style="color:var(--text3)">Media: Broken images after canceling a post.  Also Crash</span> · <code>GH-4579</code> <span style="color:var(--text3)">Editor: Post preview shows error for iframe youtube embeds missing a scheme.</span></div>
+      </details>
+      <details><summary>Adversarial check</summary><div class="latent" style="padding:8px 0 4px">The claimed gap is that adding a video to a post should reliably result in a published post where the video is actually present and viewable, without confusing errors or silent failures. The evidence set is fairly consistent with that, and it’s not easily dismissed as mere noise or sarcasm.
+
+1. **Is this just a frequent, generic complaint?**  
+The 1‑star reviews are broad but specific about video:
+- R-a293a934: “Videos won&#39;t upload…” is bundled with other glitches, but video upload failure is explicitly called out as a pain point.
+- R-3327b693: “always error when uploading videos… every time” </div></details>
+    </div>
+  </div>
+  
+  <div class="card" data-verdict="UNDER-PRIORITIZED" style="animation-delay:0.31s">
+    <div class="head">
+      <span class="rank">3</span>
+      <span class="need">“I just want to be able to create an account (and new blog) without mysterious errors. When something goes wrong, tell me clearly what the problem is and how to fix it, instead of failing silently or with a generic message that leaves me stuck.”</span>
+      <span class="tag UNDER-PRIORITIZED">UNDER-PRIORITIZED</span>
+      <span class="conf"><div class="c" data-count="65" data-suffix="%">65%</div><div class="l">confidence</div></span>
+    </div>
+    <div class="body">
+      <div class="prog"><i data-w="65"></i></div>
+      <div class="why"><b>Why a gap:</b> The user need is about reliably creating a new account (and/or new blog) without opaque or blocking errors, especially in normal conditions. The sample signals show users often cannot create an account at all, see generic or misleading errors, and are left stuck (“not make a account”, “error occurred… not telling what’s the error”, invalid_client, silent partial creation). The nearest roadmap items are narrow, one-off bugs: a bad password error after creation (GH-970), a crash on account creation (GH-1469), a crash on slow connection (GH-688), and a wait-indicator UI glitch (GH-715). These add [Reclassified UNDER-PRIORITIZED by the backtest: absent from the T0 roadmap, but the team closed a matching issue post-T0.]</div>
+      <div class="latent">Latent because: This need is latent because users mostly express raw frustration (“Bad… not make a account”, “Cant able create account showing error”) rather than a structured feature request like “please overhaul the signup flow and error handling.” The pain is extremely high: account creation is a gateway action, and when it fails, users are completely blocked from using the product, reflected in 1–2 star revie</div>
+      <div class="feats">
+        <span class="feat">volume <b>0.388</b></span>
+        <span class="feat">diversity <b>0.667</b></span>
+        <span class="feat">intensity <b>0.733</b></span>
+        <span class="feat">cohesion <b>0.793</b></span>
+        <span class="feat g">gap-clarity <b>0.7</b></span>
+        <span class="feat">contradiction <b>0.0</b></span>
+      </div>
+      
+      <div class="bt ">
+        <span class="d"></span>
+        <span class="txt">🔮 <b>Backtest:</b> Team later closed a matching issue GH-8460 &#39;Better Error Messaging for Invalid URLs&#39; (2019-04-17, sim 0.51).<span class="lag">+27 mo</span></span>
+      </div>
+      
+      <details><summary>Evidence trace — 6 signals</summary>
+        
+        <div class="ev"><span class="id">R-4ba6b4ec</span> <span class="src review">review</span>
+          <span class="star">★</span>
+          
+          <span style="color:var(--text3)">· 2016-11-01</span>
+          <div style="margin-top:4px">Bad Its very bad not make a account</div></div>
+        
+        <div class="ev"><span class="id">R-48acd729</span> <span class="src review">review</span>
+          <span class="star">★</span>
+          
+          <span style="color:var(--text3)">· 2016-05-06</span>
+          <div style="margin-top:4px">Cant able create account showing error</div></div>
+        
+        <div class="ev"><span class="id">GH-671</span> <span class="src gh_issue">gh_issue</span>
+          
+          
+          <span style="color:var(--text3)">· 2014-01-10</span>
+          <div style="margin-top:4px">Creating an account with password &#34;qwerty12345&#34; fails. Actually, the user is created but can&#39;t be logged in at first time -&gt; results an account without blog
+</div></div>
+        
+        <div class="ev"><span class="id">GH-898</span> <span class="src gh_issue">gh_issue</span>
+          
+          
+          <span style="color:var(--text3)">· 2014-02-17</span>
+          <div style="margin-top:4px">NUX: Creating a new WordPress.com blog is failing. When I try to create a new blog with my existing account, it fails after 10 seconds or so.
+</div></div>
+        
+        <div class="ev"><span class="id">GH-2544</span> <span class="src gh_issue">gh_issue</span>
+          
+          
+          <span style="color:var(--text3)">· 2015-04-16</span>
+          <div style="margin-top:4px">error invalid_client message invalid client_id. 1. Using Android emulator on Android studio.
+2. Trying to create an account.
+
+3.Keep getting this error even after creating/recreating new MyApp and hence getting a new client_id and client_se</div></div>
+        
+        <div class="ev"><span class="id">R-76f42d19</span> <span class="src review">review</span>
+          <span class="star">★★</span>
+          
+          <span style="color:var(--text3)">· 2016-07-15</span>
+          <div style="margin-top:4px">Error Why its saying that an error uccured when i am creating new account..nd also its not telling whats the error..plz respond me fast nd plz fix this</div></div>
+        
+        <div class="refs">Roadmap refs: <code>GH-970</code> <span style="color:var(--text3)">NUX: Bad password error after creating an account</span> · <code>GH-1469</code> <span style="color:var(--text3)">Crash reporst 2.9 - ClassCastException on account creation</span> · <code>GH-688</code> <span style="color:var(--text3)">Creating an account on a slow connection can crash if activity is detached</span> · <code>GH-715</code> <span style="color:var(--text3)">NUX: Wait indicator wonkiness when creating account on Gingerbread</span></div>
+      </details>
+      <details><summary>Adversarial check</summary><div class="latent" style="padding:8px 0 4px">The core claimed gap is: account/blog creation frequently fails with unclear or misleading error handling, leaving users stuck.
+
+1. **Is this just a frequent, surface-level complaint?**  
+The evidence is tightly clustered around the same flow and the same failure mode:
+- R-4ba6b4ec (1★): &#34;not make a account&#34; – generic but clearly about account creation failure.
+- R-48acd729 (1★): &#34;Cant able create account showing error&#34; – again, account creation failing.
+- R-76f42d19 (2★): explicitly calls out that an error occurs during account creation *and* that the app &#34;not telling whats the error&#34;.
+
+These</div></details>
+    </div>
+  </div>
+  
+  <div class="card" data-verdict="UNDER-PRIORITIZED" style="animation-delay:0.39s">
+    <div class="head">
+      <span class="rank">4</span>
+      <span class="need">Users need the app to reliably load, refresh, and display their blog posts inside the app over time—without intermittent failures, vague connection errors, or crashes—so that they can actually read and manage their blogs on mobile instead of being forced into an external browser or uninstalling the </span>
+      <span class="tag UNDER-PRIORITIZED">UNDER-PRIORITIZED</span>
+      <span class="conf"><div class="c" data-count="64" data-suffix="%">64%</div><div class="l">confidence</div></span>
+    </div>
+    <div class="body">
+      <div class="prog"><i data-w="64"></i></div>
+      <div class="why"><b>Why a gap:</b> User reports consistently describe a core failure to view or refresh blog posts after initial use: posts lists not loading, connection errors, crashes on Android 7, and the app becoming effectively unusable for reading or managing posts. The nearest roadmap items are individual, narrow bugs: role-based weirdness (GH-3418), a specific AuthenticatedWebView failure (GH-1751), an NPE in PostsListAdapter (GH-3370), list not updating after delete (GH-181), and live site view breaking with plain permalinks (GH-4873). These address isolated technical defects but do not frame or prioritize the broader, [Reclassified UNDER-PRIORITIZED by the backtest: absent from the T0 roadmap, but the team closed a matching issue post-T0.]</div>
+      <div class="latent">Latent because: The pain is very high because this is a fundamental use case: if posts don’t load or refresh, the app fails at its primary purpose. Users express this through 1–2 star reviews, uninstalls, and phrases like “pointless having app,” “I cannot operate this,” and “Just plain doesn’t work.” However, explicit feature-style requests are low: users rarely say “please improve post list reliability” or “add </div>
+      <div class="feats">
+        <span class="feat">volume <b>0.754</b></span>
+        <span class="feat">diversity <b>0.333</b></span>
+        <span class="feat">intensity <b>0.57</b></span>
+        <span class="feat">cohesion <b>0.714</b></span>
+        <span class="feat g">gap-clarity <b>0.75</b></span>
+        <span class="feat">contradiction <b>0.07</b></span>
+      </div>
+      
+      <div class="bt ">
+        <span class="d"></span>
+        <span class="txt">🔮 <b>Backtest:</b> Team later closed a matching issue GH-8384 &#39;Pull to refresh does not work on Blog Posts page i&#39; (2018-10-04, sim 0.63).<span class="lag">+21 mo</span></span>
+      </div>
+      
+      <details><summary>Evidence trace — 6 signals</summary>
+        
+        <div class="ev"><span class="id">R-239bff1f</span> <span class="src review">review</span>
+          <span class="star">★</span>
+          
+          <span style="color:var(--text3)">· 2016-10-25</span>
+          <div style="margin-top:4px">Just plain doesn&#39;t work &#39;Posts couldn&#39;t be refreshed at this time&#39;. No error message  no indication of what the problem is. Uninstalled.</div></div>
+        
+        <div class="ev"><span class="id">R-d469928d</span> <span class="src review">review</span>
+          <span class="star">★</span>
+          
+          <span style="color:var(--text3)">· 2016-08-05</span>
+          <div style="margin-top:4px">Disappointing It works really fine whenever I newly install it but after that it doesn&#39;t refresh the content and all other stuff anymore</div></div>
+        
+        <div class="ev"><span class="id">R-44ea902e</span> <span class="src review">review</span>
+          <span class="star">★</span>
+          
+          <span style="color:var(--text3)">· 2016-08-04</span>
+          <div style="margin-top:4px">Not working</div></div>
+        
+        <div class="ev"><span class="id">R-9264cbca</span> <span class="src review">review</span>
+          <span class="star">★</span>
+          
+          <span style="color:var(--text3)">· 2016-07-22</span>
+          <div style="margin-top:4px">Does the website and app has a problem today? Yesterday I was still editing so many stuff on my blog. But roday I can&#39;t even open the website! The app doesn&#39;t even work properly. pls send me a feedback on what&#39;s happening. :(</div></div>
+        
+        <div class="ev"><span class="id">R-d493b2a7</span> <span class="src review">review</span>
+          <span class="star">★</span>
+          
+          <span style="color:var(--text3)">· 2016-07-09</span>
+          <div style="margin-top:4px">Lost my posts!! :&#39;( Today morning when checked it it says nothing found!!! All my posts pages cmnts tags everythng is gone. Soo broke 💔💔</div></div>
+        
+        <div class="ev"><span class="id">GH-905</span> <span class="src gh_issue">gh_issue</span>
+          
+          
+          <span style="color:var(--text3)">· 2014-02-18</span>
+          <div style="margin-top:4px">ArrayIndexOutOfBoundsException in notification settings. - Open the preferences view.
+- Enter to the “Show/hide WordPress.com blogs” view. Go back.
+- Enter to the “Manage notifications”, go the Blogs section and try to check/uncheck any of </div></div>
+        
+        <div class="refs">Roadmap refs: <code>GH-3418</code> <span style="color:var(--text3)">App acts weird if you&#39;re not an Editor or Admin on all of your blogs</span> · <code>GH-1751</code> <span style="color:var(--text3)">AuthenticatedWebViewActivity fails with no current blog</span> · <code>GH-3370</code> <span style="color:var(--text3)">Crash report: NPE in PostsListAdapter</span> · <code>GH-181</code> <span style="color:var(--text3)">The posts/pages list is not updated when you delete the last page/post of your b</span> · <code>GH-4873</code> <span style="color:var(--text3)">Live site view breaks for published posts when site uses plain permalinks</span></div>
+      </details>
+      <details><summary>Adversarial check</summary><div class="latent" style="padding:8px 0 4px">The claimed gap is that users need the app to reliably load, refresh, and display their blog posts over time, without intermittent failures, vague connection errors, or crashes, so they can actually read/manage blogs on mobile instead of being forced into a browser or uninstalling.
+
+Trying to knock this down:
+
+1. **Could this just be generic &#34;app is buggy&#34; complaining?**  
+   The reviews are all 1-star and all about core content not loading or disappearing:
+   - &#34;Posts couldn&#39;t be refreshed at this time&#34; with no explanation, leading to uninstall.
+   - Works only right after install, then &#34;does</div></details>
+    </div>
+  </div>
+  
+  <div class="card" data-verdict="MISUNDERSTOOD" style="animation-delay:0.47s">
+    <div class="head">
+      <span class="rank">5</span>
+      <span class="need">Users want the comments experience to be easy to navigate and read, especially in long threads: they need a way to jump to the latest comments without endless scrolling, keep their place and selected comment when the list refreshes, have the view scroll to a sensible position (e.g., top of the comme</span>
+      <span class="tag MISUNDERSTOOD">MISUNDERSTOOD</span>
+      <span class="conf"><div class="c" data-count="50" data-suffix="%">50%</div><div class="l">confidence</div></span>
+    </div>
+    <div class="body">
+      <div class="prog"><i data-w="50"></i></div>
+      <div class="why"><b>Why a gap:</b> The roadmap clearly invests in the technical stability and mechanics of the comments feature (crashes, rotation bugs, list performance, infinite scroll, and even a broader &#39;rewrite comments&#39;). However, the core user need expressed in the samples is about *navigating and viewing comments in a usable way*—quickly reaching the latest comments, preserving context/selection when refreshing, sensible scrolling behavior when replying, and making links usable. The roadmap items focus on backend/structural fixes and generic list improvements rather than the specific UX flows that are causing pain. For </div>
+      <div class="latent">Latent because: This need is latent because users mostly complain about specific annoyances (having to scroll through 500+ comments, losing their place after refresh, odd scrolling when replying, links not clickable) rather than explicitly asking for a redesigned comment navigation system. The pain is high—people are frustrated enough to describe the experience as tedious and to report multiple edge-case bugs—but</div>
+      <div class="feats">
+        <span class="feat">volume <b>0.597</b></span>
+        <span class="feat">diversity <b>0.333</b></span>
+        <span class="feat">intensity <b>0.389</b></span>
+        <span class="feat">cohesion <b>0.739</b></span>
+        <span class="feat g">gap-clarity <b>0.45</b></span>
+        <span class="feat">contradiction <b>0.0</b></span>
+      </div>
+      
+      <div class="bt ">
+        <span class="d"></span>
+        <span class="txt">🔮 <b>Backtest:</b> Team later closed a matching issue GH-6717 &#39;Crash selecting multiple comments&#39; (2017-10-18, sim 0.66).<span class="lag">+9 mo</span></span>
+      </div>
+      
+      <details><summary>Evidence trace — 6 signals</summary>
+        
+        <div class="ev"><span class="id">GH-526</span> <span class="src gh_issue">gh_issue</span>
+          
+          
+          <span style="color:var(--text3)">· 2013-12-18</span>
+          <div style="margin-top:4px">Crash in CommentDetailFragment. I was in the notification list, and tapped on a comment and then immediately pressed the back button.
+
+```
+12-18 07:18:50.947      558-558/? E/AndroidRuntime﹕ FATAL EXCEPTION: main
+    Process: org.wordpress.</div></div>
+        
+        <div class="ev"><span class="id">GH-747</span> <span class="src gh_issue">gh_issue</span>
+          
+          
+          <span style="color:var(--text3)">· 2014-01-28</span>
+          <div style="margin-top:4px">NPE in comment list fragment. Found while monkey testing the app:
+
+&lt;pre&gt;&lt;code&gt;
+// java.lang.RuntimeException: An error occured while executing doInBackground()
+//  at android.os.AsyncTask$3.done(AsyncTask.java:299)
+//  at java.util.concurre</div></div>
+        
+        <div class="ev"><span class="id">GH-453</span> <span class="src gh_issue">gh_issue</span>
+          
+          
+          <span style="color:var(--text3)">· 2013-12-13</span>
+          <div style="margin-top:4px">CommentListFragment&#39;s ViewSwitcher should be revisited. During development for Issue #333 I had to contend with the following:
+
+(Note: I removed the crashes when working on #333 but the behaviors are still broken)
+
+The mechanism for display</div></div>
+        
+        <div class="ev"><span class="id">GH-1617</span> <span class="src gh_issue">gh_issue</span>
+          
+          
+          <span style="color:var(--text3)">· 2014-07-11</span>
+          <div style="margin-top:4px">Reader loses place in comment adapter. From @aerych: &#34;when i scroll the comment list, and it loads more comments, when it refreshes the list the scroll position changes and I&#39;ve lost my place.&#34;
+</div></div>
+        
+        <div class="ev"><span class="id">GH-660</span> <span class="src gh_issue">gh_issue</span>
+          
+          
+          <span style="color:var(--text3)">· 2014-01-09</span>
+          <div style="margin-top:4px">Comment detail doesn&#39;t show URLs as links. ![device-2014-01-09-081357](https://f.cloud.github.com/assets/3903757/1877841/08a117ba-7930-11e3-8f08-3f4a49c55627.png)
+</div></div>
+        
+        <div class="ev"><span class="id">R-99018386</span> <span class="src review">review</span>
+          <span class="star">★★★</span>
+          
+          <span style="color:var(--text3)">· 2016-07-13</span>
+          <div style="margin-top:4px">Comments There needs to be a way for us to get to the latest comments. I&#39;m of scrolling down 500+ comments after I close the app!!! 😬 めんどくせえええ!!! P.S. I meant the comments on a blog I follow. There should be a tab that allows me to skip to </div></div>
+        
+        <div class="refs">Roadmap refs: <code>GH-754</code> <span style="color:var(--text3)">CommentListFragment: ArrayIndexOutOfBoundsException</span> · <code>GH-770</code> <span style="color:var(--text3)">Rewrite comments</span> · <code>GH-1447</code> <span style="color:var(--text3)">Rotating the device when a comment is displayed add a new fragment to the stack</span> · <code>GH-1681</code> <span style="color:var(--text3)">Crash when first loading comment</span> · <code>GH-757</code> <span style="color:var(--text3)">CommentListFragment: add infinite scroll</span></div>
+      </details>
+      <details><summary>Adversarial check</summary><div class="latent" style="padding:8px 0 4px">The claimed need is: better navigability and readability in long comment threads (jump to latest, preserve scroll position/selection on refresh, sensible scroll positioning). The verdict given is MISUNDERSTOOD, so we need to see if this is really just a misread of other issues (e.g., crashes) or if there is a genuine UX/navigation gap.
+
+1. **Evidence breakdown**
+- GH-526, GH-747: crash reports in CommentDetailFragment / comment list fragment. These are stability issues, not UX requests. They don’t support the specific need, but they also don’t contradict it; they’re just orthogonal.
+- GH-453: </div></details>
+    </div>
+  </div>
+  
+
+  <footer>Every gap is provable from the linked signal IDs — no evidence, no gap.
+  Confidence is a transparent linear model over the six features shown (<code>SPEC.md §6</code>);
+  calibration: uncalibrated: backtest labels too skewed (13/15 corroborated) — transparent score kept.</footer>
+</div>
+<script>
+(function(){
+  // progress bar fill
+  document.querySelectorAll('.prog>i').forEach(function(i){
+    requestAnimationFrame(function(){ i.style.width = i.getAttribute('data-w')+'%'; }); });
+  // count-up stats
+  document.querySelectorAll('[data-count]').forEach(function(el){
+    var end=+el.getAttribute('data-count'), suf=el.getAttribute('data-suffix')||'', t0=null, dur=900;
+    if(end>0){ function step(ts){ if(!t0)t0=ts; var p=Math.min((ts-t0)/dur,1);
+      el.textContent=Math.round(end*(p<1?(1-Math.pow(1-p,3)):1))+suf; if(p<1)requestAnimationFrame(step);} requestAnimationFrame(step);} });
+  // filter + search
+  var cards=[].slice.call(document.querySelectorAll('.card'));
+  var chips=[].slice.call(document.querySelectorAll('.chip')); var q=document.getElementById('q'); var f='all';
+  function apply(){ var term=(q.value||'').trim().toLowerCase(), shown=0;
+    cards.forEach(function(c){ var okV=f==='all'||c.getAttribute('data-verdict')===f;
+      var okQ=!term||c.textContent.toLowerCase().indexOf(term)!==-1; var vis=okV&&okQ;
+      c.classList.toggle('hidden',!vis); if(vis)shown++; });
+    var e=document.getElementById('empty');
+    if(!shown&&!e){e=document.createElement('div');e.id='empty';e.className='empty';e.textContent='No gaps match.';q.parentNode.parentNode.appendChild(e);} else if(shown&&e){e.remove();} }
+  chips.forEach(function(ch){ch.addEventListener('click',function(){chips.forEach(function(x){x.classList.remove('active');});ch.classList.add('active');f=ch.getAttribute('data-f');apply();});});
+  q.addEventListener('input',apply);
+})();
+</script>
+</body></html>

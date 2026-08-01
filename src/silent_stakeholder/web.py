@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import dataclasses
 import json
+import re
 import threading
 import time
 from pathlib import Path
@@ -22,6 +23,13 @@ from .config import OUT_DIR, get_settings
 from .pipeline import run as run_pipeline
 
 TEMPLATES = Path(__file__).parent / "templates"
+
+_BACK_BAR = (
+    '<div style="position:sticky;top:0;z-index:9999;background:#1677ff;padding:10px 20px;'
+    'box-shadow:0 2px 8px rgba(0,0,0,.15)"><a href="/" style="color:#fff;'
+    'font:600 14px/1.5 -apple-system,Segoe UI,Arial;text-decoration:none">'
+    '&larr; Back to control panel</a></div>'
+)
 
 # Verified: package is in sealuzh/app_reviews AND the repo has a public issue tracker
 # with pre-T0 history. (DrKLO/Telegram and the Wikipedia app have issues disabled, so
@@ -130,14 +138,37 @@ def create_app() -> FastAPI:
     def report_html() -> str:
         p = OUT_DIR / "report.html"
         if not p.exists():
-            return "<p>No report yet — run an analysis. <a href='/'>← Back</a></p>"
-        bar = (
-            '<div style="position:sticky;top:0;z-index:9999;background:#1677ff;'
-            'padding:10px 20px;box-shadow:0 2px 8px rgba(0,0,0,.15)">'
-            '<a href="/" style="color:#fff;font:600 14px/1.5 -apple-system,Segoe UI,Arial;'
-            'text-decoration:none">← Back to control panel</a></div>'
-        )
-        return p.read_text().replace("<body>", "<body>" + bar, 1)
+            return "<p>No report yet — run an analysis. <a href='/'>&larr; Back</a></p>"
+        return p.read_text().replace("<body>", "<body>" + _BACK_BAR, 1)
+
+    @app.get("/api/reports")
+    def reports_list() -> JSONResponse:
+        """Saved per-product reports (out/reports/<slug>_result.json), newest first."""
+        rd = OUT_DIR / "reports"
+        out = []
+        if rd.exists():
+            files = sorted(rd.glob("*_result.json"), key=lambda p: p.stat().st_mtime, reverse=True)
+            for jf in files:
+                try:
+                    d = json.loads(jf.read_text())
+                except (json.JSONDecodeError, OSError):
+                    continue
+                out.append({
+                    "slug": jf.name[: -len("_result.json")],
+                    "product": d.get("product", "?"),
+                    "generated_at": str(d.get("generated_at", ""))[:16].replace("T", " "),
+                    "gaps": len(d.get("gaps", [])),
+                    "mode": (d.get("meta") or {}).get("mode", ""),
+                })
+        return JSONResponse(out)
+
+    @app.get("/reports/{slug}", response_class=HTMLResponse)
+    def report_by_slug(slug: str) -> str:
+        safe = re.sub(r"[^a-z0-9_]", "", slug.lower())  # prevent path traversal
+        p = OUT_DIR / "reports" / f"{safe}_result.html"
+        if not p.exists():
+            return "<p>Report not found. <a href='/'>&larr; Back</a></p>"
+        return p.read_text().replace("<body>", "<body>" + _BACK_BAR, 1)
 
     return app
 

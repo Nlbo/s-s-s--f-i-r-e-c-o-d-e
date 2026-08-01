@@ -5,6 +5,7 @@ one-sentence gap statement required by the rules.
 
 from __future__ import annotations
 
+import re
 from datetime import UTC, datetime
 from pathlib import Path
 
@@ -20,6 +21,16 @@ _VERDICT_PHRASE = {
     "UNDER-PRIORITIZED": "under-prioritized",
     "MISUNDERSTOOD": "misunderstood",
 }
+_SLUG_STOP = {"com", "org", "net", "io", "co", "de", "app", "apps", "android", "mobile",
+              "ios", "messenger", "client", "free", "the"}
+
+
+def report_slug(product: str) -> str:
+    """Short, stable, filesystem-safe per-product name, e.g. org.wordpress.android -> wordpress."""
+    toks = [t for t in re.split(r"[^a-z0-9]+", product.lower()) if t and t not in _SLUG_STOP]
+    if toks:
+        return toks[-1]
+    return re.sub(r"[^a-z0-9]+", "_", product.lower()).strip("_") or "product"
 
 
 def rank_and_select(
@@ -63,7 +74,7 @@ def build_report(product: str, t0: str, top: list[Gap], meta: dict) -> Report:
 
 def _to_markdown(r: Report) -> str:
     lines = [
-        f"# 🔇 The Silent Stakeholder — {r.product}",
+        f"# The Silent Stakeholder — {r.product}",
         "",
         f"*Roadmap snapshot T0 = {r.t0} · generated {r.generated_at:%Y-%m-%d %H:%M UTC} "
         f"· mode {r.meta.get('mode', '?')}*",
@@ -102,8 +113,9 @@ def write_report(r: Report, out_dir: Path = OUT_DIR) -> dict[str, Path]:
     out_dir.mkdir(parents=True, exist_ok=True)
     paths: dict[str, Path] = {}
 
+    json_str = r.model_dump_json(indent=2)
     paths["json"] = out_dir / "report.json"
-    paths["json"].write_text(r.model_dump_json(indent=2))
+    paths["json"].write_text(json_str)
 
     paths["md"] = out_dir / "report.md"
     paths["md"].write_text(_to_markdown(r))
@@ -112,6 +124,15 @@ def write_report(r: Report, out_dir: Path = OUT_DIR) -> dict[str, Path]:
         loader=FileSystemLoader(str(TEMPLATES)),
         autoescape=select_autoescape(["html", "j2"]),
     )
+    html = env.get_template("report.html.j2").render(report=r)
     paths["html"] = out_dir / "report.html"
-    paths["html"].write_text(env.get_template("report.html.j2").render(report=r))
+    paths["html"].write_text(html)
+
+    # per-product archive: out/reports/<slug>_result.{html,json} (last run per product kept)
+    archive = out_dir / "reports"
+    archive.mkdir(exist_ok=True)
+    slug = report_slug(r.product)
+    (archive / f"{slug}_result.html").write_text(html)
+    (archive / f"{slug}_result.json").write_text(json_str)
+    paths["archive"] = archive / f"{slug}_result.html"
     return paths

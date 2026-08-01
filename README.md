@@ -1,4 +1,4 @@
-# 🔇 The Silent Stakeholder
+# The Silent Stakeholder
 
 > Every product has a stakeholder who never files a ticket, never joins sprint planning: the user whose real need quietly diverges from what the team is building. This system finds those needs — **and proves them from the data.**
 
@@ -39,5 +39,5 @@ SPEC.md                     the anchor spec
 src/silent_stakeholder/     pipeline + agents + CLI
 tests/                      pytest on committed fixtures (no network)
 docs/DECISION_LOG.md        who (which agent) did what, and why
-out/                        generated reports (gitignored)
+out/                        generated reports
 ```

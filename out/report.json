@@ -1,0 +1,516 @@
+{
+  "product": "org.wordpress.android",
+  "generated_at": "2026-07-31T16:12:29.696539Z",
+  "t0": "2017-01-01",
+  "one_sentence_gap": "Users need publishing to be rock‑solid: when they tap Post/Update, their content must reliably publish or update without cryptic errors (403 forbidden, generic post update errors, silent failures), including on self‑hosted sites and after app updates. They want to be able to write and then confident — under-prioritized by the roadmap despite the evidence (71% confidence).",
+  "gaps": [
+    {
+      "rank": 1,
+      "need": "Users need publishing to be rock‑solid: when they tap Post/Update, their content must reliably publish or update without cryptic errors (403 forbidden, generic post update errors, silent failures), including on self‑hosted sites and after app updates. They want to be able to write and then confident",
+      "confidence": 0.708,
+      "confidence_breakdown": {
+        "V": 0.897,
+        "D": 0.667,
+        "I": 0.499,
+        "K": 0.737,
+        "G": 0.75,
+        "X": 0.079,
+        "raw": 0.708
+      },
+      "verdict": "UNDER-PRIORITIZED",
+      "verdict_rationale": "User signals are about a core, blocking failure to publish or update posts (403 forbidden on self‑hosted, generic post update errors, repeated failures after app updates). The nearest roadmap items only tangentially touch posting: GH-1296 is about clarifying insufficient privileges (permissions/roles UX), and GH-862 is an old, generic bug about losing posts on upload. Neither addresses the recurring, systemic inability to publish (especially 403s and post‑update regressions) as a first‑class reliability problem. There is no roadmap item that explicitly targets robust, end‑to‑end post publishin [Reclassified UNDER-PRIORITIZED by the backtest: absent from the T0 roadmap, but the team closed a matching issue post-T0.]",
+      "latent_reasoning": "The pain is very high because publishing is the core job‑to‑be‑done; when it fails, the entire app is useless (“can’t post since morning”, “always failed on posting”, “it does not let me post my articles”). Users express this as frustration with specific errors or with the latest update, not as a structured feature request like “please improve the reliability of the publishing pipeline” or “add be",
+      "evidence_signals": [
+        {
+          "id": "R-b4de1674",
+          "source": "review",
+          "star": 1,
+          "reactions": 0,
+          "date": "2016-11-11",
+          "quote": "Error I cannot able to get access to my self hosted website. Error shown that could not update data at this time. When I'm publishing a post a 403 error forbidden"
+        },
+        {
+          "id": "R-3f8a8eeb",
+          "source": "review",
+          "star": 1,
+          "reactions": 0,
+          "date": "2016-10-22",
+          "quote": "Can't log in after I updated my WordPress application. I can't log in again since updated my WordPress application. I hate this  can't post since morning."
+        },
+        {
+          "id": "R-8eb07a04",
+          "source": "review",
+          "star": 1,
+          "reactions": 0,
+          "date": "2016-09-26",
+          "quote": "Can't publish blog post Blog post is saved as draft but won't publish. I clicked publish multiple times and it notifies me that the post is published however I can't see it when visiting my blog site. Gets really frustrating"
+        },
+        {
+          "id": "R-e078e696",
+          "source": "review",
+          "star": 1,
+          "reactions": 0,
+          "date": "2016-09-20",
+          "quote": "I can't post on my website it always left a draft what should i do ?"
+        },
+        {
+          "id": "GH-1230",
+          "source": "gh_issue",
+          "star": null,
+          "reactions": 0,
+          "date": "2014-04-07",
+          "quote": "XML-RPC error 405 on self-hosted blog. Hello.  Since I updated the app to the latest version, I can no longer post content to my self-hosted WP blog. The error message says that XML-RPC services are disabled on this host.  The blog configur"
+        },
+        {
+          "id": "T-92811096",
+          "source": "ticket",
+          "star": null,
+          "reactions": 0,
+          "date": null,
+          "quote": "Digital Assistance. The digital campaign occasionally fails to upload content, which might be caused by server timeout issues. Troubleshooting steps include restarting systems and verifying network connections to ensure stability and perfor"
+        }
+      ],
+      "roadmap_refs": [
+        {
+          "id": "GH-1296",
+          "type": "issue",
+          "note": "Better handling of insufficient posting privileges"
+        },
+        {
+          "id": "GH-862",
+          "type": "issue",
+          "note": "Some users are losing posts when attempting upload"
+        }
+      ],
+      "adversarial_check": "The evidence does point to a real reliability problem around publishing, but we should be careful not to overstate it as some newly discovered, deeply latent need.\n\n1. **This is a very basic, explicit expectation, not a subtle latent need.**\n   Users expecting “when I tap Post, it actually posts” is table‑stakes for any publishing app. The complaints are direct and literal:\n   - “Error shown that could not update data at this time. When I'm publishing a post a 403 error forbidden”\n   - “Can't log in after I updated my WordPress application. I hate this can't post since morning.”\n   - “Blog pos",
+      "validation": {
+        "built_later": true,
+        "shipped_in": "GH-8300: Blog Posts List Shows Error Message When Publishing",
+        "lag_months": 20,
+        "still_open": false,
+        "reaction_growth": null,
+        "note": "Team later closed a matching issue GH-8300 'Blog Posts List Shows Error Message When Publishin' (2018-09-19, sim 0.58)."
+      },
+      "theme_id": "TH-67654e"
+    },
+    {
+      "rank": 2,
+      "need": "“When I add a video to my post—whether via Quick Video, from my gallery, or newly captured—it should upload successfully, stay attached to the post, and be visible to my viewers. I shouldn’t see constant upload errors, end up with empty posts, or publish a post that looks fine in the app but has no ",
+      "confidence": 0.667,
+      "confidence_breakdown": {
+        "V": 0.459,
+        "D": 0.667,
+        "I": 0.533,
+        "K": 0.767,
+        "G": 0.8,
+        "X": 0.0,
+        "raw": 0.667
+      },
+      "verdict": "UNDER-PRIORITIZED",
+      "verdict_rationale": "The user need is about reliably getting videos into posts and having them actually appear for viewers: uploads fail with errors, posts publish without the video, quick video posts end up empty, and error messages are confusing or misleading. The roadmap items nearby are mostly tangential: GH-250 is about a specific VideoPress alert, GH-603 about using a shortcode when sharing a video, GH-375 and GH-503 are image‑related, and GH-4579 is about YouTube iframe previews. None of these represent a coherent, prioritized effort to make video upload and publishing robust and understandable end‑to‑end.  [Reclassified UNDER-PRIORITIZED by the backtest: absent from the T0 roadmap, but the team closed a matching issue post-T0.]",
+      "latent_reasoning": "This need is highly painful (videos not uploading or disappearing undermines entire posts and frustrates both authors and viewers) but only weakly expressed as a single, clear feature request. Users describe symptoms—“videos won’t upload,” “error every time,” “viewers can’t see my videos,” “posts are empty,” “invalid file type,” “post uploaded without the video”—rather than articulating a unified ",
+      "evidence_signals": [
+        {
+          "id": "R-a293a934",
+          "source": "review",
+          "star": 1,
+          "reactions": 0,
+          "date": "2016-07-12",
+          "quote": "So many glitches! Videos won't upload  the keyboard glitches. The mobile app sucks  the follow blog widget isn't working. It keeps sending my users to have to log in when they try to like or follow my blog. And I have tried to fix this over"
+        },
+        {
+          "id": "R-3327b693",
+          "source": "review",
+          "star": 1,
+          "reactions": 0,
+          "date": "2016-04-07",
+          "quote": "Why is it that there's always error when uploading videos? I have videopress but it has this error everytime"
+        },
+        {
+          "id": "GH-74",
+          "source": "gh_issue",
+          "star": null,
+          "reactions": 0,
+          "date": "2013-09-19",
+          "quote": "Quick Video posts are empty. Went back to look at my quick video posts in a browser and noticed that they were all empty. \nTried another post via the app and it was empty too. \nThe blog I was testing with does not use video press if that ma"
+        },
+        {
+          "id": "GH-190",
+          "source": "gh_issue",
+          "star": null,
+          "reactions": 0,
+          "date": "2013-10-23",
+          "quote": "Quick Vid: Error uploading. Invalid File Type. Not sure if this is a server issue or app issue. \nWhen publishing a quick video the following error appears. \n\"Error: An error occurred while uploading media: Could not write file wpid-VID_2013"
+        },
+        {
+          "id": "GH-929",
+          "source": "gh_issue",
+          "star": null,
+          "reactions": 0,
+          "date": "2014-02-19",
+          "quote": "Submitting post before video downloads results in no video. - Create a new post\n- Insert a video from your gallery\n- Submit the post as soon as the \"Downloading media\" toast appears\n\nPost will be uploaded without the video.\n"
+        },
+        {
+          "id": "GH-3758",
+          "source": "gh_issue",
+          "star": null,
+          "reactions": 0,
+          "date": "2016-02-16",
+          "quote": "Getting a media error if VideoPress is not enabled. Publishing a post with a video ends up in a Android notification stating:\n\n> Media Error\n> Get the VideoPress upgrade to upload video!\n\nWe should improve this UX. Perhaps let the user know"
+        }
+      ],
+      "roadmap_refs": [
+        {
+          "id": "GH-250",
+          "type": "issue",
+          "note": "VideoPress alert stopped working for WP.com blogs"
+        },
+        {
+          "id": "GH-603",
+          "type": "issue",
+          "note": "Media: Sharing a video to a WP.com post doesn't use VideoPress shortcode"
+        },
+        {
+          "id": "GH-375",
+          "type": "issue",
+          "note": "Cannot upload a post with a pictures in it"
+        },
+        {
+          "id": "GH-503",
+          "type": "issue",
+          "note": "Media: Broken images after canceling a post.  Also Crash"
+        },
+        {
+          "id": "GH-4579",
+          "type": "issue",
+          "note": "Editor: Post preview shows error for iframe youtube embeds missing a scheme."
+        }
+      ],
+      "adversarial_check": "The claimed gap is that adding a video to a post should reliably result in a published post where the video is actually present and viewable, without confusing errors or silent failures. The evidence set is fairly consistent with that, and it’s not easily dismissed as mere noise or sarcasm.\n\n1. **Is this just a frequent, generic complaint?**  \nThe 1‑star reviews are broad but specific about video:\n- R-a293a934: “Videos won't upload…” is bundled with other glitches, but video upload failure is explicitly called out as a pain point.\n- R-3327b693: “always error when uploading videos… every time” ",
+      "validation": {
+        "built_later": true,
+        "shipped_in": "GH-6654: Async media: broken reattachment identification",
+        "lag_months": 8,
+        "still_open": false,
+        "reaction_growth": null,
+        "note": "Team later closed a matching issue GH-6654 'Async media: broken reattachment identification' (2017-09-22, sim 0.63)."
+      },
+      "theme_id": "TH-ee95c9"
+    },
+    {
+      "rank": 3,
+      "need": "“I just want to be able to create an account (and new blog) without mysterious errors. When something goes wrong, tell me clearly what the problem is and how to fix it, instead of failing silently or with a generic message that leaves me stuck.”",
+      "confidence": 0.652,
+      "confidence_breakdown": {
+        "V": 0.388,
+        "D": 0.667,
+        "I": 0.733,
+        "K": 0.793,
+        "G": 0.7,
+        "X": 0.0,
+        "raw": 0.652
+      },
+      "verdict": "UNDER-PRIORITIZED",
+      "verdict_rationale": "The user need is about reliably creating a new account (and/or new blog) without opaque or blocking errors, especially in normal conditions. The sample signals show users often cannot create an account at all, see generic or misleading errors, and are left stuck (“not make a account”, “error occurred… not telling what’s the error”, invalid_client, silent partial creation). The nearest roadmap items are narrow, one-off bugs: a bad password error after creation (GH-970), a crash on account creation (GH-1469), a crash on slow connection (GH-688), and a wait-indicator UI glitch (GH-715). These add [Reclassified UNDER-PRIORITIZED by the backtest: absent from the T0 roadmap, but the team closed a matching issue post-T0.]",
+      "latent_reasoning": "This need is latent because users mostly express raw frustration (“Bad… not make a account”, “Cant able create account showing error”) rather than a structured feature request like “please overhaul the signup flow and error handling.” The pain is extremely high: account creation is a gateway action, and when it fails, users are completely blocked from using the product, reflected in 1–2 star revie",
+      "evidence_signals": [
+        {
+          "id": "R-4ba6b4ec",
+          "source": "review",
+          "star": 1,
+          "reactions": 0,
+          "date": "2016-11-01",
+          "quote": "Bad Its very bad not make a account"
+        },
+        {
+          "id": "R-48acd729",
+          "source": "review",
+          "star": 1,
+          "reactions": 0,
+          "date": "2016-05-06",
+          "quote": "Cant able create account showing error"
+        },
+        {
+          "id": "GH-671",
+          "source": "gh_issue",
+          "star": null,
+          "reactions": 0,
+          "date": "2014-01-10",
+          "quote": "Creating an account with password \"qwerty12345\" fails. Actually, the user is created but can't be logged in at first time -> results an account without blog\n"
+        },
+        {
+          "id": "GH-898",
+          "source": "gh_issue",
+          "star": null,
+          "reactions": 0,
+          "date": "2014-02-17",
+          "quote": "NUX: Creating a new WordPress.com blog is failing. When I try to create a new blog with my existing account, it fails after 10 seconds or so.\n"
+        },
+        {
+          "id": "GH-2544",
+          "source": "gh_issue",
+          "star": null,
+          "reactions": 0,
+          "date": "2015-04-16",
+          "quote": "error invalid_client message invalid client_id. 1. Using Android emulator on Android studio.\n2. Trying to create an account.\n\n3.Keep getting this error even after creating/recreating new MyApp and hence getting a new client_id and client_se"
+        },
+        {
+          "id": "R-76f42d19",
+          "source": "review",
+          "star": 2,
+          "reactions": 0,
+          "date": "2016-07-15",
+          "quote": "Error Why its saying that an error uccured when i am creating new account..nd also its not telling whats the error..plz respond me fast nd plz fix this"
+        }
+      ],
+      "roadmap_refs": [
+        {
+          "id": "GH-970",
+          "type": "issue",
+          "note": "NUX: Bad password error after creating an account"
+        },
+        {
+          "id": "GH-1469",
+          "type": "issue",
+          "note": "Crash reporst 2.9 - ClassCastException on account creation"
+        },
+        {
+          "id": "GH-688",
+          "type": "issue",
+          "note": "Creating an account on a slow connection can crash if activity is detached"
+        },
+        {
+          "id": "GH-715",
+          "type": "issue",
+          "note": "NUX: Wait indicator wonkiness when creating account on Gingerbread"
+        }
+      ],
+      "adversarial_check": "The core claimed gap is: account/blog creation frequently fails with unclear or misleading error handling, leaving users stuck.\n\n1. **Is this just a frequent, surface-level complaint?**  \nThe evidence is tightly clustered around the same flow and the same failure mode:\n- R-4ba6b4ec (1★): \"not make a account\" – generic but clearly about account creation failure.\n- R-48acd729 (1★): \"Cant able create account showing error\" – again, account creation failing.\n- R-76f42d19 (2★): explicitly calls out that an error occurs during account creation *and* that the app \"not telling whats the error\".\n\nThese",
+      "validation": {
+        "built_later": true,
+        "shipped_in": "GH-8460: Better Error Messaging for Invalid URLs",
+        "lag_months": 27,
+        "still_open": false,
+        "reaction_growth": null,
+        "note": "Team later closed a matching issue GH-8460 'Better Error Messaging for Invalid URLs' (2019-04-17, sim 0.51)."
+      },
+      "theme_id": "TH-ed5218"
+    },
+    {
+      "rank": 4,
+      "need": "Users need the app to reliably load, refresh, and display their blog posts inside the app over time—without intermittent failures, vague connection errors, or crashes—so that they can actually read and manage their blogs on mobile instead of being forced into an external browser or uninstalling the ",
+      "confidence": 0.638,
+      "confidence_breakdown": {
+        "V": 0.754,
+        "D": 0.333,
+        "I": 0.57,
+        "K": 0.714,
+        "G": 0.75,
+        "X": 0.07,
+        "raw": 0.638
+      },
+      "verdict": "UNDER-PRIORITIZED",
+      "verdict_rationale": "User reports consistently describe a core failure to view or refresh blog posts after initial use: posts lists not loading, connection errors, crashes on Android 7, and the app becoming effectively unusable for reading or managing posts. The nearest roadmap items are individual, narrow bugs: role-based weirdness (GH-3418), a specific AuthenticatedWebView failure (GH-1751), an NPE in PostsListAdapter (GH-3370), list not updating after delete (GH-181), and live site view breaking with plain permalinks (GH-4873). These address isolated technical defects but do not frame or prioritize the broader, [Reclassified UNDER-PRIORITIZED by the backtest: absent from the T0 roadmap, but the team closed a matching issue post-T0.]",
+      "latent_reasoning": "The pain is very high because this is a fundamental use case: if posts don’t load or refresh, the app fails at its primary purpose. Users express this through 1–2 star reviews, uninstalls, and phrases like “pointless having app,” “I cannot operate this,” and “Just plain doesn’t work.” However, explicit feature-style requests are low: users rarely say “please improve post list reliability” or “add ",
+      "evidence_signals": [
+        {
+          "id": "R-239bff1f",
+          "source": "review",
+          "star": 1,
+          "reactions": 0,
+          "date": "2016-10-25",
+          "quote": "Just plain doesn't work 'Posts couldn't be refreshed at this time'. No error message  no indication of what the problem is. Uninstalled."
+        },
+        {
+          "id": "R-d469928d",
+          "source": "review",
+          "star": 1,
+          "reactions": 0,
+          "date": "2016-08-05",
+          "quote": "Disappointing It works really fine whenever I newly install it but after that it doesn't refresh the content and all other stuff anymore"
+        },
+        {
+          "id": "R-44ea902e",
+          "source": "review",
+          "star": 1,
+          "reactions": 0,
+          "date": "2016-08-04",
+          "quote": "Not working"
+        },
+        {
+          "id": "R-9264cbca",
+          "source": "review",
+          "star": 1,
+          "reactions": 0,
+          "date": "2016-07-22",
+          "quote": "Does the website and app has a problem today? Yesterday I was still editing so many stuff on my blog. But roday I can't even open the website! The app doesn't even work properly. pls send me a feedback on what's happening. :("
+        },
+        {
+          "id": "R-d493b2a7",
+          "source": "review",
+          "star": 1,
+          "reactions": 0,
+          "date": "2016-07-09",
+          "quote": "Lost my posts!! :'( Today morning when checked it it says nothing found!!! All my posts pages cmnts tags everythng is gone. Soo broke 💔💔"
+        },
+        {
+          "id": "GH-905",
+          "source": "gh_issue",
+          "star": null,
+          "reactions": 0,
+          "date": "2014-02-18",
+          "quote": "ArrayIndexOutOfBoundsException in notification settings. - Open the preferences view.\n- Enter to the “Show/hide WordPress.com blogs” view. Go back.\n- Enter to the “Manage notifications”, go the Blogs section and try to check/uncheck any of "
+        }
+      ],
+      "roadmap_refs": [
+        {
+          "id": "GH-3418",
+          "type": "issue",
+          "note": "App acts weird if you're not an Editor or Admin on all of your blogs"
+        },
+        {
+          "id": "GH-1751",
+          "type": "issue",
+          "note": "AuthenticatedWebViewActivity fails with no current blog"
+        },
+        {
+          "id": "GH-3370",
+          "type": "issue",
+          "note": "Crash report: NPE in PostsListAdapter"
+        },
+        {
+          "id": "GH-181",
+          "type": "issue",
+          "note": "The posts/pages list is not updated when you delete the last page/post of your b"
+        },
+        {
+          "id": "GH-4873",
+          "type": "issue",
+          "note": "Live site view breaks for published posts when site uses plain permalinks"
+        }
+      ],
+      "adversarial_check": "The claimed gap is that users need the app to reliably load, refresh, and display their blog posts over time, without intermittent failures, vague connection errors, or crashes, so they can actually read/manage blogs on mobile instead of being forced into a browser or uninstalling.\n\nTrying to knock this down:\n\n1. **Could this just be generic \"app is buggy\" complaining?**  \n   The reviews are all 1-star and all about core content not loading or disappearing:\n   - \"Posts couldn't be refreshed at this time\" with no explanation, leading to uninstall.\n   - Works only right after install, then \"does",
+      "validation": {
+        "built_later": true,
+        "shipped_in": "GH-8384: Pull to refresh does not work on Blog Posts page if there are no blog ",
+        "lag_months": 21,
+        "still_open": false,
+        "reaction_growth": null,
+        "note": "Team later closed a matching issue GH-8384 'Pull to refresh does not work on Blog Posts page i' (2018-10-04, sim 0.63)."
+      },
+      "theme_id": "TH-3da8c8"
+    },
+    {
+      "rank": 5,
+      "need": "Users want the comments experience to be easy to navigate and read, especially in long threads: they need a way to jump to the latest comments without endless scrolling, keep their place and selected comment when the list refreshes, have the view scroll to a sensible position (e.g., top of the comme",
+      "confidence": 0.496,
+      "confidence_breakdown": {
+        "V": 0.597,
+        "D": 0.333,
+        "I": 0.389,
+        "K": 0.739,
+        "G": 0.45,
+        "X": 0.0,
+        "raw": 0.496
+      },
+      "verdict": "MISUNDERSTOOD",
+      "verdict_rationale": "The roadmap clearly invests in the technical stability and mechanics of the comments feature (crashes, rotation bugs, list performance, infinite scroll, and even a broader 'rewrite comments'). However, the core user need expressed in the samples is about *navigating and viewing comments in a usable way*—quickly reaching the latest comments, preserving context/selection when refreshing, sensible scrolling behavior when replying, and making links usable. The roadmap items focus on backend/structural fixes and generic list improvements rather than the specific UX flows that are causing pain. For ",
+      "latent_reasoning": "This need is latent because users mostly complain about specific annoyances (having to scroll through 500+ comments, losing their place after refresh, odd scrolling when replying, links not clickable) rather than explicitly asking for a redesigned comment navigation system. The pain is high—people are frustrated enough to describe the experience as tedious and to report multiple edge-case bugs—but",
+      "evidence_signals": [
+        {
+          "id": "GH-526",
+          "source": "gh_issue",
+          "star": null,
+          "reactions": 0,
+          "date": "2013-12-18",
+          "quote": "Crash in CommentDetailFragment. I was in the notification list, and tapped on a comment and then immediately pressed the back button.\n\n```\n12-18 07:18:50.947      558-558/? E/AndroidRuntime﹕ FATAL EXCEPTION: main\n    Process: org.wordpress."
+        },
+        {
+          "id": "GH-747",
+          "source": "gh_issue",
+          "star": null,
+          "reactions": 0,
+          "date": "2014-01-28",
+          "quote": "NPE in comment list fragment. Found while monkey testing the app:\n\n<pre><code>\n// java.lang.RuntimeException: An error occured while executing doInBackground()\n//  at android.os.AsyncTask$3.done(AsyncTask.java:299)\n//  at java.util.concurre"
+        },
+        {
+          "id": "GH-453",
+          "source": "gh_issue",
+          "star": null,
+          "reactions": 0,
+          "date": "2013-12-13",
+          "quote": "CommentListFragment's ViewSwitcher should be revisited. During development for Issue #333 I had to contend with the following:\n\n(Note: I removed the crashes when working on #333 but the behaviors are still broken)\n\nThe mechanism for display"
+        },
+        {
+          "id": "GH-1617",
+          "source": "gh_issue",
+          "star": null,
+          "reactions": 0,
+          "date": "2014-07-11",
+          "quote": "Reader loses place in comment adapter. From @aerych: \"when i scroll the comment list, and it loads more comments, when it refreshes the list the scroll position changes and I've lost my place.\"\n"
+        },
+        {
+          "id": "GH-660",
+          "source": "gh_issue",
+          "star": null,
+          "reactions": 0,
+          "date": "2014-01-09",
+          "quote": "Comment detail doesn't show URLs as links. ![device-2014-01-09-081357](https://f.cloud.github.com/assets/3903757/1877841/08a117ba-7930-11e3-8f08-3f4a49c55627.png)\n"
+        },
+        {
+          "id": "R-99018386",
+          "source": "review",
+          "star": 3,
+          "reactions": 0,
+          "date": "2016-07-13",
+          "quote": "Comments There needs to be a way for us to get to the latest comments. I'm of scrolling down 500+ comments after I close the app!!! 😬 めんどくせえええ!!! P.S. I meant the comments on a blog I follow. There should be a tab that allows me to skip to "
+        }
+      ],
+      "roadmap_refs": [
+        {
+          "id": "GH-754",
+          "type": "issue",
+          "note": "CommentListFragment: ArrayIndexOutOfBoundsException"
+        },
+        {
+          "id": "GH-770",
+          "type": "issue",
+          "note": "Rewrite comments"
+        },
+        {
+          "id": "GH-1447",
+          "type": "issue",
+          "note": "Rotating the device when a comment is displayed add a new fragment to the stack"
+        },
+        {
+          "id": "GH-1681",
+          "type": "issue",
+          "note": "Crash when first loading comment"
+        },
+        {
+          "id": "GH-757",
+          "type": "issue",
+          "note": "CommentListFragment: add infinite scroll"
+        }
+      ],
+      "adversarial_check": "The claimed need is: better navigability and readability in long comment threads (jump to latest, preserve scroll position/selection on refresh, sensible scroll positioning). The verdict given is MISUNDERSTOOD, so we need to see if this is really just a misread of other issues (e.g., crashes) or if there is a genuine UX/navigation gap.\n\n1. **Evidence breakdown**\n- GH-526, GH-747: crash reports in CommentDetailFragment / comment list fragment. These are stability issues, not UX requests. They don’t support the specific need, but they also don’t contradict it; they’re just orthogonal.\n- GH-453: ",
+      "validation": {
+        "built_later": true,
+        "shipped_in": "GH-6717: Crash selecting multiple comments",
+        "lag_months": 9,
+        "still_open": false,
+        "reaction_growth": null,
+        "note": "Team later closed a matching issue GH-6717 'Crash selecting multiple comments' (2017-10-18, sim 0.66)."
+      },
+      "theme_id": "TH-88ce67"
+    }
+  ],
+  "meta": {
+    "mode": "openai:gpt-5.1",
+    "n_signals": 4116,
+    "n_themes": 133,
+    "n_roadmap": 1719,
+    "n_candidates": 15,
+    "calibration": "uncalibrated: backtest labels too skewed (13/15 corroborated) — transparent score kept"
+  }
+}
